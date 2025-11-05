@@ -21,7 +21,8 @@ const app = express();
 
 const allowedOrigins = [
   'http://localhost:5173',   // Vite default
-  'http://localhost:3000',   // CRA default
+  'http://localhost:3000',
+  'https://learnilmworld.onrender.com/api',   // CRA default
   process.env.FRONTEND_URL,  // your deployed frontend (e.g., https://learnosphere.vercel.app)
 ].filter(Boolean); // remove undefined
 
