@@ -19,7 +19,7 @@ import {
   Mail
 } from 'lucide-react'
 import { Navbar, Nav, Container, Offcanvas, Button } from 'react-bootstrap'
-import logo from "../assets/LearnilmworldLogo.jpg";
+// import logo from "../assets/LearnilmworldLogo.jpg";
 import russian_student from '../assets/russian_student.png'
 import arab_student from '../assets/arabian_student.png'
 import chi_student from '../assets/chinese_student.png'
@@ -34,6 +34,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Footer from '../components/Footer'
 
 import heroImage1 from '../assets/Hero_image1.png'
+// import MoreLanguages from '../components/MoreLanguages'
 
 
 // LinguaNest — Enhanced Landing Page (single-file React component)
@@ -47,6 +48,7 @@ export default function LandingPageAlt() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [showOffcanvas, setShowOffcanvas] = useState(false)
   const [showMore, setShowMore] = useState(false);
+  const [showMoreLanguages, setShowMoreLanguages] = useState(false);
 
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -130,6 +132,32 @@ export default function LandingPageAlt() {
       navigate(`/trainer-profile/${trainerId}`);
     }
   };
+
+  const handleMoreLanguageClick = (languageName: string) => {
+    const languageTrainerMap: Record<string, string> = {
+      Sanskrit: "68f244c9e88b2371b4194d2c",
+      Russian: "68f244c9e88b2371b4194d2c",
+      Mandarin: "trainer_id_for_mandarin",
+    };
+
+    const trainerId = languageTrainerMap[languageName];
+
+    if (!trainerId) {
+      alert("Trainer for this language not found yet!");
+      setShowMoreLanguages(false);
+      return;
+    }
+
+    if (!user) {
+      localStorage.setItem("redirectAfterLogin", `/trainer-profile/${trainerId}`);
+      navigate("/login");
+    } else {
+      navigate(`/trainer-profile/${trainerId}`);
+    }
+
+    setShowMoreLanguages(false);
+  };
+
 
   const handleSubjectClick = (subject: any) => {
     if (subject.isMore) {
@@ -252,7 +280,7 @@ export default function LandingPageAlt() {
     { q: 'Do trainers provide materials?', a: 'Many trainers include PDFs, flashcards or audio. You can also upload your own material before a lesson.' },
     { q: 'Is there a mobile app?', a: 'Coming soon — our PWA works great on mobile and can be installed to your home screen.' },
     {
-      q: "What is the procedure to become a tutor at LEARNiLM🌎WORLD?",
+      q: "What is the procedure to become a tutor at LearniLM🌍World?",
       a: "Becoming a tutor involves a few simple steps — from applying to onboarding. Here’s how you can start your journey with us:",
     },
     {
@@ -323,13 +351,13 @@ export default function LandingPageAlt() {
                 <div className="text-2xl md:text-3xl font-[Good Vibes] font-extrabold tracking-wide relative inline-flex items-center"> 
                   
                   {/* LEARN */} 
-                  <span className="text-[#dc8d33] bg-clip-text drop-shadow-lg"> LEARNiLM </span> 
+                  <span className="text-[#dc8d33] bg-clip-text drop-shadow-lg"> LearniLM </span> 
                    
                   {/* Rotating Globe */} 
                   <motion.span animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 12, ease: "linear" }} className="inline-block mx-1 text-3xl" > 🌎 </motion.span> 
 
                    {/* World */} 
-                  <span className="text-[#dc8d33] bg-clip-text drop-shadow-lg"> WORLD </span>
+                  <span className="text-[#dc8d33] bg-clip-text drop-shadow-lg"> World </span>
                  
                   {/* Optional subtle shine */} 
                   {/* <motion.div className="absolute top-0 left-0 w-full h-full bg-white/20 rounded-full blur-xl pointer-events-none" animate={{ x: [-200, 200] }} transition={{ repeat: Infinity, duration: 3, ease: "linear" }} />  */}
@@ -504,7 +532,6 @@ export default function LandingPageAlt() {
                 flag: "https://flagcdn.com/w40/de.png",
                 pattern: "MMB Pattern",
                 bg: german_st,
-                // bg: "https://st2.depositphotos.com/1518767/8469/i/450/depositphotos_84693888-stock-photo-pretty-student-in-the-library.jpg",
                 levels: [
                   { name: "A1", desc: "Basic introductions & phrases." },
                   { name: "A2", desc: "Everyday conversations & travel." },
@@ -516,7 +543,6 @@ export default function LandingPageAlt() {
                 flag: "https://flagcdn.com/w40/fr.png",
                 pattern: "DELF Pattern",
                 bg: french_st,
-                // bg: "https://t3.ftcdn.net/jpg/04/70/92/80/360_F_470928010_XLZ5r8ksCXK8ZEGUnc6X5PPTPFpbgSwv.jpg",
                 levels: [
                   { name: "A1", desc: "Greetings & simple interactions." },
                   { name: "A2", desc: "Conversations on daily topics." },
@@ -528,7 +554,6 @@ export default function LandingPageAlt() {
                 flag: "https://flagcdn.com/w40/jp.png",
                 pattern: "JLPT / Japan Foundation",
                 bg: japanese_st,
-                // bg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmgp7s6ne8OUyY3aOKKDYbfdMLwCEG_qaThSBYaZYrA4uqLYDkioAmr4JvVXuI4qaVp_8&usqp=CAU",
                 levels: [
                   { name: "N5", desc: "Basic greetings & phrases." },
                   { name: "N4", desc: "Daily conversation & reading." },
@@ -540,7 +565,6 @@ export default function LandingPageAlt() {
                 flag: "https://flagcdn.com/w40/es.png",
                 pattern: "DELE Pattern",
                 bg: spanish_st,
-                // bg: "https://st5.depositphotos.com/1003234/69163/i/450/depositphotos_691637142-stock-photo-beautiful-woman-student-spanish-flag.jpg",
                 levels: [
                   { name: "A1", desc: "Everyday vocabulary & phrases." },
                   { name: "A2", desc: "Converse about daily life." },
@@ -551,36 +575,12 @@ export default function LandingPageAlt() {
                 flag: "https://flagcdn.com/w40/gb.png",
                 pattern: "Cambridge English",
                 bg: british_st,
-                // bg: "https://st5.depositphotos.com/10614052/68049/i/450/depositphotos_680499390-stock-photo-young-students-language-school-books.jpg",
                 levels: [
                   { name: "A2", desc: "Understand daily expressions." },
                   { name: "B1", desc: "Detailed conversations." },
                   { name: "B2", desc: "Fluent in professional settings." },
                 ],
               },
-              {
-                lang: "Sanskrit",
-                flag: "https://flagcdn.com/w40/in.png",
-                pattern: "Classical Language",
-                bg: indian_st,
-                // bg: "https://st2.depositphotos.com/3591429/11681/i/450/depositphotos_116814870-stock-photo-college-students-using-wireless-devices.jpg",
-                levels: [{ name: "Intro", desc: "Learn alphabets & chanting." }],
-              },
-
-              //  Russian
-              {
-                lang: "Russian",
-                flag: "https://flagcdn.com/w40/ru.png",
-                pattern: "TORFL / TRKI Certification",
-                bg: russian_student,
-                levels: [
-                  { name: "A1", desc: "Basic phrases & introductions." },
-                  { name: "A2", desc: "Simple dialogues & reading skills." },
-                  { name: "B1", desc: "Confident in travel & work situations." },
-                ],
-              },
-
-              //  Arabic
               {
                 lang: "Arabic",
                 flag: "https://flagcdn.com/w40/sa.png",
@@ -592,19 +592,6 @@ export default function LandingPageAlt() {
                   { name: "B1", desc: "Understand media & formal speech." },
                 ],
               },
-
-              //  Mandarin
-              {
-                lang: "Mandarin",
-                flag: "https://flagcdn.com/w40/cn.png",
-                pattern: "HSK (Hanyu Shuiping Kaoshi)",
-                bg: chi_student,
-                levels: [
-                  { name: "HSK 1", desc: "Basic vocabulary & sentences." },
-                  { name: "HSK 2", desc: "Understand short daily phrases." },
-                  { name: "HSK 3", desc: "Converse & read common texts." },
-                ],
-              },
             ].map((course, idx) => (
               <motion.div
                 key={idx}
@@ -613,26 +600,34 @@ export default function LandingPageAlt() {
                 transition={{ duration: 0.5, delay: idx * 0.15 }}
                 viewport={{ once: true }}
                 className="relative rounded-2xl overflow-hidden group hover:shadow-2xl transition-all duration-300 cursor-pointer"
-                onClick={() => handleLanguageClick(course.lang)}
+                onClick={() =>
+                  handleLanguageClick(course.lang)
+                }
               >
-                {/* Language Header (moved outside image) */}
+                {/* Language Header */}
                 <div className="flex items-center justify-between px-3 pt-4 pb-2">
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-full overflow-hidden border border-white">
-                      <img
-                        src={course.flag}
-                        alt={`${course.lang} flag`}
-                        className="w-full h-full object-cover"
-                      />
+                      {course.flag === "🌍" ? (
+                        <span className="text-2xl">🌍</span>
+                      ) : (
+                        <img
+                          src={course.flag}
+                          alt={`${course.lang} flag`}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
                     </div>
                     <h3 className="text-2xl font-bold text-white">{course.lang}</h3>
                   </div>
-                  <span className="text-xs bg-[#9787F3] text-white px-2 py-1 rounded-full">
-                    {course.pattern}
-                  </span>
+                  {course.pattern && (
+                    <span className="text-xs bg-[#9787F3] text-white px-2 py-1 rounded-full">
+                      {course.pattern}
+                    </span>
+                  )}
                 </div>
 
-                {/* Image with gradient and text content below */}
+                {/* Image and Description */}
                 <div
                   className="relative rounded-b-2xl overflow-hidden"
                   style={{
@@ -643,25 +638,67 @@ export default function LandingPageAlt() {
                   }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent group-hover:from-black/50 transition-all duration-300"></div>
-                  <div className="relative z-10 text-left p-6 flex flex-col justify-end h-full">
-                    <ul className="text-base font-semibold text-gray-200 space-y-1">
-                      {course.levels.map((level, i) => (
-                        <li key={i} className="leading-snug">
-                          <strong>{level.name}:</strong> {level.desc}
-                        </li>
-                      ))}
-                    </ul>
-                    <p className="mt-3 text-[#CBE56A] font-semibold">
-                      Click to start learning →
-                    </p>
-                  </div>
+
+                  {(
+                    <div className="relative z-10 text-left p-6 flex flex-col justify-end h-full">
+                      <ul className="text-base font-semibold text-gray-200 space-y-1">
+                        {course.levels?.map((level, i) => (
+                          <li key={i} className="leading-snug">
+                            <strong>{level.name}:</strong> {level.desc}
+                          </li>
+                        ))}
+                      </ul>
+                      <p className="mt-3 text-[#CBE56A] font-semibold">
+                        Click to start learning →
+                      </p>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             ))}
           </div>
+
+          {/* "Show More Languages" Button (outside grid) */}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setShowMoreLanguages(true)}
+            className="mt-8 px-6 py-3 bg-[#CBE56A] text-[#2D274B] rounded-full shadow-md hover:bg-[#c2e24f] transition"
+          >
+            Show More Languages
+          </motion.button>
+
+          {/* To add in more language just change the below section and handleMorelanguage function */}
+          {/* Modal for More Languages */}
+          {showMoreLanguages && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50">
+              <div className="bg-white rounded-2xl p-8 max-w-md w-full relative shadow-lg">
+                <button
+                  onClick={() => setShowMoreLanguages(false)}
+                  className="absolute top-3 right-3 text-gray-600 hover:text-black text-2xl"
+                >
+                  ✕
+                </button>
+                <h3 className="text-2xl font-bold text-[#2D274B] mb-4">
+                  Explore More Languages
+                </h3>
+                <ul className="space-y-3 text-left">
+                  {["Sanskrit", "Russian", "Mandarin"].map((lang, i) => (
+                    <li
+                      key={i}
+                      onClick={() => handleMoreLanguageClick(lang)}
+                      className="cursor-pointer text-[#2D274B] font-semibold hover:text-[#dc8d33] transition"
+                    >
+                      • {lang}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+
         </div>
       </section>
-
 
       {/* Explore subjects section */}
       <section
@@ -822,8 +859,6 @@ export default function LandingPageAlt() {
         )}
       </section>
 
-
-
        {/* How it works section */}
       <section className="py-16" aria-labelledby="how-it-works">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -851,7 +886,7 @@ export default function LandingPageAlt() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div>
-              <h3 className="text-4xl font-semibold font-serif text-[#dc8d33]">Why learners love <br/> LEARNiLM🌎WORLD</h3>
+              <h3 className="text-4xl font-semibold font-serif text-[#dc8d33]">Why learners love <br/> LearniLM🌍World</h3>
               <p className="mt-4 text-white text-lg font-bold max-w-xl">Short lessons, lots of speaking time and tutors focused on practical outcomes. Learn phrases you’ll use the very next day.</p>
 
               <div className="mt-8 grid sm:grid-cols-3 gap-4">
@@ -891,7 +926,7 @@ export default function LandingPageAlt() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-8">
             <h3 id="reviews" className="text-4xl font-serif font-bold">What learners say</h3>
-            <p className="mt-2 text-white font-bold text-lg">Real reviews from students and professionals who used LEARNiLM🌎WORLD.</p>
+            <p className="mt-2 text-white font-bold text-lg">Real reviews from students and professionals who used LearniLM🌍World.</p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -912,9 +947,9 @@ export default function LandingPageAlt() {
         </div>
       </section>
 
-      {/* Highlights section */}
+     {/* Highlights Section */}
       <section
-        className="relative py-24 bg-[#2D274B] text-wite"
+        className="relative py-24 bg-[#2D274B] text-white"
         aria-labelledby="sdil-highlights"
       >
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
@@ -927,7 +962,7 @@ export default function LandingPageAlt() {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-serif text-[#dc8d33] tracking-tight text-center"
           >
-            Highlights of LEARNiLM 🌎 WORLD
+            Highlights of LearniLM 🌎 World
           </motion.h2>
 
           {/* Subtitle */}
@@ -938,11 +973,11 @@ export default function LandingPageAlt() {
             viewport={{ once: true }}
             className="mt-5 text-xl font-bold text-white max-w-2xl mx-auto text-center"
           >
-            Our approach is designed to ensure effective learning, flexibility, and comprehensive support.
+            Our approach ensures effective learning, flexibility, and comprehensive support.
           </motion.p>
 
-          {/* Image + Highlights */}
-          <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Image + Icon Highlights */}
+          <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Image */}
             <motion.div
               initial={{ opacity: 0, x: -40 }}
@@ -958,38 +993,66 @@ export default function LandingPageAlt() {
               />
             </motion.div>
 
-            {/* Right Bullet Points */}
-            <motion.ul
-              initial="hidden"
-              whileInView="visible"
+            {/* Right Icons Grid */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              variants={{
-                hidden: { opacity: 0 },
-                visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
-              }}
-              className="space-y-4 text-lg text-white list-disc list-inside"
+              className="grid grid-cols-2 gap-8 text-center"
             >
               {[
-                "Flexible Timings",
-                "Online Batches",
-                "Certified Courses",
-                "Expert Faculty",
-                "Personalized Support & Guidance",
-              ].map((point, idx) => (
-                <motion.li
+                {
+                  icon: "🎯",
+                  title: "Flexible Timings",
+                  desc: "Learn at your own pace with live and recorded sessions.",
+                },
+                {
+                  icon: "💻",
+                  title: "Online Batches",
+                  desc: "Join collaborative learning groups from anywhere in the world.",
+                },
+                {
+                  icon: "📜",
+                  title: "Certified Courses",
+                  desc: "Earn certificates that enhance your professional credibility.",
+                },
+                {
+                  icon: "👨‍🏫",
+                  title: "Expert Faculty",
+                  desc: "Gain insights from top mentors and experienced trainers.",
+                },
+              ].map((feature, idx) => (
+                <motion.div
                   key={idx}
-                  variants={{
-                    hidden: { opacity: 0, y: 15 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-                  }}
+                  whileHover={{ scale: 1.05 }}
+                  className="p-6 bg-white/10 rounded-2xl border border-white/20 hover:border-[#dc8d33] transition"
                 >
-                  {point}
-                </motion.li>
+                  <div className="text-5xl mb-3">{feature.icon}</div>
+                  <h4 className="text-lg font-semibold text-[#dc8d33]">
+                    {feature.title}
+                  </h4>
+                  <p className="mt-2 text-gray-200 text-sm leading-relaxed">
+                    {feature.desc}
+                  </p>
+                </motion.div>
               ))}
-            </motion.ul>
+            </motion.div>
           </div>
+
+          {/* Closing Line */}
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="mt-16 text-lg text-center text-gray-300 max-w-3xl mx-auto"
+          >
+            Personalized support and guidance ensure every learner’s success at LearniLM 🌎 World.
+          </motion.p>
         </div>
       </section>
+
 
 
       {/* FAQ */}

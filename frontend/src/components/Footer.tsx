@@ -8,10 +8,10 @@ const Footer = () => (
       <footer className="bg-[#6b48af] text-white py-12">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-8">
           <div>
-            <div className="font-semibold text-lg">LEARNiLM🌎WORLD</div>
-            <div className="text-sm text-slate-300 mt-2">© {new Date().getFullYear()} LEARNiLM🌎WORLD — All rights reserved</div>
+            <div className="font-semibold text-lg">LearniLM🌎World</div>
+            <div className="text-sm text-slate-300 mt-2">© {new Date().getFullYear()} LearniLM🌎World — All rights reserved</div>
             <div className="mt-4 text-sm text-slate-300">Email: support@learnilmworld.com</div>
-            <div className="text-sm text-slate-300">Phone: +1 (555) 123-4567</div>
+            <div className="text-sm text-slate-300">Phone: +91 81002 61773</div>
           </div>
 
           <div>
@@ -47,7 +47,7 @@ const Footer = () => (
         </div>
 
         <div className="max-w-7xl mx-auto px-6 mt-8 border-t border-white/10 pt-6 text-sm  flex flex-col sm:flex-row justify-between">
-          <div>Made with ❤️ in LEARNiLM🌎WORLD</div>
+          <div>Made with ❤️ in LearniLM🌎World</div>
           <div className="mt-3 sm:mt-0">Version 1.0 • Privacy policy</div>
         </div>
       </footer>

@@ -252,6 +252,14 @@ const Login: React.FC = () => {
                 Sign up here
               </Link>
             </p>
+            <div className="mt-2">
+              <Link
+                to="/"
+                className="text-base font-semibold text-[#4f4382] hover:underline hover:text-[#2D274B] transition-colors duration-300"
+              >
+                ← Go back to Home
+              </Link>
+            </div>
           </div>
         </div>
       </div>

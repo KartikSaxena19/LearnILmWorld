@@ -161,7 +161,7 @@ const TrainerProfile: React.FC = () => {
           <div className="flex justify-between items-center py-4">
             <Link to="/" className="flex items-center">
               <div>
-                <div className="text-lg font-semibold">LEARN🌎SPHERE</div>
+                <div className="text-lg font-semibold">LearniLM🌎World</div>
                 <div className="text-xs text-slate-500 -mt-1">Live lessons · Micro-courses</div>
               </div>
             </Link>

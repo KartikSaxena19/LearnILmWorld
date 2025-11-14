@@ -6,6 +6,7 @@ import {
 } from 'lucide-react'
 import axios from 'axios'
 import { motion } from 'framer-motion'
+import Footer from '../components/Footer'
 
 /** Trainer types: demoVideo optional */
 interface Trainer {
@@ -37,6 +38,12 @@ interface Trainer {
   }
 }
 
+interface ShowFiltersState {
+  language: boolean;
+  subject: boolean;
+}
+
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 const MainPage: React.FC = () => {
@@ -44,7 +51,8 @@ const MainPage: React.FC = () => {
   const [trainers, setTrainers] = useState<Trainer[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
-  const [showFilters, setShowFilters] = useState(false)
+  const [showFilters, setShowFilters] = useState<ShowFiltersState>({language: false, subject: false});
+
   const [filters, setFilters] = useState({
     language: '',
     minRate: '',
@@ -54,6 +62,33 @@ const MainPage: React.FC = () => {
     rating: '',
     sortBy: 'rating'
   })
+
+
+  const [learningType, setLearningType] = useState("language"); 
+
+  const handleLearningTypeChange = (type: any) => {
+  setLearningType(type);
+
+  // Reset all filters when switching type
+  setFilters({
+    language: '',
+    minRate: '',
+    maxRate: '',
+    experience: '',
+    specialization: '',
+    rating: '',
+    sortBy: 'rating'
+  });
+
+  // Also reset languageMode when switching away from Language Mode
+  setLanguageMode("subject");
+};
+
+
+const [languageMode, setLanguageMode] = useState(""); 
+// "subject" | "profession"
+
+
   // which trainer is currently showing a player (id) — only one at a time
   const [openVideoId, setOpenVideoId] = useState<string | null>(null)
 
@@ -155,7 +190,14 @@ const MainPage: React.FC = () => {
   return () => { mounted = false }
 }, [])
 
-  
+  const LANGUAGES = [
+  { code: "en", name: "English", flag: "🇺🇸" },
+  { code: "fr", name: "French", flag: "🇫🇷" },
+  { code: "de", name: "German", flag: "🇩🇪" },
+  { code: "it", name: "Italian", flag: "🇮🇹" },
+  { code: "jp", name: "Japanese", flag: "🇯🇵" }
+];
+
 
   // ---------- derived filtered list (stable hooks) ----------
     const filteredTrainers = useMemo(() => {
@@ -207,6 +249,7 @@ const MainPage: React.FC = () => {
           return allLangs.some(lang => lang.includes(langQ));
         });
       }
+      
 
       // Price filters
       const min = parseNumber(filters.minRate, 0);
@@ -356,15 +399,15 @@ const MainPage: React.FC = () => {
       </div>
 
       {/* Header (smaller) */}
-      <header className=" z-10 bg-[#dc8d33]  bg-opacity-90 backdrop-blur-lg border-b border-white border-opacity-30 sticky top-0">
+      <header className="sticky top-0 z-40 bg-[#2D274B]/95 backdrop-blur-sm border-b border-white/30 text-[#dc8d33]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row justify-between items-center py-3 gap-3 sm:gap-0">
             <Link to="/" className="flex items-center">
               <div>
                 <div className="text-2xl md:text-3xl font-[Good Vibes] font-extrabold tracking-wide relative inline-flex items-center">
                 {/* LEARN */}
-                <span className="text-[#2D274B] bg-clip-text  drop-shadow-lg">
-                  LEARNIiLM
+                <span className="text-[#dc8d33] bg-clip-text  drop-shadow-lg">
+                  LearniLM
                 </span>
 
                 {/* Rotating Globe */}
@@ -377,8 +420,8 @@ const MainPage: React.FC = () => {
                 </motion.span>
 
                 {/* World */}
-                <span className=" bg-clip-text text-[#2D274B] drop-shadow-lg">
-                  WORLD
+                <span className=" bg-clip-text text-[#dc8d33] drop-shadow-lg">
+                  World
                 </span>
 
                 {/* Optional subtle shine */}
@@ -419,140 +462,249 @@ const MainPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Search + Filters (moved up) */}
-        <div className="flex justify-center mb-8">
-          <div className="w-full max-w-4xl px-0">
-            <div className="flex flex-col lg:flex-row gap-4 items-start">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#2D274B] h-5 w-5" />
-                <input
-                  type="text"
-                  placeholder="Search trainers by name, language, or specialization..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9787F3] focus:border-[#9787F3] transition-all duration-200 text-lg"
-                />
-              </div>
-
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => setShowFilters(s => !s)}
-                  className="flex items-center px-4 py-3 bg-[#CBE56A] text-[#2D274B] rounded-xl hover:bg-[#c2e24f] transition-all duration-200 font-semibold"
-                  aria-expanded={showFilters}
-                >
-                  <Filter className="h-4 w-4 mr-2" />
-                  Filters
-                  <ChevronDown className={`h-4 w-4 ml-2 transform transition-transform ${showFilters ? 'rotate-180' : ''}`} />
-                </button>
-
-                <button
-                  onClick={clearFilters}
-                  className="px-4 py-3 bg-gray-100 text-[#2D274B] rounded-xl hover:bg-[#CBE56A] transition-colors duration-200 font-medium"
-                >
-                  Clear All
-                </button>
-              </div>
+        {/*  TOP SEARCH BAR */}
+        <div className="flex justify-center mb-10">
+          <div className="w-full max-w-4xl">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#2D274B] h-5 w-5" />
+              <input
+                type="text"
+                placeholder="Search trainers by name, language, or specialization..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#9787F3] text-lg"
+              />
             </div>
-
-            {showFilters && (
-              // reduced width + removed background for the filters panel
-              <div className="mt-4 p-4 rounded-xl animate-slide-down max-w-2xl mx-auto">
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-[#2D274B] mb-1">Language</label>
-                    <input
-                      type="text"
-                      placeholder="e.g., English, Spanish"
-                      value={filters.language}
-                      onChange={(e) => setFilters(prev => ({ ...prev, language: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9787F3]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-[#2D274B] mb-1">Min Price ($/hr)</label>
-                    <input
-                      type="number"
-                      placeholder="0"
-                      value={filters.minRate}
-                      onChange={(e) => setFilters(prev => ({ ...prev, minRate: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9787F3]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-[#2D274B] mb-1">Max Price ($/hr)</label>
-                    <input
-                      type="number"
-                      placeholder="100"
-                      value={filters.maxRate}
-                      onChange={(e) => setFilters(prev => ({ ...prev, maxRate: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9787F3]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-[#2D274B] mb-1">Min Experience (years)</label>
-                    <input
-                      type="number"
-                      placeholder="0"
-                      value={filters.experience}
-                      onChange={(e) => setFilters(prev => ({ ...prev, experience: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9787F3]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-[#2D274B] mb-1">Specialization</label>
-                    <input
-                      type="text"
-                      placeholder="e.g., Business, Exam Prep"
-                      value={filters.specialization}
-                      onChange={(e) => setFilters(prev => ({ ...prev, specialization: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9787F3]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-[#2D274B] mb-1">Min Rating</label>
-                    <select
-                      value={filters.rating}
-                      onChange={(e) => setFilters(prev => ({ ...prev, rating: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9787F3]"
-                    >
-                      <option value="">Any Rating</option>
-                      <option value="4.5">4.5+ Stars</option>
-                      <option value="4.0">4.0+ Stars</option>
-                      <option value="3.5">3.5+ Stars</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-[#2D274B] mb-1">Sort By</label>
-                    <select
-                      value={filters.sortBy}
-                      onChange={(e) => setFilters(prev => ({ ...prev, sortBy: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9787F3]"
-                    >
-                      <option value="rating">Highest Rated</option>
-                      <option value="price_low">Price: Low to High</option>
-                      <option value="price_high">Price: High to Low</option>
-                      <option value="experience">Most Experienced</option>
-                    </select>
-                  </div>
-
-                  <div className="flex items-end">
-                    <button onClick={clearFilters} className="w-full px-4 py-2 bg-gray-200 text-[#2D274B] rounded-lg hover:bg-gray-300 transition-colors duration-200 font-medium">
-                      Clear All
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
-        {/* Results Count */}
+
+        {/* 6 MINI FILTER BLOCKS */}
+        <div className="max-w-6xl mx-auto mb-10 px-4">
+
+
+          <div className="flex gap-4 mb-6">
+            <button
+              onClick={() => handleLearningTypeChange("language")}
+              className={`px-4 py-2 rounded-lg font-semibold ${
+                learningType === "language"
+                  ? "bg-[#CBE56A] text-[#2D274B]"
+                  : "bg-gray-200 text-gray-700"
+              }`}
+            >
+              Learn a Language
+            </button>
+
+            <button
+              onClick={() => handleLearningTypeChange("subject")}
+              className={`px-4 py-2 rounded-lg font-semibold ${
+                learningType === "subject"
+                  ? "bg-[#CBE56A] text-[#2D274B]"
+                  : "bg-gray-200 text-gray-700"
+              }`}
+            >
+              Learn a Subject
+            </button>
+          </div>
+
+
+          <h2 className="text-xl font-bold text-[#2D274B] mb-4">I'm Learning</h2>
+
+          {/* 6 ITEMS PER ROW ALWAYS */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+
+            {/* Language Filter */}
+            {learningType === "language" && (
+            <div className="relative p-3 bg-white rounded-xl shadow-sm border border-gray-100">
+              <label className="text-xs font-semibold text-[#2D274B]">What's Next?</label>
+
+              <button
+                onClick={() => setShowFilters((prev) => ({ ...prev, language: !prev.language }))}
+                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-sm flex justify-between items-center"
+              >
+                <span>
+                  {filters.language
+                    ? `${LANGUAGES.find(l => l.name === filters.language)?.flag || ""} ${filters.language}`
+                    : "Language"}
+                </span>
+                <ChevronDown className={`h-4 w-4 ${showFilters.language ? "rotate-180" : ""}`} />
+              </button>
+
+              {showFilters.language && (
+                <div className="absolute bg-white shadow-xl rounded-xl p-3 mt-2 w-40 z-30 max-h-48 overflow-y-auto">
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    value={filters.language}
+                    onChange={(e) => setFilters(prev => ({ ...prev, language: e.target.value }))}
+                    className="w-full px-2 py-1 border border-gray-300 rounded mb-2 text-sm"
+                  />
+
+                  {LANGUAGES.filter(l =>
+                    l.name.toLowerCase().includes(filters.language.toLowerCase())
+                  ).map(lang => (
+                    <div
+                      key={lang.code}
+                      onClick={() => {
+                        setFilters(prev => ({ ...prev, language: lang.name }));
+                        setShowFilters((prev) => ({ ...prev, language: false }));
+                      }}
+                      className="cursor-pointer flex items-center gap-2 px-2 py-1 hover:bg-gray-100 rounded text-sm"
+                    >
+                      <span>{lang.flag}</span>
+                      <span>{lang.name}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            )}
+
+            {learningType === "language" && (
+              <div className="p-3 bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col">
+                <label className="text-xs font-semibold text-[#2D274B] mb-2">
+                  Learn Language As:
+                </label>
+
+                <select
+                  value={languageMode}
+                  onChange={(e) => setLanguageMode(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg border bg-gray-50 border-gray-300 text-sm text-gray-700 focus:outline-none"
+                >
+                  <option value="profession" selected>Profession</option>
+                  <option value="subject">Subject</option>
+                </select>
+              </div>
+            )}
+
+
+            {/* Specialization / Subjects Dropdown */}
+            {learningType === "subject" && (
+            <div className="relative p-3 bg-white rounded-xl shadow-sm border border-gray-100">
+              <label className="text-xs font-semibold text-[#2D274B]">Area of Mastery</label>
+
+              <button
+                onClick={() => setShowFilters((prev) => ({ ...prev, subject: !prev.subject }))}
+                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-sm flex justify-between items-center"
+              >
+                <span>{filters.specialization || "Subject"}</span>
+                <ChevronDown className={`h-4 w-4 ${showFilters.subject ? "rotate-180" : ""}`} />
+              </button>
+
+              {showFilters.subject && (
+                <div className="absolute bg-white shadow-xl rounded-xl p-3 mt-2 w-48 z-30 max-h-48 overflow-y-auto text-sm">
+                  {[
+                    "Mathematics",
+                    "Science",
+                    "Physics",
+                    "Chemistry",
+                    "Biology",
+                    "English",
+                    "Hindi",
+                    "Social Science",
+                    "Geography",
+                    "History",
+                    "Civics",
+                    "Computer Science",
+                    "Economics",
+                    "Accountancy",
+                    "Business Studies",
+                  ].map((subj) => (
+                    <div
+                      key={subj}
+                      onClick={() => {
+                        setFilters(prev => ({ ...prev, specialization: subj }));
+                        setShowFilters((prev) => ({ ...prev, subject: false }));
+                      }}
+                      className="cursor-pointer px-2 py-1 hover:bg-gray-100 rounded"
+                    >
+                      {subj}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            )}
+
+            {/* Min + Max Price Combined */}
+            <div className="p-3 bg-white rounded-xl shadow-sm border border-gray-100">
+              <label className="text-xs font-semibold text-[#2D274B]">Price Range ($/hr)</label>
+
+              <div className="flex items-center gap-2 mt-1">
+                <input
+                  type="number"
+                  value={filters.minRate}
+                  onChange={(e) => setFilters(p => ({ ...p, minRate: e.target.value }))}
+                  className="w-1/2 px-2 py-2 border border-gray-300 rounded-lg text-sm"
+                  placeholder="Min"
+                />
+                <input
+                  type="number"
+                  value={filters.maxRate}
+                  onChange={(e) => setFilters(p => ({ ...p, maxRate: e.target.value }))}
+                  className="w-1/2 px-2 py-2 border border-gray-300 rounded-lg text-sm"
+                  placeholder="Max"
+                />
+              </div>
+            </div>
+
+            {/* Experience */}
+            <div className="p-3 bg-white rounded-xl shadow-sm border border-gray-100">
+              <label className="text-xs font-semibold text-[#2D274B]">Experience (yrs)</label>
+              <input
+                type="number"
+                value={filters.experience}
+                onChange={e => setFilters(p => ({ ...p, experience: e.target.value }))}
+                className="w-full mt-1 px-2 py-2 border border-gray-300 rounded-lg text-sm"
+              />
+            </div>
+
+            {/* Rating */}
+            <div className="p-3 bg-white rounded-xl shadow-sm border border-gray-100">
+              <label className="text-xs font-semibold text-[#2D274B]">Rating</label>
+              <select
+                value={filters.rating}
+                onChange={e => setFilters(p => ({ ...p, rating: e.target.value }))}
+                className="w-full mt-1 px-2 py-2 border border-gray-300 rounded-lg text-sm"
+              >
+                <option value="">Any</option>
+                <option value="4.5">4.5+</option>
+                <option value="4.0">4.0+</option>
+                <option value="3.5">3.5+</option>
+              </select>
+            </div>
+
+            {/* Sort By */}
+            <div className="p-3 bg-white rounded-xl shadow-sm border border-gray-100">
+              <label className="text-xs font-semibold text-[#2D274B]">Sort By</label>
+              <select
+                value={filters.sortBy}
+                onChange={e => setFilters(p => ({ ...p, sortBy: e.target.value }))}
+                className="w-full mt-1 px-2 py-2 border border-gray-300 rounded-lg text-sm"
+              >
+                <option value="rating">Highest Rated</option>
+                <option value="price_low">Price: Low → High</option>
+                <option value="price_high">Price: High → Low</option>
+                <option value="experience">Most Experienced</option>
+              </select>
+            </div>
+
+          </div>
+
+          {/* CLEAR BUTTON */}
+          <div className="flex justify-end mt-4">
+            <button
+              onClick={clearFilters}
+              className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 text-[#2D274B] text-sm font-semibold"
+            >
+              Clear All
+            </button>
+          </div>
+
+        </div>
+
+
+        {/* FOUND COUNT */}
         <div className="mb-6 text-center">
           <p className="text-lg text-white">
             Found <span className="font-bold text-[#2D274B]">{filteredTrainers.length}</span> trainers
@@ -694,13 +846,53 @@ const MainPage: React.FC = () => {
                 </div>
 
                 {/* languages */}
-                <div className="mb-3 flex flex-wrap gap-2">
-                  {languagesList.map((language, idx) => (
-                    <span key={idx} className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-medium">
-                      {language || '—'}
-                    </span>
-                  ))}
-                </div>
+                {learningType === "language" && (
+  <div className="mb-3">
+    <p className="text-xs text-gray-500 mb-1 font-medium">🌐 Languages I Teach</p>
+    <div className="flex flex-wrap gap-2">
+      {languagesList.map((language, idx) => (
+        <span
+          key={idx}
+          className="px-3 py-1 bg-gray-50 border rounded-xl text-sm text-gray-800 shadow-sm"
+        >
+          {language}
+        </span>
+      ))}
+    </div>
+  </div>
+)}
+
+
+                {/* Specializations when learning type is subjects */}
+                {learningType === "subject" && (() => {
+  const specs = trainer.profile?.specializations;
+  if (!Array.isArray(specs) || specs.length === 0) return null;
+
+  return (
+    <div className="mb-3">
+      <p className="text-xs text-gray-500 mb-1 font-medium">📚 Subjects I Teach</p>
+
+      <div className="flex flex-wrap gap-2">
+        {specs.slice(0, 4).map((spec, idx) => (
+          <span
+            key={idx}
+            className="px-3 py-1 bg-purple-50 border border-purple-200 rounded-xl text-sm text-purple-800 shadow-sm"
+          >
+            {spec}
+          </span>
+        ))}
+
+        {specs.length > 4 && (
+          <span className="px-3 py-1 bg-gray-200 text-gray-700 rounded-xl text-sm">
+            +{specs.length - 4} more
+          </span>
+        )}
+      </div>
+    </div>
+  );
+})()}
+
+
 
                 {/* bio (moved below filters per request; kept short) */}
                 <p className="text-[#6A6592] mb-4 line-clamp-3 flex-1">
@@ -765,6 +957,8 @@ const MainPage: React.FC = () => {
           </div>
         )}
       </main>
+
+      <Footer />
     </div>
   )
 }

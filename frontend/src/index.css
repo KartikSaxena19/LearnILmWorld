@@ -51,7 +51,7 @@
   }
   
   .sidebar-link.active {
-    @apply bg-accent text-white shadow-lg;
+    @apply bg-[#2D274B] text-[#CBE56A] shadow-lg;
   }
   
   .gradient-bg {

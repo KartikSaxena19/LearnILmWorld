@@ -11,14 +11,14 @@ const router = express.Router();
 router.post('/', authenticate, authorize(['trainer']), async (req, res) => {
   try {
     const { title, description, bookingIds, duration, maxStudents, language, level, scheduledDate } = req.body;
-    
+
     // Generate unique Jitsi room name
     const jitsiRoomName = `language-session-${uuidv4()}`;
     const jitsiLink = `https://meet.jit.si/${jitsiRoomName}`;
 
     // Get bookings and extract students
-    const bookings = await Booking.find({ 
-      _id: { $in: bookingIds }, 
+    const bookings = await Booking.find({
+      _id: { $in: bookingIds },
       trainer: req.user._id,
       paymentStatus: 'completed'
     });
@@ -99,8 +99,7 @@ router.get('/:id', authenticate, async (req, res) => {
     }
 
     // Check if user has access to this session
-    const hasAccess = session.trainer._id.toString() === req.user._id.toString() || 
-                     session.students.some(student => student._id.toString() === req.user._id.toString());
+    const hasAccess = session.trainer._id.toString() === req.user._id.toString() || session.students.some(student => student._id.toString() === req.user._id.toString());
 
     if (!hasAccess) {
       return res.status(403).json({ message: 'Access denied' });
@@ -116,7 +115,7 @@ router.get('/:id', authenticate, async (req, res) => {
 router.put('/:id/status', authenticate, async (req, res) => {
   try {
     const { status } = req.body;
-    
+
     const session = await Session.findByIdAndUpdate(
       req.params.id,
       { status },
@@ -150,7 +149,7 @@ router.put('/:id/status', authenticate, async (req, res) => {
 router.put('/:id', authenticate, async (req, res) => {
   try {
     const session = await Session.findById(req.params.id);
-    
+
     if (!session) {
       return res.status(404).json({ message: 'Session not found' });
     }
@@ -181,7 +180,7 @@ router.put('/:id', authenticate, async (req, res) => {
 router.delete('/:id', authenticate, async (req, res) => {
   try {
     const session = await Session.findById(req.params.id);
-    
+
     if (!session) {
       return res.status(404).json({ message: 'Session not found' });
     }

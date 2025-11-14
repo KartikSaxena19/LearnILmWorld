@@ -1,196 +1,240 @@
-# LearnOSphere — Online Learning Platform 🎓🌐
+LearniLM World — Online Learning Platform 🎓🌍
 
-A polished, production-ready learning marketplace connecting students and trainers with secure payments, live sessions, and rich profiles — built with React (TypeScript) frontend, Express.js backend, and MongoDB.
+A modern, production-ready learning marketplace connecting students and trainers with secure payments, live sessions, intelligent chatbot support, and rich profiles — built with React (TypeScript) frontend, Express.js backend, and MongoDB.
 
----
+🔗 Live Project
 
-## 🔗 Live Project
+🌐 URL: https://www.learnilmworld.com/
 
-**🔗 URL**: https://learn-osphere.vercel.app/ 
+📂 Problem Statement
 
----
+Students and trainers face friction when trying to connect for meaningful learning:
 
-## 📂 Problem Statement
+Hard to discover qualified and trusted trainers
 
-Students and trainers face friction when trying to connect and run paid live sessions:
+Booking & payment workflows are tedious
 
-* Hard to discover qualified trainers with rich profiles  
-* Booking & payments workflows are tedious or insecure  
-* Live teaching needs reliable, integrated video + receipts  
-* Admins and trainers need analytics and earnings visibility
+Live sessions require stable, integrated tools
 
-This leads to poor UX, lost conversions, and administrative overhead.
+Admins and trainers lack proper analytics
 
----
+Students often miss guided help for queries
 
-## ✅ Our Solution: LearnOSphere
+These challenges lead to poor user experience and reduced conversions.
 
-**LearnOSphere** is a complete marketplace that solves the above by offering:
+✅ Our Solution: LearniLM World
 
-* Role-based access (Student / Trainer) and secure JWT authentication  
-* Rich trainer profiles with demo videos, skills, availability, and reviews  
-* Session booking with Stripe payments (plus a demo payment mode) and receipt generation  
-* Jitsi-powered live sessions (session management + links)  
-* Review & rating system with aggregated statistics for dashboards  
-* Secure, validated REST API and real-time dashboard analytics
+LearniLM World solves these problems with:
 
-Result: a professional, secure, and scalable platform for teaching and learning online.
+Secure Student & Trainer authentication (JWT-based)
 
----
+Detailed trainer profiles with demo videos, skills, price, availability
 
-## 🏆 Core Features
+Advanced filtering & search with rich UX
 
-### 🔐 Authentication & Authorization
-* JWT-based auth with refresh token patterns
-* Role-based access control: Student / Trainer
-* Protected routes and secure password handling
+Stripe-powered payments + demo payment mode
 
-### 🗂️ Backend (Express.js + MongoDB)
-* MongoDB Schemas: Users, Trainers, Sessions, Reviews, Payments
-* RESTful API design with clear status codes and error responses
-* Validation and sanitization for all inputs
-* Rate limiting, helmet, CORS, and other security middleware
+Jitsi-based live video sessions with real-time scheduling
 
-### 💳 Payments
-* Full Stripe integration for real charges
-* Demo payment mode for testing flows without real payments
-* Receipt generation (downloadable) after successful payments
+Integrated AI chatbot for quick help, navigation, and FAQs
 
-### 📺 Sessions & Live Classes
-* Jitsi integration for launching secure video meetings
-* Booking lifecycle: request → payment → confirmation → session link
-* Session attendance metadata and post-session actions
+Dashboards for trainers and students with analytics and receipts
 
-### ⭐ Reviews & Ratings
-* Students can post reviews and star ratings
-* Real-time aggregation of trainer ratings for dashboards
+Result: A clean, intelligent, and scalable platform for online learning.
 
-### 📊 Dashboards & Analytics
-* Student dashboard: bookings, upcoming sessions, receipts
-* Trainer dashboard: earnings, session history, student list
-* Admin/metrics endpoints for real-time stats and KPIs
+🎨 UI Theme & Branding
 
-### 🧩 UX & Frontend (React + TypeScript + Tailwind)
-* Beautiful responsive landing page with trust elements
-* Role-aware registration & flows
-* Advanced trainer filtering, search, and discovery
-* Smooth Framer Motion animations and micro-interactions
-* Robust loading & error states for great UX
+The platform uses a refined color system visible in the navbar and UI:
 
----
+Primary Dark: #2D274B
 
-## 🎨 Design System & Theme
+Primary Accent: #DC8D33
 
-* Custom color palette:
-  * `#FBF5E5` (soft cream)
-  * `#C890A7` (muted rose)
-  * `#A35C7A` (deep accent)
-  * `#212121` (dark base)
-* Professional typography, spacing scale, and consistent micro-interactions
+Highlight: #CBE56A
 
----
+Used across buttons, navigation, and key UI components for a premium look.
 
-## 🚀 Quick Start (Local)
+🏆 Core Features
+🔐 Authentication & Authorization
 
-```bash
+JWT with refresh tokens
+
+Role-based access: Student & Trainer
+
+Secure password handling
+
+🗂️ Backend (Express.js + MongoDB)
+
+Mongoose schemas: Users, Trainers, Sessions, Reviews, Payments
+
+REST API with validated payloads
+
+Security middleware (Helmet, CORS, rate limiting)
+
+🤖 Chatbot (AI Assistant)
+
+Helps users navigate the platform
+
+Assisted registration & trainer discovery
+
+Fast FAQ responses
+
+Integrated with external LLM API for precision
+
+💳 Payments
+
+Stripe integration for real charges
+
+Demo payment mode for testing
+
+Auto-generated receipts
+
+📺 Live Sessions
+
+Jitsi-based secure meetings
+
+Automatic session creation & tracking
+
+Time-based access
+
+⭐ Reviews & Ratings
+
+Star ratings + detailed reviews
+
+Trainer rating aggregation
+
+📊 Dashboards & Analytics
+
+Upcoming sessions, history, and receipts for students
+
+Earnings, bookings, and stats for trainers
+
+🧩 Frontend (React + TypeScript + Tailwind + Framer Motion)
+
+Clean animations and transitions
+
+Responsive UI
+
+Custom filters and sorting for trainers
+
+Visually polished landing and about sections
+
+🚀 Quick Start (Local)
+
 # Clone repository
-git clone https://github.com/<yourusername>/LearnOSphere.git
-cd LearnOSphere
+
+git clone https://github.com/<yourusername>/LearniLM-World.git
+cd LearniLM-World
 
 # Backend
+
 cd server
 npm install
-# create .env with required variables (see below)
 npm run dev
 
 # Frontend
+
 cd ../client
 npm install
 npm run dev
-```
 
-### Typical .env (backend)
-```
+Example .env (Backend)
 PORT=4000
-MONGO_URI=mongodb+srv://<user>:<pass>@cluster0.mongodb.net/learnosphere
+MONGO*URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/learniLM
 JWT_SECRET=your_jwt_secret_here
 JWT_EXPIRES_IN=7d
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_WEBHOOK_SECRET=whsec_...
+STRIPE_SECRET_KEY=sk_test*...
+STRIPE*WEBHOOK_SECRET=whsec*...
 JITSI_BASE_URL=https://meet.jit.si
 NODE_ENV=development
-```
 
-> Replace placeholders with real values (Stripe keys, Mongo URI, JWT secret).
+🗺️ How It Works
+👨‍🎓 For Students
 
----
+Register & verify email
 
-## 🗺️ How It Works
+Explore trainers with search/filter
 
-### For Students
-1. Register & verify account  
-2. Browse/filter trainers by skill, rating, price, availability  
-3. Book a session → pay via Stripe (or demo payment)  
-4. Receive receipt and session/join link → attend via Jitsi  
-5. Leave rating & review after session
+Book a session and pay
 
-### For Trainers
-1. Sign up and complete profile (bio, skills, demo video, hourly rate)  
-2. Manage availability and accept bookings  
-3. Receive earnings reports and downloadable receipts  
-4. View students, session stats, and aggregated ratings
+Join class through Jitsi
 
----
+Submit ratings & feedback
 
-## 📦 API Highlights (examples)
+👨‍🏫 For Trainers
 
-* `POST /api/auth/register` — register user (role-aware)  
-* `POST /api/auth/login` — login, returns JWT  
-* `GET /api/trainers` — list & filter trainers  
-* `POST /api/sessions` — create booking (protected)  
-* `POST /api/payments/create` — create Stripe payment intent  
-* `POST /api/payments/webhook` — verify Stripe webhooks  
-* `GET /api/dashboard/trainer` — trainer analytics (protected)
+Create a profile
 
----
+Manage availability
 
-## 🛠️ Tech Stack
+Accept bookings
 
-* **Frontend**: React + TypeScript + Tailwind CSS + Framer Motion  
-* **Backend**: Node.js + Express.js  
-* **Database**: MongoDB (Mongoose)  
-* **Payments**: Stripe (with demo mode)  
-* **Live Video**: Jitsi Meet integration  
-* **Auth**: JWT tokens, role-based middleware
+View earnings & analytics
 
----
+Interact with students
 
-## ✅ Production Readiness Checklist
+📦 API Endpoints (Examples)
 
-* Payment System: Full Stripe integration + demo option  
-* Authentication: Secure JWT + protected routes  
-* Database: MongoDB models with relationships and indexes  
-* Session Management: Jitsi links + lifecycle handling  
-* Review System: Star ratings & aggregated calculations  
-* Security: Input validation, rate limiting, helmet, CORS  
-* UX: Responsive UI, loading/error states, micro-interactions
+POST /api/auth/register
 
----
+POST /api/auth/login
 
-## 📚 Contributors
+GET /api/trainers
+
+POST /api/sessions
+
+POST /api/payments/create
+
+POST /api/payments/webhook
+
+GET /api/dashboard/student
+
+GET /api/dashboard/trainer
+
+🛠️ Tech Stack
+
+Frontend
+
+React
+
+TypeScript
+
+Tailwind CSS
+
+Framer Motion
+
+Backend
+
+Node.js
+
+Express.js
+
+MongoDB
+
+Integrations
+
+Stripe
+
+Jitsi
+
+AI Chatbot (RAG-based / LLM-powered)
+
+📚 Contributors
 
 Built with ❤️ by:
 
-* **Mudadla Yogitha**  
-  
+Mudadla Yogitha
 
----
+Mohd Alfahad
 
-## 📧 Contact
+Preethi
 
-Have questions or want to collaborate?  
-Email: `mudadlayogitha440@gmail.com`
+📧 Contact
 
----
+For questions or support:
+📩 support@learnilmworld.com
 
-Built with ❤️ by Mudadla Yogitha ✨
+❤️ Final Note
+
+Built with passion & precision — LearniLM World ✨
+Empowering learners across the globe.

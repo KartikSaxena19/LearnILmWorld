@@ -5,8 +5,9 @@ import { ChevronDown, ChevronRight,Facebook, Twitter, Instagram, Linkedin
 } from "lucide-react";
 import { Container, Nav, Offcanvas, Button } from "react-bootstrap";
 import logo from '../assets/LearnilmworldLogo.jpg'
-import image1 from '../assets/become-trainer1.webp'
-import image2 from '../assets/become-trainer2.png'
+import image1 from '../assets/become-trainer3.png'
+import image2 from '../assets/become-trainer4.png'
+import Footer from "../components/Footer";
 
 
 
@@ -18,7 +19,7 @@ const BecomeTrainer: React.FC = () => {
   return (
     <div className="bg-[#dc8d33] min-h-screen text-[#2D274B]">
 
-        <header className="sticky top-0 z-40 bg-[#dc8d33]/85 backdrop-blur-sm border-b border-white/40">
+        <header className="sticky top-0 z-40 bg-[#2D274B] backdrop-blur-sm border-b border-white/40">
           <Container className="py-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -26,8 +27,8 @@ const BecomeTrainer: React.FC = () => {
                   {/* Main Logo */}
                   <Link to="/">
                   <div className="text-2xl md:text-3xl font-[Good Vibes] font-extrabold tracking-wide relative inline-flex items-center">
-                    <span className="text-[#2D274B]">
-                      LEARNiLM
+                    <span className="text-[#dc8d33]">
+                      LearniLM
                     </span>
                     <motion.span
                       animate={{ rotate: 360 }}
@@ -36,8 +37,8 @@ const BecomeTrainer: React.FC = () => {
                     >
                       🌎
                     </motion.span>
-                    <span className="text-[#2D274B]">
-                      WORLD
+                    <span className="text-[#dc8d33]">
+                      World
                     </span>
                     {/* <motion.div
                       className="absolute top-0 left-0 w-full h-full bg-white/20 rounded-full blur-xl pointer-events-none"
@@ -51,11 +52,11 @@ const BecomeTrainer: React.FC = () => {
 
               {/* Desktop Navigation */}
               <nav className="hidden sm:flex items-center gap-6">
-                <Link to="/main" className="text-sm font-semibold hover:text-[#CBE56A]">
+                <Link to="/main" className="text-sm text-[#dc8d33] font-semibold hover:text-[#CBE56A]">
                   Browse our Mentors
                 </Link>
 
-                <Link to="/login" className="text-sm font-semibold  hover:text-[#CBE56A]">
+                <Link to="/login" className="text-sm text-[#dc8d33] font-semibold  hover:text-[#CBE56A]">
                   Sign In
                 </Link>
               </nav>
@@ -119,7 +120,7 @@ const BecomeTrainer: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Join LEARNiLM🌍WORLD as a Trainer and help students achieve their goals while
+          Join LearniLM🌍World as a Trainer and help students achieve their goals while
           growing your career in a flexible, rewarding environment.
         </motion.p>
         <motion.button
@@ -142,12 +143,12 @@ const BecomeTrainer: React.FC = () => {
           <h2 className="text-4xl md:text-4xl font-bold text-[#2D274B]">
             Teach, Inspire, and Make a Difference
           </h2>
-          <p className="text-lg font-bold text-white leading-relaxed">
-            At LEARNiLMWORLD, we believe in empowering individuals through knowledge.
+          <p className="text-xl font-bold text-white leading-relaxed">
+            At LearniLM World, we believe in empowering individuals through knowledge.
             As a trainer, you’ll help learners from diverse backgrounds gain confidence,
             improve communication, and unlock new opportunities in their lives.
           </p>
-          <ul className="list-disc list-inside text-white font-bold space-y-2">
+          <ul className="list-disc list-outside text-lg text-white font-bold space-y-2">
             <li>Flexible working hours and teaching freedom</li>
             <li>Access to a supportive and growing learning community</li>
             <li>Opportunity to reach learners from around the world</li>
@@ -186,12 +187,12 @@ const BecomeTrainer: React.FC = () => {
           <h2 className="text-4xl md:text-4xl font-bold text-[#2D274B]">
             Empower Learners Across 150+ Countries 🌍
           </h2>
-          <p className="text-lg text-white font-semibold leading-relaxed">
-           Be part of LEARNiLM 🌎 World — where passionate educators and curious learners come together. Shape the future of learning and grow with our expanding global community. <br/>
+          <p className="text-xl text-white font-bold leading-relaxed">
+           Be part of LearniLM 🌎 World — where passionate educators and curious learners come together. Shape the future of learning and grow with our expanding global community. <br/>
             {/* <span className="font-semibold text-[#8CA0E5]">800,000+</span> students.  */}
             {/* Join us and get all the tools you need to teach, inspire, and grow. */}
           </p>
-          <ul className="space-y-3 text-white font-semibold">
+          <ul className="space-y-3 text-lg text-white font-bold">
             <li className="flex items-start gap-3">
               <span className="text-[#2D274B] text-xl">✔</span>
               Continuous Flow of Learners — Reach motivated students from around the world.
@@ -242,9 +243,9 @@ const BecomeTrainer: React.FC = () => {
 
 
       {/* Benefits Section */}
-      <section className="py-16 px-6 md:px-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#2D274B] mb-12">
-          Why Teach with LEARNiLMWORLD?
+      <section className="bg-[#2D274B] py-16 px-6 md:px-16">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#dc8d33] mb-12">
+          Why Teach with LearniLM🌍World?
         </h2>
         <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto ">
           {[
@@ -278,8 +279,8 @@ const BecomeTrainer: React.FC = () => {
       </section>
 
       {/* Testimonials Section - trainer review */}
-      <section className=" py-20 px-6">
-        <h2 className="text-5xl md:text-4xl sm:text-3xl font-bold text-center mb-12 text-[#2D274B]">
+      <section className=" py-20 px-6 bg-[#2D274B]">
+        <h2 className="text-5xl md:text-4xl sm:text-3xl font-bold text-center mb-12 text-[#dc8d33]">
           Straight from the Heart ❤️
         </h2>
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 ">
@@ -425,55 +426,7 @@ const BecomeTrainer: React.FC = () => {
         </motion.button>
       </section>
 
-      {/* Footer - expanded */}
-      <footer className="bg-[#6b48af] text-white py-12">
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-8">
-          <div>
-            <div className="font-semibold text-lg">LearnILmWorld</div>
-            <div className="text-sm text-slate-300 mt-2">© {new Date().getFullYear()} LEARNiLM🌎WORLD — All rights reserved</div>
-            <div className="mt-4 text-sm text-slate-300">Email: support@learnilmworld.com</div>
-            <div className="text-sm text-slate-300">Phone: +1 (555) 123-4567</div>
-          </div>
-
-          <div>
-            <div className="font-semibold">Company</div>
-            <ul className="mt-3 space-y-2 text-sm text-slate-300">
-              <li><Link to="/about" className="hover:underline">About</Link></li>
-              <li><Link to="/careers" className="hover:underline">Careers</Link></li>
-              <li><Link to="/blog" className="hover:underline">Blog</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <div className="font-semibold">Resources</div>
-            <ul className="mt-3 space-y-2 text-sm text-slate-300">
-              <li><Link to="/help" className="hover:underline">Help Center</Link></li>
-              <li><Link to="/terms" className="hover:underline">Terms</Link></li>
-              <li><Link to="/privacy" className="hover:underline">Privacy</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <div className="font-semibold">Stay in touch</div>
-            
-
-            <div className="mt-4 flex items-center gap-3 text-slate-300">
-              <a href="#" aria-label="Facebook"><Facebook /></a>
-              <a href="#" aria-label="Twitter"><Twitter /></a>
-              <a href="#" aria-label="Instagram"><Instagram /></a>
-              <a href="#" aria-label="LinkedIn"><Linkedin /></a>
-            </div>
-            <div className='Logo'>
-              <img src={logo} width={'150px'} />
-            </div>
-          </div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-6 mt-8 border-t border-white/10 pt-6 text-sm  flex flex-col sm:flex-row justify-between">
-          <div>Made with ❤️ in LEARNiLM🌎WORLD</div>
-          <div className="mt-3 sm:mt-0">Version 1.0 • Privacy policy</div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

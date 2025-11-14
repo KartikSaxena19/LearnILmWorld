@@ -645,7 +645,7 @@ const AdminDashboard: React.FC = () => {
       {/* Sidebar */}
       <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white bg-opacity-90 backdrop-blur-lg border-r border-white border-opacity-30 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex items-center justify-between p-6 border-b border-white border-opacity-30">
-          <Link to="/" className="text-lg font-semibold">LEARNiLM🌎WORLD</Link>
+          <Link to="/" className="text-lg font-semibold">LearniLM🌍World</Link>
           <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-gray-500 hover:text-gray-700">
             <X className="h-6 w-6" />
           </button>

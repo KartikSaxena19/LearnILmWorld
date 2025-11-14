@@ -18,9 +18,21 @@ import careers_img from '../assets/careers_img.png';
 import { Navbar, Nav, Container, Offcanvas, Button } from "react-bootstrap"
 import Footer from "../components/Footer";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export default function AboutPage() {
   const location = useLocation()
   const [showOffcanvas, setShowOffcanvas] = useState(false)
+  const [feedbackData, setFeedbackData] = useState({
+    name: "",
+    email: "",
+    category: "",
+    message: "",
+  });
+
+  const [feedbackStatus, setFeedbackStatus] = useState(null);
+  const [showFeedback, setShowFeedback] = React.useState(false);
+
 
   useEffect(() => {
     if (location.hash) {
@@ -36,6 +48,34 @@ export default function AboutPage() {
     visible: { opacity: 1, y: 0 },
   }
 
+  const handleFeedbackSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setFeedbackStatus(null);
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/feedback`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(feedbackData),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || 'Failed to send feedback');
+    }
+
+    setFeedbackStatus('success');
+    setFeedbackData({ name: '', email: '', category: '', message: '' });
+  } catch (err: any) {
+    console.error(err);
+    setFeedbackStatus('error');
+  }
+};
+  
+
   return (
     <div className="min-h-screen font-inter bg-[#dc8d33] text-[#2D274B] scroll-smooth">
       {/* HEADER */}
@@ -43,17 +83,26 @@ export default function AboutPage() {
         <Container className="py-3">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <div className="text-3xl font-[Good Vibes] font-extrabold tracking-wide flex items-center">
-              <span className="text-[#dc8d33]">LEARNiLM</span>
-              <motion.span
+            <Link to="/">
+              <div className="text-2xl md:text-3xl font-[Good Vibes] font-extrabold tracking-wide relative inline-flex items-center">
+                <span className="text-[#dc8d33]">
+                  LearniLM</span>
+                <motion.span 
                 animate={{ rotate: 360 }}
                 transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
-                className="inline-block mr-2 text-3xl"
-              >
+                className="inline-block mx-1 text-3xl"
+                >
                 🌎
-              </motion.span>
-              <span className="text-[#dc8d33]">WORLD</span>
-            </div>
+                </motion.span>
+                <span className="text-[#dc8d33]">
+                  World</span>
+                  {/* <motion.div
+                  className="absolute top-0 left-0 w-full h-full bg-white/20 rounded-full blur-xl pointer-events-none"
+                  animate={{ x: [-200, 200] }}
+                  transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+                  /> */}
+              </div>
+            </Link>
 
             {/* Desktop Nav */}
             <nav className="hidden sm:flex items-center gap-6">
@@ -108,7 +157,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           {/* MAIN HEADING (Centered above both sides) */}
           <h1 className="text-5xl md:text-5xl font-serif font-extrabold text-[#2D274B] text-center mb-14">
-            About LEARNiLM🌎WORLD
+            About LearniLM🌎World
           </h1>
 
           <div className="grid lg:grid-cols-2 gap-12 items-stretch">
@@ -255,7 +304,7 @@ export default function AboutPage() {
               className="text-left"
             >
               <h3 className="text-3xl font-serif font-extrabold mb-4">
-                How LEARNiLM🌎WORLD Began
+                How LearniLM🌎World Began
               </h3>
               <p className="text-lg text-white font-semibold leading-relaxed mb-4">
                 What started as a simple idea — to make learning truly personal — evolved into a global
@@ -263,7 +312,7 @@ export default function AboutPage() {
               </p>
               <p className="text-lg text-white font-semibold leading-relaxed">
                 Through dedication, creativity, and a belief that knowledge should have no limits,
-                <span className="text-white font-bold"> LEARNiLM🌎WORLD </span>
+                <span className="text-white font-bold"> LearniLM🌎World </span>
                 continues to empower individuals to grow academically, professionally, and personally.
               </p>
             </motion.div>
@@ -297,7 +346,7 @@ export default function AboutPage() {
             <Briefcase size={40} className="mx-auto mb-4 text-[#CBE56A]" />
           </motion.div>
 
-          <h2 className="text-4xl font-serif font-bold text-[#CBE56A]">Careers at LEARNiLM🌎WORLD</h2>
+          <h2 className="text-4xl font-serif font-bold text-[#CBE56A]">Careers at LearniLM🌎World</h2>
           <p className="mt-4 text-lg max-w-3xl mx-auto text-gray-200">
             Join a mission-driven team transforming education. Your ideas matter, your growth is
             supported, and your work makes a real impact.
@@ -364,7 +413,7 @@ export default function AboutPage() {
       <section id="blog" className="py-24 px-6 bg-[#dc8d33] text-[#2D274B]">
         <div className="max-w-7xl mx-auto text-center">
           <BookOpen size={40} className="mx-auto mb-4 text-[#2D274B]" />
-          <h2 className="text-4xl font-serif font-bold">From the LEARNiLM🌎WORLD Desk</h2>
+          <h2 className="text-4xl font-serif font-bold">From the LearniLM🌎World Desk</h2>
           <p className="mt-5 text-lg text-white font-semibold max-w-3xl mx-auto">
             Explore stories, tips, and ideas that inspire learners and educators alike —
             where curiosity meets opportunity.
@@ -390,7 +439,7 @@ export default function AboutPage() {
               {
                 title: "Bridging Skills and Opportunities for All",
                 excerpt:
-                  "At LEARNiLM🌎WORLD, we’re committed to creating accessible pathways that connect learners to real-world possibilities.",
+                  "At LearniLM🌎World, we’re committed to creating accessible pathways that connect learners to real-world possibilities.",
                 image:
                   "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80",
               },
@@ -431,7 +480,7 @@ export default function AboutPage() {
           <HelpCircle size={40} className="mx-auto mb-4 text-[#CBE56A]" />
           <h2 className="text-4xl font-serif font-bold text-[#CBE56A]">Help Centre</h2>
           <p className="mt-4 text-lg max-w-3xl mx-auto text-gray-200">
-            Need assistance? Find quick answers and guides to help both learners and mentors navigate Learnilm with ease.
+            Need assistance? Find quick answers and guides to help both learners and mentors navigate LearniLM🌎World with ease.
           </p>
 
           {/* FAQs / Accordion */}
@@ -442,7 +491,7 @@ export default function AboutPage() {
                 a: "Go to your dashboard, choose a course or mentor, and click 'Book Session'. You’ll receive a confirmation email instantly after booking.",
               },
               {
-                q: "How can I become a trainer on Learnilm?",
+                q: "How can I become a trainer on LearniLm World?",
                 a: "Submit your profile through the ‘Join as Trainer’ form. Once verified by our team, you’ll be able to create and manage your own sessions.",
               },
               {
@@ -476,13 +525,97 @@ export default function AboutPage() {
             ))}
           </div>
 
-          {/* Contact Help Line */}
-          <div className="mt-12">
+          {/* Contact Help Line + Feedback Form */}
+          <div className="mt-12 text-center">
             <p className="text-lg text-gray-300 font-medium">
               Still need help? Reach out to us anytime at{" "}
               <span className="text-[#CBE56A] font-semibold">support@learnilmworld.com</span>
             </p>
+
+            {/* Feedback Button */}
+            <button
+              onClick={() => setShowFeedback(true)}
+              className="mt-6 bg-[#CBE56A] text-[#2D274B] px-6 py-3 rounded-full font-semibold hover:bg-[#d5f56a] transition"
+            >
+              Give Feedback
+            </button>
+
+            {/* Feedback Modal */}
+            {showFeedback && (
+              <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+                <div className="bg-[#2D274B] text-white rounded-2xl p-8 w-[90%] max-w-lg relative">
+                  <button
+                    onClick={() => setShowFeedback(false)}
+                    className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl"
+                  >
+                    ×
+                  </button>
+
+                  <h3 className="text-2xl font-bold text-[#dc8d33] mb-4">We value your feedback 🌟</h3>
+
+                  <form onSubmit={handleFeedbackSubmit} className="space-y-4">
+                    <input
+                      type="text"
+                      placeholder="Your Name"
+                      value={feedbackData.name}
+                      onChange={(e) => setFeedbackData({ ...feedbackData, name: e.target.value })}
+                      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#CBE56A] focus:border-[#CBE56A] transition-all duration-300"
+                      required
+                    />
+
+                    <input
+                      type="email"
+                      placeholder="Your Email"
+                      value={feedbackData.email}
+                      onChange={(e) => setFeedbackData({ ...feedbackData, email: e.target.value })}
+                      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-[#CBE56A]"
+                      required
+                    />
+
+                    <select
+                      value={feedbackData.category}
+                      onChange={(e) => setFeedbackData({ ...feedbackData, category: e.target.value })}
+                      className="w-full px-4 py-3 rounded-xl bg-[#3a3460] border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#CBE56A] focus:border-[#CBE56A] transition-all duration-300 appearance-none"
+                      required
+                    >
+                      <option value="">Select a category</option>
+                      <option value="Bug Report">Bug Report</option>
+                      <option value="Feature Request">Feature Request</option>
+                      <option value="General Feedback">General Feedback</option>
+                    </select>
+
+                    <textarea
+                      placeholder="Your Message"
+                      rows={4}
+                      value={feedbackData.message}
+                      onChange={(e) => setFeedbackData({ ...feedbackData, message: e.target.value })}
+                      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-[#CBE56A]"
+                      required
+                    />
+
+                    <button
+                      type="submit"
+                      className="w-full bg-[#CBE56A] text-[#2D274B] font-semibold py-3 rounded-xl hover:scale-105 transition"
+                    >
+                      Submit Feedback
+                    </button>
+                  </form>
+
+                  {feedbackStatus === 'success' && (
+                    <p className="text-[#CBE56A] font-semibold mt-4 text-center">
+                      Thank you! Your feedback has been submitted.
+                    </p>
+                  )}
+                  {feedbackStatus === 'error' && (
+                    <p className="text-red-600 font-semibold mt-4 text-center">
+                      ❌ FAILED to send feedback. Please try again.
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
+
         </div>
       </section>
 
@@ -493,7 +626,7 @@ export default function AboutPage() {
           <FileText size={40} className="mx-auto mb-4 text-[#2D274B]" />
           <h2 className="text-4xl font-serif font-bold">Terms & Conditions</h2>
           <p className="mt-4 text-lg text-white font-semibold max-w-3xl mx-auto">
-            By accessing or using LEARNiLM🌎WORLD, you agree to our policies and terms. These ensure a safe,
+            By accessing or using LearniLM🌎World, you agree to our policies and terms. These ensure a safe,
             transparent, and fair learning environment for everyone.
           </p>
 
@@ -518,12 +651,12 @@ export default function AboutPage() {
               {
                 title: "Intellectual Property Rights",
                 content:
-                  "All content, materials, and trademarks on Learnilm are the property of Learnilm World or its partners. Unauthorized use or redistribution of our materials is prohibited.",
+                  "All content, materials, and trademarks on LearniLM World are the property of LearniLM🌍World World or its partners. Unauthorized use or redistribution of our materials is prohibited.",
               },
               {
                 title: "Limitation of Liability",
                 content:
-                  "Learnilm World is not liable for indirect or consequential losses resulting from misuse of the platform. Our services are provided 'as is' without warranty beyond legal requirements.",
+                  "LearniLM World is not liable for indirect or consequential losses resulting from misuse of the platform. Our services are provided 'as is' without warranty beyond legal requirements.",
               },
               {
                 title: "Privacy & Data Usage",

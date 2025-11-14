@@ -8,6 +8,9 @@ import bookingRoutes from './routes/bookingRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
 import adminRoutes from './routes/adminRoutes.js'
+import feedbackRoutes from "./routes/feedbackRoutes.js";
+import chatbotRoutes from './routes/chatbotRoutes.js';
+
 
 
 const app = express();
@@ -50,6 +53,9 @@ app.use('/api/bookings', bookingRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/admin', adminRoutes);
+app.use("/api/feedback", feedbackRoutes);
+app.use('/api/chatbot', chatbotRoutes);
+
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {

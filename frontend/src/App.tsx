@@ -20,11 +20,16 @@ import ResetPassword from './pages/ResetPassword';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import BecomeTrainer from './pages/BecomeTrainer';
 import AboutPage from './pages/AboutPage';
+import StudentJoinSession from './components/StudentJoinSession';
+import Chatbot from './components/Chatbot/Chatbot';
 function App() {
   return (
      <StripeProvider>
       <AuthProvider>
         <Router>
+          
+              <Chatbot />
+
           <div className="min-h-screen bg-gradient-to-br from-cream-50 to-green-50">
             <Routes>
               <Route path="/" element={<LandingPage />} />
@@ -56,6 +61,8 @@ function App() {
                   <EducatorDashboard />
                 </PrivateRoute>
               } />
+
+              <Route path="/student/session/:id" element={<StudentJoinSession />} />
               
               <Route path="/session/:sessionId" element={
                 <PrivateRoute allowedRoles={['student', 'trainer']}>

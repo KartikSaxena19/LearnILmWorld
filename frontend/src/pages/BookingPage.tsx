@@ -538,7 +538,7 @@ const BookingPage = () => {
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
           
           <div>
-                <div className="text-lg font-semibold">LEARN🌎SPHERE</div>
+                <div className="text-lg font-semibold">LearniLM🌎World</div>
                 <div className="text-xs text-[#2D274B]500 -mt-1">Live lessons · Micro-courses</div>
               </div>
         </div>

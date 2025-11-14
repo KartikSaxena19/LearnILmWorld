@@ -302,7 +302,7 @@ const Register: React.FC = () => {
           <h1 className={`text-2xl sm:text-3xl md:text-4xl font-extrabold  mb-2 text-center ${
             formData.role === 'trainer' ? 'text-[#dc8d33]' : 'text-[#2D274B]'
           }`}>
-            Join LEARNiLM 🌎 WORLD
+            Join LearniLM 🌎 World
           </h1>
           <p className=
           {`text-xl font-bold sm:text-base md:text-xl 
