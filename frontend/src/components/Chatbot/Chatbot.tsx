@@ -17,6 +17,9 @@ const SUPPORTED_LANGUAGES = [
   { code: 'sa', name: 'Sanskrit', flag: '🇮🇳' }
 ];
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+
 const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -46,7 +49,7 @@ const Chatbot: React.FC = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/api/chatbot/start', 
+      const response = await axios.post(`${API_BASE_URL}/api/chatbot/start`, 
         { language: selectedLanguage },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -86,7 +89,7 @@ const Chatbot: React.FC = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/api/chatbot/message', 
+      const response = await axios.post(`${API_BASE_URL}/api/chatbot/message`, 
         {
           sessionId,
           message: userMessage,
@@ -95,11 +98,11 @@ const Chatbot: React.FC = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      const aiMessage: Message = {
-        role: 'assistant',
-        message: response.data.response,
-        timestamp: new Date()
-      };
+      // const aiMessage: Message = {
+      //   role: 'assistant',
+      //   message: response.data.response,
+      //   timestamp: new Date()
+      // };
       setMessages(response.data.conversation);
       setNeedsRole(response.data.needsRole || false);
     } catch (error) {
