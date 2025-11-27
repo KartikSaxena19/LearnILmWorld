@@ -6,8 +6,6 @@ import { authenticate } from '../middleware/auth.js';
 
 const router = express.Router();
 
-
-
 // Register
 router.post('/register', async (req, res) => {
   try {
@@ -154,8 +152,11 @@ router.post('/register', async (req, res) => {
 
       userData.profile = {
         education: education || '',
-        teachingExperienceDetails: teachingExperienceDetails || '',
+
+        teachingExperienceDetails:
+          req.body.profile?.teachingExperienceDetailsDescription || teachingExperienceDetails || '',
         experience: parseInt(req.body.profile?.experience) || parseInt(teachingExperienceDetails) || 0,
+
         certifications: Array.isArray(certifications)
           ? certifications.map(cert => ({
             ...cert,
@@ -185,6 +186,22 @@ router.post('/register', async (req, res) => {
     } else if (role === 'student') {
       userData.profile = {
         phone: phone || '',
+        learningType: req.body.profile?.learningType || '',
+        learningValues: Array.isArray(req.body.profile?.learningValues)
+          ? req.body.profile.learningValues
+          : req.body.profile?.learningValues
+            ? [req.body.profile.learningValues]
+            : [],
+        standards: Array.isArray(req.body.profile?.standards)
+          ? req.body.profile.standards
+          : req.body.profile?.standards
+            ? [req.body.profile.standards]
+            : [],
+        specializations: Array.isArray(req.body.profile?.subjects)
+          ? req.body.profile.subjects
+          : req.body.profile?.subjects
+            ? [req.body.profile.subjects]
+            : [],
       };
     }
 
@@ -238,6 +255,16 @@ router.post('/register', async (req, res) => {
 const sendTrainerVerificationEmail = async (user, resumeData) => {
   const { profile } = user;
 
+  // teachingValues snippet (use exactly as instructed)
+  const teachingValues =
+    (profile.specializations && profile.specializations.length)
+      ? profile.specializations
+      : profile.languages && profile.languages.length
+        ? profile.languages
+        : profile.hobbies && profile.hobbies.length
+          ? profile.hobbies
+          : ['N/A'];
+
   // Build certification list
   const certList = (profile.certifications || [])
     .map(
@@ -252,7 +279,7 @@ const sendTrainerVerificationEmail = async (user, resumeData) => {
     )
     .join('') || '<p>No certificates provided</p>';
 
-  // Add verify/reject links
+  // Approve/Reject links
   const verifyToken = jwt.sign({ trainerId: user._id }, process.env.JWT_SECRET, {
     expiresIn: '7d',
   });
@@ -260,50 +287,58 @@ const sendTrainerVerificationEmail = async (user, resumeData) => {
   const approveLink = `${process.env.FRONTEND_URL}/api/auth/verify-trainer/${verifyToken}?action=approve`;
   const rejectLink = `${process.env.FRONTEND_URL}/api/auth/verify-trainer/${verifyToken}?action=reject`;
 
-  // Email body
   const htmlBody = `
     <h2>Trainer Registration - Verification Required</h2>
+
     <p><b>Name:</b> ${user.name}</p>
     <p><b>Email:</b> ${user.email}</p>
     <p><b>Phone:</b> ${profile.phone || 'N/A'}</p>
-    <p><b>Education:</b> ${profile.education || 'N/A'}</p>
-    <p><b>Teaching Experience:</b> ${profile.teachingExperienceDetails || 'N/A'}</p>
-    <p><b>Date of Birth:</b> ${profile.dob ? new Date(profile.dob).toLocaleDateString() : 'N/A'}</p>
-    <p><b>Bio:</b> ${profile.bio || 'N/A'}</p>
-    <p><b>Languages:</b> ${(profile.languages || []).join(', ') || 'N/A'}</p>
-    <p><b>Subjects:</b> ${(profile.specializations || []).join(', ') || 'N/A'}</p>
-    <p><b>Standards:</b> ${profile.standards || 'N/A'}</p>
 
-    <h3>Certifications:</h3>
+    <hr>
+
+    <h3>Trainer Details</h3>
+    <p><b>Highest Qualification:</b> ${profile.education || 'N/A'}</p>
+    <p><b>Bio:</b> ${profile.bio || 'N/A'}</p>
+
+    <p><b>Teaching Type:</b> ${profile.specializations?.length ? 'Subjects' :
+      profile.languages?.length ? 'Languages' :
+        profile.hobbies?.length ? 'Hobbies' : 'N/A'
+    }</p>
+
+    <p><b>Teaching Values:</b> ${teachingValues.join(', ')}</p>
+
+    <p><b>Experience (Years):</b> ${profile.experience || 0}</p>
+
+    <p><b>Standards:</b> ${Array.isArray(profile.standards) && profile.standards.length
+      ? profile.standards.join(', ')
+      : 'N/A'
+    }</p>
+
+    <p><b>Date of Birth:</b> ${profile.dob ? new Date(profile.dob).toLocaleDateString() : 'N/A'
+    }</p>
+
+    <hr>
+
+    <h3>Certifications</h3>
     ${certList}
+
+    <hr>
 
     <p>Click below to verify or reject this trainer:</p>
     <a href="${approveLink}" style="color:green;">✅ Approve Trainer</a><br>
     <a href="${rejectLink}" style="color:red;">❌ Reject Trainer</a>
   `;
 
-  // Attachments
+  // Attachments (unchanged)
   const attachments = [];
-
-  // Resume as attachment (if exists)
-  if (resumeData && typeof resumeData === 'string') {
+  if (resumeData && typeof resumeData === 'string' && resumeData.startsWith('data:')) {
+    const base64Data = resumeData.split(';base64,').pop();
     attachments.push({
       filename: 'resume.pdf',
-      content: resumeData.split(',')[1] || resumeData,
-      encoding: 'base64',
+      content: base64Data,
+      encoding: 'base64'
     });
   }
-
-  // Certificates as attachments (if any)
-  (profile.certifications || []).forEach((cert, idx) => {
-    if (cert.certificateImage && typeof cert.certificateImage === 'string') {
-      attachments.push({
-        filename: `certificate_${idx + 1}.png`,
-        content: cert.certificateImage.split(',')[1] || cert.certificateImage,
-        encoding: 'base64',
-      });
-    }
-  });
 
   // Send email
   await sendEmail({
@@ -313,6 +348,7 @@ const sendTrainerVerificationEmail = async (user, resumeData) => {
     attachments,
   });
 };
+
 
 // End of helper
 

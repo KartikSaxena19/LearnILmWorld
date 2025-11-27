@@ -89,13 +89,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const response = await axios.post(`${API_BASE_URL}/api/auth/login`, { email, password })
       const { token: jwtToken, user: userFromServer } = response.data
 
-      const loginAdmin = (email: string, password: string) => {
-        if (email === import.meta.env.VITE_ADMIN_EMAIL && password === import.meta.env.VITE_ADMIN_PASSWORD) {
-          setIsAdmin(true)
-          return { success: true }
-        }
-        return { success: false, error: 'Invalid admin credentials' }
-      }
+      // const loginAdmin = (email: string, password: string) => {
+      //   if (email === import.meta.env.VITE_ADMIN_EMAIL && password === import.meta.env.VITE_ADMIN_PASSWORD) {
+      //     setIsAdmin(true)
+      //     return { success: true }
+      //   }
+      //   return { success: false, error: 'Invalid admin credentials' }
+      // }
 
 
       if (jwtToken) {

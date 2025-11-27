@@ -1,6 +1,6 @@
 // src/pages/student/StudentHome.tsx
-import { BookOpen, Calendar, Star, Globe, User, TrendingUp } from "lucide-react";
-// MessageCircle, Users => removed these unused lucide icons
+import { BookOpen, Calendar, Star, User, TrendingUp } from "lucide-react";
+// MessageCircle, Globe, Users => removed these unused lucide icons
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -81,7 +81,7 @@ const StudentHome: React.FC = () => {
       </div>
 
       {/* Stats Grid (No Shine) */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         <div className="bg-white rounded-xl p-5 text-center shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
           <div className="w-10 h-10 bg-[#9787F3] rounded-xl flex items-center justify-center mx-auto mb-3">
             <BookOpen className="h-5 w-5 text-white" />
@@ -106,13 +106,13 @@ const StudentHome: React.FC = () => {
           <div className="text-[#f97316] text-sm font-semibold">Completed</div>
         </div>
 
-        <div className="bg-white rounded-xl p-5 text-center shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+        {/* <div className="bg-white rounded-xl p-5 text-center shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
           <div className="w-10 h-10 bg-[#9787F3] rounded-xl flex items-center justify-center mx-auto mb-3">
             <Globe className="h-5 w-5 text-white" />
           </div>
           <div className="text-2xl font-bold text-[#2D274B] mb-1">${stats.totalSpent}</div>
           <div className="text-[#9787F3] text-sm font-semibold">Total Spent</div>
-        </div>
+        </div> */}
       </div>
 
       {/* Recent Sessions (No Shine) */}

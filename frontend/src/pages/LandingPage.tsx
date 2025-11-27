@@ -127,10 +127,10 @@ export default function LandingPageAlt() {
 
     if (!user) {
       // Save the clicked language temporarily for redirect after login
-      localStorage.setItem("redirectAfterLogin", `/trainer-profile/${trainerId}`);
+      localStorage.setItem("redirectAfterLogin", `/main?language=${encodeURIComponent(language)}`);
       navigate("/login");
     } else {
-      navigate(`/trainer-profile/${trainerId}`);
+      navigate(`/main?language=${encodeURIComponent(language)}`);
     }
   };
 
@@ -150,10 +150,10 @@ export default function LandingPageAlt() {
     }
 
     if (!user) {
-      localStorage.setItem("redirectAfterLogin", `/trainer-profile/${trainerId}`);
+      localStorage.setItem("redirectAfterLogin", `/main?language=${encodeURIComponent(languageName)}`);
       navigate("/login");
     } else {
-      navigate(`/trainer-profile/${trainerId}`);
+      navigate(`/main?language=${encodeURIComponent(languageName)}`);
     }
 
     setShowMoreLanguages(false);
@@ -192,10 +192,10 @@ export default function LandingPageAlt() {
 
     if (!user) {
       // Store redirect path for after login
-      localStorage.setItem("redirectAfterLogin", `/trainer-profile/${trainerId}`);
+      localStorage.setItem("redirectAfterLogin", `/main?subject=${encodeURIComponent(subject.name)}`);
       navigate("/login");
     } else {
-      navigate(`/trainer-profile/${trainerId}`);
+      navigate(`/main?subject=${encodeURIComponent(subject.name)}`);
     }
   };
 
@@ -219,10 +219,10 @@ export default function LandingPageAlt() {
     }
 
     if (!user) {
-      localStorage.setItem("redirectAfterLogin", `/trainer-profile/${trainerId}`);
+      localStorage.setItem("redirectAfterLogin", `/main?subject=${encodeURIComponent(subjectName)}`);
       navigate("/login");
     } else {
-      navigate(`/trainer-profile/${trainerId}`);
+      navigate(`/main?subject=${encodeURIComponent(subjectName)}`);
     }
 
     setShowMore(false);
@@ -410,15 +410,7 @@ export default function LandingPageAlt() {
 
               <p className="mt-6 text-2xl text-[#2D274B] font-bold max-w-xl">
                 Personalized Learning, Perfect for Your Pace: Languages & Academic Subjects.Master Every Subject & Language, Backed by Experts.An EdTech solution that fits your life. Unlock your first lesson free and see the difference by coming week. 
-              </p>
-
-              <div className="mt-6 flex items-center gap-3">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border text-sm text-[#4B437C] shadow-sm">⭐ 4.9 Average Rating</div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border text-sm text-[#4B437C] shadow-sm">✅ Verified Tutors</div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border text-sm text-[#4B437C] shadow-sm">⏱️ 15–60 min Lessons</div>
-              </div>
-
-              
+              </p>           
 
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link to="/main" className="inline-flex items-center gap-3 px-6 py-3 bg-[#CBE56A] text-[#4B437C] text-lg rounded-lg shadow hover:scale-105 transition" aria-label="Start learning"> 
@@ -429,6 +421,14 @@ export default function LandingPageAlt() {
                   <Users /> Become a Trainer
                 </Link>
               </div>
+
+              <div className="mt-6 flex items-center gap-3">
+                
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border text-sm text-[#4B437C] shadow-sm">✅ Verified Tutors</div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border text-sm text-[#4B437C] shadow-sm">⏱️ 15–60 min Lessons</div>
+              </div>
+
+
               {/* chaned color to wite from [#7fe808],[#ef4444] and [#9787F3] */}
               {/* <div className="mt-10 grid grid-cols-3 gap-4 max-w-md">
                 <motion.div initial={{ scale: 0.95 }} animate={mounted ? { scale: 1 } : {}} className="text-center">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import {
   Search, Filter, Star, Globe, Clock, User, MapPin, ChevronDown, X, Play, Heart
@@ -78,6 +78,34 @@ const MainPage: React.FC = () => {
     sortBy: 'rating',
     nationality:'',
   })
+
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+
+    const selectedLang = params.get("language");
+    const selectedSubject = params.get("subject");
+
+    if (selectedLang) {
+      setFilters(prev => ({
+        ...prev,
+        language: selectedLang,
+      }));
+      setLearningType("language");
+      setLanguageMode("subject");
+    }
+
+    if (selectedSubject) {
+      setFilters(prev => ({
+        ...prev,
+        specialization: selectedSubject,
+      }));
+      setLearningType("subject");
+    }
+  }, [location.search]);
+
 
 
   const [learningType, setLearningType] = useState("language"); 

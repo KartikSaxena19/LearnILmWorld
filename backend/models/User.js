@@ -76,6 +76,17 @@ const userSchema = new mongoose.Schema({
     phone: { type: String, trim: true, default: '' },
     location: { type: String, trim: true, default: '' },
 
+    learningType: {
+      type: String,
+      enum: ['subjects', 'languages', 'hobbies', ''],
+      default: ''
+    },
+    learningValues: {
+      type: [String],
+      default: []
+    },
+
+
     nationalityCode: { type: String, trim: true, uppercase: true, default: '' }, // store 'IN', 'US', 'RU' for using flag cdn
     // always use uppercase or else ReactFlagsSelect will ignore it.
     // nationalityName: { type: String, trim: true, default: '' }, // optional

@@ -8,6 +8,16 @@ interface Message {
   timestamp: Date;
 }
 
+interface UserData {
+  name: string;
+  phone: string;
+  email: string;
+  role: 'Student' | 'Trainer';
+}
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+
 const SUPPORTED_LANGUAGES = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
   { code: 'de', name: 'German', flag: '🇩🇪' },
@@ -17,9 +27,6 @@ const SUPPORTED_LANGUAGES = [
   { code: 'sa', name: 'Sanskrit', flag: '🇮🇳' }
 ];
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-
 const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -27,7 +34,15 @@ const Chatbot: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [sessionId, setSessionId] = useState<string | null>(null);
-  const [needsRole, setNeedsRole] = useState(false);
+  const [hasProvidedData, setHasProvidedData] = useState(false);
+  const [showForm, setShowForm] = useState(true);
+  const [formData, setFormData] = useState<UserData>({
+    name: '',
+    phone: '',
+    email: '',
+    role: 'Student'
+  });
+  const [formErrors, setFormErrors] = useState<{[key: string]: string}>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -37,7 +52,8 @@ const Chatbot: React.FC = () => {
   // Start chat automatically when modal opens
   useEffect(() => {
     if (isOpen && !sessionId) {
-      startNewChat();
+      // Don't start chat immediately - show form first
+      setShowForm(true);
     }
   }, [isOpen]);
 
@@ -45,30 +61,86 @@ const Chatbot: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const startNewChat = async () => {
+  const validateForm = (): boolean => {
+    const errors: {[key: string]: string} = {};
+
+    // Name validation
+    if (!formData.name.trim()) {
+      errors.name = 'Please enter your name';
+    }
+
+    // Phone validation
+    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+    if (!formData.phone.trim() || !phoneRegex.test(formData.phone.replace(/[\s\-\(\)]/g, ''))) {
+      errors.phone = 'Please enter a valid phone number';
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.trim() || !emailRegex.test(formData.email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsLoading(true);
+    
     try {
-      setIsLoading(true);
+      // Combine form data into a single message
+      const userInfoMessage = `Name: ${formData.name}, Phone: ${formData.phone}, Email: ${formData.email}, Role: ${formData.role}`;
+      
       const token = localStorage.getItem('token');
       const response = await axios.post(`${API_BASE_URL}/api/chatbot/start`, 
-        { language: selectedLanguage },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { 
+          language: selectedLanguage,
+          message: userInfoMessage
+        },
+        { 
+          headers: { Authorization: `Bearer ${token}` },
+          timeout: 60000 
+        }
       );
       
       setSessionId(response.data.sessionId);
       setMessages(response.data.conversation);
-      setNeedsRole(response.data.needsRole || false);
+      setHasProvidedData(true);
+      setShowForm(false);
     } catch (error) {
       console.error('Failed to start chat:', error);
-      // If backend not working, show demo mode
+      // Show error message if backend fails
       setSessionId('demo_session');
       setMessages([{
         role: 'assistant',
-        message: 'Welcome! Are you a student or trainer?',
+        message: `🎉 Thank you for sharing your details, ${formData.name}!\n\nHow can I help you today? Here are some common questions:\n\n• "How to find trainers?"\n• "What equipment do I need?"\n• "Tell me about certificates"\n• "How to book sessions?"\n• "Class schedule and structure"\n\nOr ask me anything else about LearnILmWorld!`,
         timestamp: new Date()
       }]);
-      setNeedsRole(true);
+      setHasProvidedData(true);
+      setShowForm(false);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleFormChange = (field: keyof UserData, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+    // Clear error when user starts typing
+    if (formErrors[field]) {
+      setFormErrors(prev => ({
+        ...prev,
+        [field]: ''
+      }));
     }
   };
 
@@ -95,42 +167,23 @@ const Chatbot: React.FC = () => {
           message: userMessage,
           language: selectedLanguage
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { 
+          headers: { Authorization: `Bearer ${token}` },
+          timeout: 60000 
+        }
       );
 
-      // const aiMessage: Message = {
-      //   role: 'assistant',
-      //   message: response.data.response,
-      //   timestamp: new Date()
-      // };
       setMessages(response.data.conversation);
-      setNeedsRole(response.data.needsRole || false);
+      setHasProvidedData(!response.data.needsData);
     } catch (error) {
       console.error('Failed to send message:', error);
-      // Demo responses if backend fails
-      const demoResponses: {[key: string]: string} = {
-        'student': 'Great! I can help with subjects, mentors, and learning.',
-        'trainer': 'Awesome! I can help with students and teaching.',
-        'language': 'We teach: English, German, French, Japanese, Spanish, Sanskrit.',
-        'subject': 'We offer: Languages, Sciences, Math, History, Geography, Economics, CS.',
-        'mentor': 'Certified experts in all subjects. View profiles on our platform.',
-        'certif': 'Yes! Get certificates after course completion.',
-      };
-      
-      let response = "I can help with subjects, mentors, and learning questions!";
-      for (const [key, value] of Object.entries(demoResponses)) {
-        if (userMessage.toLowerCase().includes(key)) {
-          response = value;
-          break;
-        }
-      }
-      
-      const aiMessage: Message = {
+      // Show error message if backend fails
+      const errorMessage: Message = {
         role: 'assistant',
-        message: response,
+        message: "I apologize, but I'm having trouble connecting to the service. Please try again later.",
         timestamp: new Date()
       };
-      setMessages(prev => [...prev, aiMessage]);
+      setMessages(prev => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
     }
@@ -144,19 +197,30 @@ const Chatbot: React.FC = () => {
   };
 
   const suggestedQuestions = [
-    "What subjects do you teach?",
-    "Tell me about mentors",
+    "How to find trainers?",
     "Do you provide certificates?",
     "What equipment do I need?",
     "How are classes structured?"
   ];
 
-  // Reset chat when closing
+  const resetChat = () => {
+    setSessionId(null);
+    setMessages([]);
+    setHasProvidedData(false);
+    setShowForm(true);
+    setFormData({
+      name: '',
+      phone: '',
+      email: '',
+      role: 'Student'
+    });
+    setFormErrors({});
+  };
+
   const handleClose = () => {
     setIsOpen(false);
-    // Optionally reset the chat state when closing
-    // setSessionId(null);
-    // setMessages([]);
+    // Reset chat when closing
+    setTimeout(resetChat, 300);
   };
 
   return (
@@ -166,14 +230,14 @@ const Chatbot: React.FC = () => {
         className="chatbot-toggle"
         onClick={() => setIsOpen(!isOpen)}
       >
-        💬 Ask iLM
+        💬 Ask LEARNilM
       </button>
 
       {/* Chatbot Modal */}
       {isOpen && (
         <div className="chatbot-modal">
           <div className="chatbot-header">
-            <h3>Ask iLM</h3>
+            <h3>Ask LEARNilM</h3>
             <div className="chatbot-controls">
               <select 
                 value={selectedLanguage}
@@ -191,8 +255,93 @@ const Chatbot: React.FC = () => {
           </div>
 
           <div className="chatbot-body">
-            {/* Messages */}
-            {sessionId && (
+            {/* User Information Form */}
+            {showForm && (
+              <div className="user-form-container">
+                <div className="form-header">
+                  <h4>Get Started with LearnILmWorld</h4>
+                  <p>Please provide your details to begin</p>
+                </div>
+
+                <form onSubmit={handleFormSubmit} className="user-form">
+                  <div className="form-group">
+                    <label htmlFor="name">Your Name *</label>
+                    <input
+                      type="text"
+                      id="name"
+                      value={formData.name}
+                      onChange={(e) => handleFormChange('name', e.target.value)}
+                      placeholder="Enter your full name"
+                      className={formErrors.name ? 'error' : ''}
+                    />
+                    {formErrors.name && <span className="error-message">{formErrors.name}</span>}
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="phone">Phone Number *</label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      value={formData.phone}
+                      onChange={(e) => handleFormChange('phone', e.target.value)}
+                      placeholder="Enter your phone number"
+                      className={formErrors.phone ? 'error' : ''}
+                    />
+                    {formErrors.phone && <span className="error-message">{formErrors.phone}</span>}
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="email">Email Address *</label>
+                    <input
+                      type="email"
+                      id="email"
+                      value={formData.email}
+                      onChange={(e) => handleFormChange('email', e.target.value)}
+                      placeholder="Enter your email address"
+                      className={formErrors.email ? 'error' : ''}
+                    />
+                    {formErrors.email && <span className="error-message">{formErrors.email}</span>}
+                  </div>
+
+                  <div className="form-group">
+                    <label>You are joining as *</label>
+                    <div className="radio-group">
+                      <label className="radio-option">
+                        <input
+                          type="radio"
+                          name="role"
+                          value="Student"
+                          checked={formData.role === 'Student'}
+                          onChange={(e) => handleFormChange('role', e.target.value)}
+                        />
+                        <span className="radio-label">Student</span>
+                      </label>
+                      <label className="radio-option">
+                        <input
+                          type="radio"
+                          name="role"
+                          value="Trainer"
+                          checked={formData.role === 'Trainer'}
+                          onChange={(e) => handleFormChange('role', e.target.value)}
+                        />
+                        <span className="radio-label">Trainer</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <button 
+                    type="submit" 
+                    className="submit-btn"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? 'Starting Chat...' : 'Start Chatting →'}
+                  </button>
+                </form>
+              </div>
+            )}
+
+            {/* Chat Interface */}
+            {!showForm && sessionId && (
               <>
                 <div className="messages-container">
                   {messages.map((message, index) => (
@@ -201,7 +350,12 @@ const Chatbot: React.FC = () => {
                       className={`message ${message.role}`}
                     >
                       <div className="message-content">
-                        {message.message}
+                        {message.message.split('\n').map((line, i) => (
+                          <React.Fragment key={i}>
+                            {line}
+                            {i < message.message.split('\n').length - 1 && <br />}
+                          </React.Fragment>
+                        ))}
                       </div>
                     </div>
                   ))}
@@ -218,19 +372,17 @@ const Chatbot: React.FC = () => {
                 </div>
 
                 {/* Suggested Questions */}
-                {!needsRole && (
-                  <div className="suggested-questions">
-                    {suggestedQuestions.map((question, index) => (
-                      <button
-                        key={index}
-                        className="suggestion-chip"
-                        onClick={() => setInputMessage(question)}
-                      >
-                        {question}
-                      </button>
-                    ))}
-                  </div>
-                )}
+                <div className="suggested-questions">
+                  {suggestedQuestions.map((question, index) => (
+                    <button
+                      key={index}
+                      className="suggestion-chip"
+                      onClick={() => setInputMessage(question)}
+                    >
+                      {question}
+                    </button>
+                  ))}
+                </div>
 
                 {/* Input Area */}
                 <div className="input-section">
@@ -238,7 +390,7 @@ const Chatbot: React.FC = () => {
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder={needsRole ? "Type 'student' or 'trainer'..." : "Ask me anything..."}
+                    placeholder="Ask me anything about LearnILmWorld..."
                     disabled={isLoading}
                     rows={2}
                   />

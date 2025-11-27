@@ -2,7 +2,9 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import { useAuth } from '../../contexts/AuthContext'
 import ReactFlagsSelect from "react-flags-select";
-
+// ----------------------
+//  commented out trainers hourly rate
+// ---------------------
 
 /* ---------- TrainerHome ---------- */
 // const FRONTEND_URL= import.meta.env.VITE_FRONTEND_URL;
@@ -406,10 +408,10 @@ const TrainerProfile = () => {
                 <input type="number" name="profile.experience" value={formData.profile.experience} onChange={handleChange} className="input-field" min={0} step={0.5} />
               </div>
 
-              <div>
+              {/* <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Hourly Rate ($)</label>
                 <input type="number" name="profile.hourlyRate" value={formData.profile.hourlyRate} onChange={handleChange} className="input-field" min={1} step={1} />
-              </div>
+              </div> */}
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Teaching Style</label>

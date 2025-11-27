@@ -82,12 +82,12 @@ const TrainerHome = () => {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
-        <StatCard color="#9787F3" icon={<BookOpen />} label="Total Sessions" value={stats.totalSessions} />
-        <StatCard color="#22c55e" icon={<Calendar />} label="Upcoming" value={stats.upcomingSessions} />
-        <StatCard color="#f97316" icon={<Star />} label="Completed" value={stats.completedSessions} />
         <StatCard color="#16a34a" icon={<DollarSign />} label="Total Earnings" value={`$${stats.totalEarnings}`} />
-        <StatCard color="#0ea5e9" icon={<Users />} label="Students" value={stats.totalStudents} />
+        <StatCard color="#22c55e" icon={<Calendar />} label="Upcoming" value={stats.upcomingSessions} />
         <StatCard color="#facc15" icon={<Award />} label="Rating" value={stats.averageRating.toFixed(1)} />
+        <StatCard color="#0ea5e9" icon={<Users />} label="Students" value={stats.totalStudents} />
+        <StatCard color="#f97316" icon={<Star />} label="Completed" value={stats.completedSessions} />
+        <StatCard color="#9787F3" icon={<BookOpen />} label="Total Sessions" value={stats.totalSessions} />
       </div>
 
       {/* Recent Bookings */}
