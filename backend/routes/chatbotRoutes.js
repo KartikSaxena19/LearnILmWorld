@@ -22,7 +22,8 @@ try {
 // ================================
 const RandomTextDetector = {
   // Check if text is random/nonsense - STRICTER VERSION
-  isRandomText: (text) => {
+  //  removed arrrow function cause we are using "this" keyword
+  isRandomText(text) {
     if (!text || text.trim().length === 0) return false;
 
     const cleanedText = text.trim().toLowerCase();
@@ -684,7 +685,7 @@ const GeminiService = {
   generateResponse: async (message, sessionId, language = 'en', history) => {
     const API_KEY = process.env.GOOGLE_API_KEY;
 
-    console.log("Gemini called with:", message, sessionId, history);
+    // console.log("Gemini called with:", message, sessionId, history);
 
 
     // First check if it's random text
@@ -782,10 +783,22 @@ ANSWER:
           })
         }
       );
+      // console.log(response);
+
+      // added by me, to check token limit error
+      if (response.status === 429) {
+        console.log("⚠️ Gemini API rate limit hit!");
+        return {
+          success: false,
+          error: "Rate limit exceeded. Please try again later.",
+          source: 'gemini_rate_limit'
+        };
+      }
 
       if (!response.ok) throw new Error(`API error: ${response.status}`);
 
       const data = await response.json();
+      // console.log(response.status, data);
       let answer = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
       // Ensure there's a follow-up question
@@ -884,9 +897,12 @@ const SmartResponseGenerator = {
     }
 
     conversationMemory.addMessage(sessionId, 'user', message);
+    // fetch history from memory
+    const history = conversationMemory.getRecentHistory(sessionId);
 
     try {
-      const geminiResult = await GeminiService.generateResponse(message, sessionId, language);
+      //changed by me send message + history to Gemini
+      const geminiResult = await GeminiService.generateResponse(message, sessionId, language, history);
 
       if (geminiResult.success && geminiResult.response) {
         conversationMemory.addMessage(sessionId, 'assistant', geminiResult.response);
@@ -900,6 +916,8 @@ const SmartResponseGenerator = {
       }
 
     } catch (error) {
+      // added by me
+      console.log("Error in SmartResponseGenerator:", error);
       const fallbackResponse = "I'd be happy to help you with LearnILmWorld! What would you like to know?";
       conversationMemory.addMessage(sessionId, 'assistant', fallbackResponse);
 
