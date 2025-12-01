@@ -1,6 +1,8 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import fs from 'fs';
+import Chatbot from '../models/Chatbot.js';
+
 
 const router = express.Router();
 
@@ -679,8 +681,11 @@ Start by browsing our mentor community today!`;
 // GEMINI SERVICE WITH RANDOM TEXT DETECTION
 // =====================================
 const GeminiService = {
-  generateResponse: async (message, sessionId, language = 'en') => {
+  generateResponse: async (message, sessionId, language = 'en', history) => {
     const API_KEY = process.env.GOOGLE_API_KEY;
+
+    console.log("Gemini called with:", message, sessionId, history);
+
 
     // First check if it's random text
     if (RandomTextDetector.isRandomText(message)) {
@@ -735,6 +740,9 @@ const GeminiService = {
 
       const ENHANCED_PROMPT = `
 You are LearnILmWorld's helpful assistant. Always end your response with a relevant follow-up question to keep the conversation engaging.
+
+Conversation so far:
+${history}
 
 WEBSITE INFORMATION:
 ${websiteContext}
@@ -910,78 +918,151 @@ const sessions = new Map();
 
 router.post('/start', async (req, res) => {
   try {
-    const { language = 'en' } = req.body;
+    const { language = "en", userType = "guest" } = req.body;
 
-    const sessionId = `chat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const sessionId = `chat_${Date.now()}_${Math.random()
+      .toString(36)
+      .substr(2, 9)}`;
 
-    const session = {
+    const welcomeResponse = await SmartResponseGenerator.generate(
+      "",
       sessionId,
       language,
-      conversation: []
-    };
+      true
+    );
 
-    sessions.set(sessionId, session);
-
-    const welcomeResponse = await SmartResponseGenerator.generate('', sessionId, language, true);
-
-    session.conversation.push({
-      role: 'assistant',
-      message: welcomeResponse.response
+    // CREATE DB SESSION USING Chatbot MODEL
+    const newSession = await Chatbot.create({
+      sessionId,
+      userType,
+      language,
+      conversation: [
+        { role: "assistant", message: welcomeResponse.response }
+      ],
+      userContext: {}
     });
 
     res.json({
-      sessionId: session.sessionId,
-      conversation: session.conversation
+      sessionId: newSession.sessionId,
+      conversation: newSession.conversation
     });
+    // console.log("Chat session created:", newSession);
+
   } catch (error) {
-    console.error('Error in /start:', error);
-    res.status(500).json({ error: 'Failed to start chat' });
+    console.error("Error in /start:", error);
+    res.status(500).json({ error: "Failed to start chat" });
   }
 });
 
 router.post('/message', async (req, res) => {
   try {
-    const { sessionId, message, language = 'en' } = req.body;
+    const { sessionId, message, language = "en" } = req.body;
 
-    const session = sessions.get(sessionId);
+    // console.log("Chat request received:", req.body);
+
+    // FIND SESSION USING Chatbot
+    const session = await Chatbot.findOne({ sessionId });
+
+    // Added by me
+    const history = session.conversation.map(msg => {
+      return `${msg.role === "user" ? "User" : "Assistant"}: ${msg.message}`;
+    }).join("\n");
+
     if (!session) {
-      return res.status(404).json({ error: 'Chat session not found' });
+      return res.status(404).json({ error: "Chat session not found" });
     }
 
-    session.conversation.push({ role: 'user', message });
-
-    const response = await SmartResponseGenerator.generate(message, sessionId, language, false);
-
+    //  STORE USER MESSAGE
     session.conversation.push({
-      role: 'assistant',
+      role: "user",
+      message
+    });
+
+    const response = await SmartResponseGenerator.generate(
+      message,
+      sessionId,
+      language,
+      false,
+      history, // added by me
+    );
+
+    // STORE BOT MESSAGE
+    session.conversation.push({
+      role: "assistant",
       message: response.response
     });
+
+    await session.save(); //  THIS COMMITS TO MONGO
 
     res.json({
       response: response.response,
       conversation: session.conversation,
       source: response.source
     });
+
   } catch (error) {
-    console.error('Error in /message:', error);
-    res.status(500).json({ error: 'Failed to process message' });
+    console.error("Error in /message:", error);
+    res.status(500).json({ error: "Failed to process message" });
   }
 });
 
 router.get('/history/:sessionId', async (req, res) => {
   try {
-    const session = sessions.get(req.params.sessionId);
-    if (!session) return res.status(404).json({ error: 'Session not found' });
+    const session = await Chatbot.findOne({
+      sessionId: req.params.sessionId
+    });
 
-    // Get memory context for debugging
-    const memoryContext = conversationMemory.getConversationSummary(req.params.sessionId);
+    if (!session) {
+      return res.status(404).json({ error: "Session not found" });
+    }
 
     res.json({
       conversation: session.conversation,
-      memoryContext: memoryContext
+      userContext: session.userContext
     });
+
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch history' });
+    res.status(500).json({ error: "Failed to fetch history" });
+  }
+});
+
+router.post("/save-user", async (req, res) => {
+  try {
+    const { sessionId, name, phone, email, role } = req.body;
+
+    if (!sessionId || !name || !phone || !email || !role) {
+      return res.status(400).json({ error: "All fields required" });
+    }
+
+    const session = await Chatbot.findOne({ sessionId });
+
+    if (!session) {
+      return res.status(404).json({ error: "Session not found" });
+    }
+
+    //  SAVE USER INFO INTO SAME CHAT SESSION
+    session.userContext = {
+      userRole: role,
+      name,
+      phone,
+      email
+    };
+
+    session.conversation.push({
+      role: "assistant",
+      message: `Thank you ${name}, your details are saved successfully.`
+    });
+
+    await session.save();
+
+    res.json({
+      success: true,
+      message: "User data saved successfully"
+    });
+
+  } catch (error) {
+    console.error("Error saving user data:", error);
+    res.status(500).json({ error: "Failed to save user data" });
   }
 });
 

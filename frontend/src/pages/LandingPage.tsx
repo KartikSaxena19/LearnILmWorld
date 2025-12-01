@@ -1052,9 +1052,7 @@ export default function LandingPageAlt() {
           </motion.p>
         </div>
       </section>
-
-
-
+ 
       {/* FAQ */}
       <section className="py-16" aria-labelledby="faq-heading">
         <div className="max-w-5xl mx-auto px-6 lg:px-8">
@@ -1082,8 +1080,8 @@ export default function LandingPageAlt() {
       {/* CTA  bg-gradient-to-r from-[#9787F3]/10 to-[#f97316]/8*/}
       <section className="py-12 ">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h4 className="text-4xl font-extrabold">Start speaking confidently</h4>
-          <p className="text-white text-xl font-bold mt-2">Sign up now and claim your free trial lesson. Get personalized recommendations and a 7-day plan after your first session.</p>
+          <h4 className="text-4xl font-extrabold">Master Your Skills, Confidently</h4>
+          <p className="text-white text-xl font-bold mt-2">Sign up to Claim Your Free Trial Session. Get a Personalized 7-Day Learning Path After Your First Session.</p>
           <div className="mt-6 flex justify-center gap-4">
             <Link to="/main" className="inline-flex items-center gap-3 px-6 py-3 rounded-lg bg-[#CBE56A] text-[#2D274B]">Browse trainers <ChevronRight /></Link>
             <Link to="/register" className="inline-flex items-center gap-3 px-6 py-3 rounded-lg border bg-[#CBE56A] border-[#CBE56A] text-[#2D274B] hover:bg-[#CBE56A]">Become a trainer</Link>

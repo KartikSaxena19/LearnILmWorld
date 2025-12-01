@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import './Chatbot.css';
+import { chatTranslations } from './chatTranslations';
+
 
 interface Message {
   role: 'user' | 'assistant';
@@ -36,6 +38,7 @@ const Chatbot: React.FC = () => {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [hasProvidedData, setHasProvidedData] = useState(false);
   const [showForm, setShowForm] = useState(true);
+  const t = chatTranslations[selectedLanguage] || chatTranslations.en;
   const [formData, setFormData] = useState<UserData>({
     name: '',
     phone: '',
@@ -85,50 +88,55 @@ const Chatbot: React.FC = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
+ const handleFormSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    setIsLoading(true);
-    
-    try {
-      // Combine form data into a single message
-      const userInfoMessage = `Name: ${formData.name}, Phone: ${formData.phone}, Email: ${formData.email}, Role: ${formData.role}`;
-      
-      const token = localStorage.getItem('token');
-      const response = await axios.post(`${API_BASE_URL}/api/chatbot/start`, 
-        { 
-          language: selectedLanguage,
-          message: userInfoMessage
-        },
-        { 
-          headers: { Authorization: `Bearer ${token}` },
-          timeout: 60000 
-        }
-      );
-      
-      setSessionId(response.data.sessionId);
-      setMessages(response.data.conversation);
-      setHasProvidedData(true);
-      setShowForm(false);
-    } catch (error) {
-      console.error('Failed to start chat:', error);
-      // Show error message if backend fails
-      setSessionId('demo_session');
-      setMessages([{
-        role: 'assistant',
-        message: `🎉 Thank you for sharing your details, ${formData.name}!\n\nHow can I help you today? Here are some common questions:\n\n• "How to find trainers?"\n• "What equipment do I need?"\n• "Tell me about certificates"\n• "How to book sessions?"\n• "Class schedule and structure"\n\nOr ask me anything else about LearnILmWorld!`,
-        timestamp: new Date()
+  if (!validateForm()) return;
+
+  setIsLoading(true);
+
+  try {
+    // 1. START CHAT SESSION (NO USER DATA YET)
+    const startRes = await axios.post(
+      `${API_BASE_URL}/api/chatbot/start`,
+      { language: selectedLanguage },
+      { timeout: 60000 }
+    );
+
+    const newSessionId = startRes.data.sessionId;
+    setSessionId(newSessionId);
+
+    // 2. SAVE USER DATA INTO MONGO USING SESSION ID
+    await axios.post(
+      `${API_BASE_URL}/api/chatbot/save-user`,
+      {
+        sessionId: newSessionId,
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        role: formData.role.toLowerCase()
+      },
+      { timeout: 60000 }
+    );
+
+    //  3. LOAD CONVERSATION FROM DB
+    setMessages(startRes.data.conversation);
+    setHasProvidedData(true);
+    setShowForm(false);
+
+  } catch (error) {
+    const welcomeMessage = `🎉 ${t.welcome}\n\n${t.intro}\n\n• ${t.points.join('\n• ')}\n\n💡 ${t.question}`;
+
+    setMessages([{
+      role: 'assistant',
+      message: welcomeMessage,
+      timestamp: new Date()
       }]);
-      setHasProvidedData(true);
-      setShowForm(false);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   const handleFormChange = (field: keyof UserData, value: string) => {
     setFormData(prev => ({
@@ -196,12 +204,7 @@ const Chatbot: React.FC = () => {
     }
   };
 
-  const suggestedQuestions = [
-    "How to find trainers?",
-    "Do you provide certificates?",
-    "What equipment do I need?",
-    "How are classes structured?"
-  ];
+  const suggestedQuestions = t.quickReplies;
 
   const resetChat = () => {
     setSessionId(null);
@@ -222,6 +225,8 @@ const Chatbot: React.FC = () => {
     // Reset chat when closing
     setTimeout(resetChat, 300);
   };
+
+  
 
   return (
     <>
@@ -373,15 +378,16 @@ const Chatbot: React.FC = () => {
 
                 {/* Suggested Questions */}
                 <div className="suggested-questions">
-                  {suggestedQuestions.map((question, index) => (
-                    <button
+                  {suggestedQuestions.map((question: string, index: number) => (
+                      <button
                       key={index}
                       className="suggestion-chip"
                       onClick={() => setInputMessage(question)}
-                    >
-                      {question}
-                    </button>
-                  ))}
+                        >
+                    {question}
+                      </button>
+                    ))
+                  }
                 </div>
 
                 {/* Input Area */}
@@ -390,7 +396,7 @@ const Chatbot: React.FC = () => {
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Ask me anything about LearnILmWorld..."
+                    placeholder={t.placeholder}
                     disabled={isLoading}
                     rows={2}
                   />

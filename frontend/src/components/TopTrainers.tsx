@@ -240,58 +240,64 @@ export default function TopTrainers(): JSX.Element {
             return (
               <div
                 key={id ?? idx}
-                className="min-w-[260px] max-w-[260px] lg:min-w-[220px] lg:max-w-[220px] bg-[#2D274B] text-white rounded-2xl shadow-xl p-6 hover:scale-105 transition cursor-pointer"
+                className="
+                  min-w-[260px] max-w-[260px]
+                  lg:min-w-[220px] lg:max-w-[220px]
+                  bg-[#2D274B] text-white rounded-2xl shadow-xl p-6
+                  hover:scale-105 transition cursor-pointer
+                  flex flex-col
+                "
               >
-                {/* role badge */}
-                <div className="flex justify-end mb-2">
-                  <span
-                    className={`text-xs px-2 py-1 rounded-full font-semibold ${
-                      role === "language"
-                        ? "bg-[#da9649] text-[#2D274B]"
+                <div className="flex-grow">
+                  <div className="flex justify-end mb-2">
+                    <span
+                      className={`text-xs px-2 py-1 rounded-full font-semibold ${
+                        role === "language"
+                          ? "bg-[#da9649] text-[#2D274B]"
+                          : role === "subject"
+                          ? "bg-[#CBE56A] text-[#2D274B]"
+                          : "bg-white text-[#2D274B]"
+                      }`}
+                    >
+                      {role === "language"
+                        ? "Language"
                         : role === "subject"
-                        ? "bg-[#CBE56A] text-[#2D274B]"
-                        : "bg-white text-[#2D274B]"
-                    }`}
-                  >
-                    {role === "language"
-                      ? "Language"
-                      : role === "subject"
-                      ? "Subject"
-                      : "Trainer"}
-                  </span>
+                        ? "Subject"
+                        : "Trainer"}
+                    </span>
+                  </div>
+
+                  <div className="w-28 h-28 mx-auto rounded-full overflow-hidden border-4 border-[#CBE56A] shadow">
+                    <img
+                      src={trainer.profile?.imageUrl || trainer_profile}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  <h3 className="text-xl font-bold text-center mt-4">{trainer.name}</h3>
+
+                  {displayList.length > 0 ? (
+                    <p className="text-center text-sm text-[#CBE56A] font-medium mt-1">
+                      {displayList.slice(0, 3).join(", ")}
+                    </p>
+                  ) : (
+                    <p className="text-center text-sm text-[#CBE56A] font-medium mt-1">
+                      Experienced tutor
+                    </p>
+                  )}
+
+                  <div className="mt-4 text-sm text-center">
+                    <span className="text-[#CBE56A] font-semibold">
+                      {trainer.profile?.experience ?? 0} yrs
+                    </span>{" "}
+                    experience
+                  </div>
                 </div>
 
-                <div className="w-28 h-28 mx-auto rounded-full overflow-hidden border-4 border-[#CBE56A] shadow">
-                  <img
-                    src={trainer.profile?.imageUrl || trainer_profile}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-
-                <h3 className="text-xl font-bold text-center mt-4">
-                  {trainer.name}
-                </h3>
-
-                {displayList.length > 0 ? (
-                  <p className="text-center text-sm text-[#CBE56A] font-medium mt-1">
-                    {displayList.slice(0, 3).join(", ")}
-                  </p>
-                ) : (
-                  <p className="text-center text-sm text-[#CBE56A] font-medium mt-1">
-                    Experienced tutor
-                  </p>
-                )}
-
-                <div className="mt-4 text-sm text-center">
-                  <span className="text-[#CBE56A] font-semibold">
-                    {trainer.profile?.experience ?? 0} yrs
-                  </span>{" "}
-                  experience
-                </div>
-
+                {/* FIXED BOTTOM BUTTON */}
                 <Link
                   to={`/trainer-profile/${trainer._id}`}
-                  className="block mt-5 w-full text-center bg-[#CBE56A] text-[#2D274B] py-2 rounded-lg font-semibold hover:bg-[#d6f05c] transition"
+                  className="mt-5 w-full text-center bg-[#CBE56A] text-[#2D274B] py-2 rounded-lg font-semibold hover:bg-[#d6f05c] transition"
                 >
                   View Profile
                 </Link>

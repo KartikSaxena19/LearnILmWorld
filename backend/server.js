@@ -23,15 +23,18 @@ const app = express();
 //   .map(u => u.trim())
 //   .filter(Boolean);
 
+// console.log("RESEND KEY:", process.env.RESEND_API_KEY);
+
+
 const allowedOrigins = [
   'http://localhost:5173',   // Vite default
   'http://localhost:3000',
   'https://learnilmworld.onrender.com',
   'https://learnilmworld.onrender.com/api',
   'https://www.learnilmworld.com',
-  'https://learn-ilm-world.vercel.app',   // CRA default
-  process.env.FRONTEND_URL,  // your deployed frontend (e.g., https://learnosphere.vercel.app)
-].filter(Boolean); // remove undefined
+  'https://learn-ilm-world.vercel.app',
+  process.env.FRONTEND_URL,  //  deployed frontend (e.g., https://learnosphere.vercel.app)
+].filter(Boolean); // removes undefined
 
 // Middleware - robust CORS using env variable
 app.use(cors({
@@ -72,7 +75,7 @@ app.get('/api/test', (req, res) => {
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  // Handle CORS origin errors gracefully
+  // Handle CORS origin errors
   if (err.message && err.message.startsWith('CORS policy')) {
     return res.status(403).json({ message: err.message });
   }

@@ -758,22 +758,22 @@ const MainPage: React.FC = () => {
             </div>
 
             {/* Min + Max Price Combined */}
-            <div className="p-2 bg-[#2D274B] rounded-xl shadow-sm ">
+            <div className="py-3 px-2 bg-[#2D274B] rounded-xl shadow-sm ">
               <label className="text-base font-bold text-[#dc8d33]">Price Range ($/hr)</label>
 
-              <div className="flex items-center gap-2 mt-1">
+              <div className="flex items-center gap-2 mt-1 text-[#2D274B]">
                 <input
                   type="number"
                   value={filters.minRate}
                   onChange={(e) => setFilters(p => ({ ...p, minRate: e.target.value }))}
-                  className="w-1/2 px-2 py-2 border border-gray-300 text-[#dc8d33] bg-[#CBE56A] rounded-lg text-sm font-semibold"
+                  className="w-1/2 px-2 py-2 border border-gray-300  bg-[#CBE56A] rounded-lg text-sm font-semibold"
                   placeholder="Min"
                 />
                 <input
                   type="number"
                   value={filters.maxRate}
                   onChange={(e) => setFilters(p => ({ ...p, maxRate: e.target.value }))}
-                  className="w-1/2 px-2 py-2 border border-gray-300 text-[#dc8d33] bg-[#CBE56A] rounded-lg text-base font-bold"
+                  className="w-1/2 px-2 py-2 border border-gray-300 bg-[#CBE56A] rounded-lg text-sm font-bold"
                   placeholder="Max"
                 />
               </div>

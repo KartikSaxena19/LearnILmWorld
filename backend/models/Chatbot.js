@@ -7,13 +7,13 @@ const chatbotSchema = new mongoose.Schema({
     unique: true
   },
   userId: {
-    type: mongoose.Schema.Types.Mixed, // <-- can be ObjectId or string for guests
+    type: mongoose.Schema.Types.Mixed,
     ref: 'User'
   },
   userType: {
     type: String,
     enum: ['student', 'trainer', 'admin', 'guest'],
-    required: true
+    default: 'guest'
   },
   language: {
     type: String,
@@ -36,6 +36,9 @@ const chatbotSchema = new mongoose.Schema({
     }
   }],
   userContext: {
+    name: String,
+    phone: String,
+    email: String,
     userRole: String,
     learningGoal: String,
     targetLanguage: String

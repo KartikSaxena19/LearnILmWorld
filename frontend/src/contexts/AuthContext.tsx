@@ -71,7 +71,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   try {
     await axios.post(`${API_BASE_URL}/api/auth/forgot-password`, { email })
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || 'Failed to send reset link')
+    await new Promise(r => setTimeout(r, 1500));
+    await axios.post(`${API_BASE_URL}/api/auth/forgot-password`, { email })
+    // throw new Error(error.response?.data?.message || 'Failed to send reset link')
   }
 }
 
