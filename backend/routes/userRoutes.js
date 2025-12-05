@@ -112,6 +112,18 @@ router.put('/profile', authenticate, async (req, res) => {
     const existingUser = await User.findById(req.user._id);
     if (!existingUser) return res.status(404).json({ message: "User not found" });
 
+    if (updates.secondaryEmail) {
+      const emailInUse = await User.findOne({
+        secondaryEmail: updates.secondaryEmail,
+        _id: { $ne: existingUser._id }
+      });
+      if (emailInUse) {
+        return res.status(400).json({ message: 'This secondary email is already in use' });
+      }
+      existingUser.secondaryEmail = updates.secondaryEmail; // update it safely
+      delete updates.secondaryEmail; // remove from updates to avoid double-assign
+    }
+
     // MERGE, DON'T REPLACE PROFILE
     if (updates.profile) {
       existingUser.profile = {

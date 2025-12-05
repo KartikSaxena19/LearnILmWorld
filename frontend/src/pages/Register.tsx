@@ -1,7 +1,7 @@
 // File: src/pages/Register.tsx
 import React, { useEffect, useState } from 'react'
 //  useMemo,removd from above
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import StepRole from './register/Steps/StepRole'
 import StepBasicInfo from './register/Steps/StepBasicInfo'
@@ -251,10 +251,32 @@ const Register: React.FC = () => {
     <div className="w-full max-w-3xl mx-auto relative z-10">
       {/* Heading */}
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-extrabold text-white drop-shadow-lg tracking-wide">
-          Join LearniLM 🌏 World
+        <h1 className="text-4xl font-extrabold text-gray-50 drop-shadow-lg tracking-wide flex justify-center items-center gap-2 font-[Good Vibes]">
+          
+          {/* Static "Join" part */}
+          <span>Join</span>
+
+          {/* Clickable "LearniLM 🌎 World" */}
+          <Link to="/" className="flex items-center gap-2 text-gray-50 hover:text-[#e0fa84]">
+            {/* LearniLM */}
+            <span>LearniLM</span>
+
+            {/* Animated Globe */}
+            <motion.span
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
+              className="inline-block text-4xl"
+            >
+              🌎
+            </motion.span>
+
+            {/* World */}
+            <span>World</span>
+          </Link>
         </h1>
-        <p className="text-white/80 mt-2 text-lg font-medium">
+
+        {/* Subtitle */}
+        <p className="text-white/80 mt-2 text-lg font-medium text-center">
           Start your Learning Journey Today
         </p>
       </div>

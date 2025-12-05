@@ -5,6 +5,8 @@ import ReactFlagsSelect from "react-flags-select";
 import type { RegisterFormData } from "../types";
 import FormLabel from "../../../components/FormLabel";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+
 type Props = {
   formData: RegisterFormData;
   setFormData: React.Dispatch<React.SetStateAction<RegisterFormData>>;
@@ -18,12 +20,30 @@ const StepBasicInfo: React.FC<Props> = ({
   onNext,
   onBack,
 }) => {
-  const [errors, setErrors] = useState<{ email?: string; country?: string }>(
-    {}
-  );
+  const [errors, setErrors] = useState<{ email?: string; country?: string }>({});
+
+  const [emailStatus, setEmailStatus] = useState<{ message?: string; blocked?: boolean }>({});
 
   const country = formData.location?.split("|")[0] || "";
   const city = formData.location?.split("|")[1] || "";
+
+  const checkEmail = async (email: string) => {
+    if (!email || !/^\S+@\S+\.\S+$/.test(email)) return;
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/auth/check-email`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, role: formData.role }),
+      });
+
+      const data = await res.json();
+      setEmailStatus(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
 
   // Validations
   const validate = () => {
@@ -40,7 +60,11 @@ const StepBasicInfo: React.FC<Props> = ({
   };
 
   const handleNext = () => {
+
     if (!validate()) return;
+
+    if (emailStatus.blocked) return;
+  
     onNext();
   };
 
@@ -75,11 +99,18 @@ const StepBasicInfo: React.FC<Props> = ({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, email: e.target.value }))
               }
+              onBlur={() => checkEmail(formData.email)}
               className={`w-full p-3 border rounded-xl outline-none transition ${
                 errors.email ? "border-red-500" : "focus:ring-2 focus:ring-indigo-300"
               }`}
               placeholder="you@example.com"
             />
+            {/* existing email error */}
+            {emailStatus.message && !errors.email && (
+              <p className="text-xs text-red-500 mt-1">{emailStatus.message}</p>
+            )}
+
+            {/* email validation error */}
             {errors.email && (
               <p className="text-xs text-red-500 mt-1">{errors.email}</p>
             )}
@@ -138,7 +169,7 @@ const StepBasicInfo: React.FC<Props> = ({
             />
 
             <p className="text-xs text-gray-400 mt-1">
-              Adding your city helps us show trainers near your region.
+             Tailor your experience! Knowing your city helps us filter for local accents and regional nuances.
             </p>
           </div>
         </div>

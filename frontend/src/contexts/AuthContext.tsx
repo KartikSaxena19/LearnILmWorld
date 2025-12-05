@@ -8,6 +8,7 @@ export interface User {
   id: string
   name: string
   email: string
+  secondaryEmail?: string;
   role: Role
   profile?: any
   stats?: any

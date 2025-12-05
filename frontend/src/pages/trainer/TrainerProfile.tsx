@@ -2,11 +2,8 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import { useAuth } from '../../contexts/AuthContext'
 import ReactFlagsSelect from "react-flags-select";
-// ----------------------
 //  commented out trainers hourly rate
-// ---------------------
 
-/* ---------- TrainerHome ---------- */
 // const FRONTEND_URL= import.meta.env.VITE_FRONTEND_URL;
 // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
@@ -63,10 +60,11 @@ const TrainerProfile = () => {
   ]
 
 
-  const [formData, setFormData] = useState<{ name: string; email: string; profile: ProfileType; }>
+  const [formData, setFormData] = useState<{ name: string; email: string; secondaryEmail: string;  profile: ProfileType; }>
   ({
     name: user?.name || '',
     email: user?.email || '',
+    secondaryEmail: user?.secondaryEmail || '',
     profile: defaultProfile
   })
   const [loading, setLoading] = useState(false)
@@ -74,6 +72,8 @@ const TrainerProfile = () => {
   const [error, setError] = useState('')
   const [newLanguage, setNewLanguage] = useState('')
   const [newSpecialization, setNewSpecialization] = useState('')
+  const [newHobby, setNewHobby] = useState('')
+
   // const [newStudentAge, setNewStudentAge] = useState('')
   const [newStandard, setNewStandard] = useState("")
   // const [newProfileImage, setNewProfileImage] = useState('')
@@ -321,6 +321,19 @@ const TrainerProfile = () => {
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
                 <input name="email" type="email" value={formData.email} className="input-field bg-gray-50" disabled />
               </div>
+              {/* secondary email */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Secondary Email</label>
+                <input
+                  type="email"
+                  name="secondaryEmail"
+                  value={formData.secondaryEmail}
+                  onChange={handleChange}
+                  className="input-field"
+                  placeholder="Enter secondary email"
+                />
+              </div>
+
               
               {/* Phone Number */}
               <div>
@@ -359,45 +372,6 @@ const TrainerProfile = () => {
               <textarea name="profile.bio" value={formData.profile.bio} onChange={handleChange} className="input-field" rows={4} placeholder="Tell students about yourself..." />
             </div>
           </div>
-
-
-          {/* Resume Upload */}
-          {/* <div className="mt-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Upload Resume (PDF)</label>
-            <input
-              type="file"
-              accept=".pdf,.doc,.docx"
-              onChange={(e) => {
-                const file = e.target.files?.[0]
-                if (!file) return
-                const reader = new FileReader()
-                reader.onload = () => {
-                  const dataUrl = reader.result as string
-                  setFormData(prev => ({
-                    ...prev,
-                    profile: { ...prev.profile, resume: dataUrl }
-                  }))
-                }
-                reader.readAsDataURL(file)
-              }}
-              className="input-field"
-            />
-            {formData.profile.resume && (
-              <div className="mt-2">
-                <a href={formData.profile.resume} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
-                  View Uploaded Resume
-                </a>
-                <button
-                  type="button"
-                  className="ml-2 text-red-600"
-                  onClick={() => setFormData(prev => ({ ...prev, profile: { ...prev.profile, resume: '' } }))}
-                >
-                  Remove
-                </button>
-              </div>
-            )}
-          </div> */}
-
 
           {/* Teaching Info */}
           <div>
@@ -459,6 +433,36 @@ const TrainerProfile = () => {
                 <button type="button" onClick={() => { addToArray('languages', newLanguage); setNewLanguage('') }} className="btn-primary">Add</button>
               </div>
             </div>
+
+            {/* Hobbies */}
+            <div className="mt-6">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Hobbies</label>
+              <ul className="space-y-2 mb-4">
+                {(formData.profile.hobbies || []).map((hobby, idx) => (
+                  <li key={idx} className="flex items-center justify-between bg-gray-100 p-2 rounded">
+                    {hobby}
+                    <button type="button" onClick={() => removeFromArray('hobbies', idx)} className="text-red-600">Remove</button>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex">
+                <input
+                  type="text"
+                  value={newHobby}
+                  onChange={(e) => setNewHobby(e.target.value)}
+                  className="input-field flex-1 mr-2"
+                  placeholder="Add new hobby"
+                />
+                <button
+                  type="button"
+                  onClick={() => { addToArray('hobbies', newHobby); setNewHobby('') }}
+                  className="btn-primary"
+                >
+                  Add
+                </button>
+              </div>
+            </div>
+
 
             {/* Specializations / Subjects */}
             <div className="mt-6">

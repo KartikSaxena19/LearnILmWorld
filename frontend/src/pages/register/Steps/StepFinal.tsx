@@ -1,4 +1,3 @@
-// File: src/pages/register/Steps/StepFinal.tsx
 import React, { useState } from 'react'
 import type { RegisterFormData } from '../types'
 import PhoneInput from 'react-phone-input-2'
@@ -9,7 +8,7 @@ type Props = {
   formData: RegisterFormData
   setFormData: React.Dispatch<React.SetStateAction<RegisterFormData>>
   onBack: () => void
-  onSubmit: () => void
+  onSubmit: () => void       // DO NOT TOUCH THIS
   loading: boolean
 }
 
@@ -24,9 +23,59 @@ const StepFinal: React.FC<Props> = ({
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
 
+  // LOCAL FIELD ERRORS
+  const [errors, setErrors] = useState({
+    name: "",
+    phone: "",
+    password: "",
+    confirmPassword: ""
+  })
+
+  // LOCAL VALIDATION BEFORE CALLING onSubmit()
+  const validateInputs = () => {
+    const newErrors: any = {}
+
+    // NAME VALIDATION
+    if (!formData.name.trim()) {
+      newErrors.name = "Full name is required"
+    } else if (!/^[A-Za-z\s]+$/.test(formData.name.trim())) {
+      newErrors.name = "Name can only contain alphabets and spaces"
+    }
+
+    // PHONE VALIDATION
+    const phoneDigits = (formData.phone || "").replace(/\D/g, "")
+    if (phoneDigits.length < 10) {
+      newErrors.phone = "Please supply a valid phone number"
+    }
+
+    // PASSWORD VALIDATION
+    if (!formData.password) {
+      newErrors.password = "Password is required"
+    } else if (formData.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters long"
+    }
+
+    // CONFIRM PASSWORD VALIDATION
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match"
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+
+  // WRAPPER for real onSubmit()
+  const handleSubmitClick = () => {
+    if (validateInputs()) {
+      // No field errors → call original onSubmit()
+      onSubmit()
+    }
+  }
+
   return (
     <div className="h-full flex flex-col justify-between">
-      <div>
+      <div className="flex-1 overflow-y-auto pb-8">
         <h3 className="text-xl font-bold mb-5">Almost done — Account Details</h3>
 
         <div className="space-y-5">
@@ -43,6 +92,9 @@ const StepFinal: React.FC<Props> = ({
               className="w-full p-3 border rounded-lg bg-white"
               placeholder="Enter your full name"
             />
+            {errors.name && (
+              <p className="text-red-600 text-sm mt-1">{errors.name}</p>
+            )}
           </div>
 
           {/* Phone */}
@@ -67,6 +119,10 @@ const StepFinal: React.FC<Props> = ({
                 borderRadius: '8px 0 0 8px'
               }}
             />
+
+            {errors.phone && (
+              <p className="text-red-600 text-sm mt-1">{errors.phone}</p>
+            )}
           </div>
 
           {/* Password */}
@@ -91,6 +147,9 @@ const StepFinal: React.FC<Props> = ({
                 {showPassword ? 'Hide' : 'Show'}
               </button>
             </div>
+            {errors.password && (
+              <p className="text-red-600 text-sm mt-1">{errors.password}</p>
+            )}
           </div>
 
           {/* Confirm Password */}
@@ -118,6 +177,9 @@ const StepFinal: React.FC<Props> = ({
                 {showConfirm ? 'Hide' : 'Show'}
               </button>
             </div>
+            {errors.confirmPassword && (
+              <p className="text-red-600 text-sm mt-1">{errors.confirmPassword}</p>
+            )}
           </div>
 
         </div>
@@ -133,7 +195,7 @@ const StepFinal: React.FC<Props> = ({
         </button>
 
         <button
-          onClick={onSubmit}
+          onClick={handleSubmitClick}
           disabled={loading}
           className="px-4 py-2 rounded-lg bg-emerald-400 text-black font-semibold disabled:opacity-50"
         >

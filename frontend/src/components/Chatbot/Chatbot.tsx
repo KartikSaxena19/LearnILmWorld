@@ -264,7 +264,7 @@ const Chatbot: React.FC = () => {
             {showForm && (
               <div className="user-form-container">
                 <div className="form-header">
-                  <h4>Get Started with LearnILmWorld</h4>
+                  <h4>Get Started with LearniLM🌎World</h4>
                   <p>Please provide your details to begin</p>
                 </div>
 

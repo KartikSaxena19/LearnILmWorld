@@ -251,6 +251,92 @@ router.post('/register', async (req, res) => {
   }
 });
 
+// Check email status on registration
+router.post('/check-email', async (req, res) => {
+  try {
+    const { email, role } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.json({ exists: false }); // allow new user
+    }
+
+    // If student
+    if (user.role === "student") {
+      return res.json({
+        exists: true,
+        blocked: true,
+        message: "A student account already exists with this email."
+      });
+    }
+
+    // If trainer
+    if (user.role === "trainer") {
+
+      if (user.profile.verificationStatus === "pending") {
+        return res.json({
+          exists: true,
+          blocked: true,
+          message: "Your verification is still pending. Please wait for its Approval."
+        });
+      }
+
+      if (user.profile.verificationStatus === "verified") {
+        return res.json({
+          exists: true,
+          blocked: true,
+          message: "This trainer is already verified and registered."
+        });
+      }
+
+      if (user.profile.verificationStatus === "rejected") {
+
+        const rejectionDate = user.profile.rejectionDate;
+
+        if (!rejectionDate) {
+          return res.json({
+            exists: true,
+            blocked: true,
+            message: "Your previous application was rejected. Please wait 6 months before re-applying."
+          });
+        }
+
+        const now = new Date();
+        const rejectedOn = new Date(rejectionDate);
+        const diffMonths =
+          (now.getFullYear() - rejectedOn.getFullYear()) * 12 +
+          (now.getMonth() - rejectedOn.getMonth());
+
+        if (diffMonths < 6) {
+          return res.json({
+            exists: true,
+            blocked: true,
+            message: `You may re-apply after ${6 - diffMonths} more month(s).`
+          });
+        }
+
+        // If 6 months have passed → allow re-apply
+        return res.json({
+          exists: true,
+          blocked: false,
+          message: "You can re-register since 6 months have passed after your rejection."
+        });
+      }
+    }
+
+    res.json({ exists: true, blocked: true, message: "Account exists already." });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
 // Helper to send email to admin for trainer verification
 const sendTrainerVerificationEmail = async (user, resumeData) => {
   const { profile } = user;
@@ -348,8 +434,6 @@ const sendTrainerVerificationEmail = async (user, resumeData) => {
     attachments,
   });
 };
-
-
 // End of helper
 
 // Login
@@ -381,7 +465,7 @@ router.post('/login', async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ message: 'User does not exist, Sign Up Now!' });
     }
 
     const isMatch = await user.comparePassword(password);
@@ -398,7 +482,7 @@ router.post('/login', async (req, res) => {
       }
       if (user.profile.verificationStatus === 'rejected') {
         return res.status(403).json({
-          message: 'Your account verification was rejected. You may reapply after 6 months from your previous registration.'
+          message: 'Your account verification was rejected. You may re-apply after 6 months from your previous registration.'
         });
       }
     }
@@ -436,8 +520,6 @@ router.get('/me', authenticate, async (req, res) => {
     stats: req.user.stats
   });
 });
-
-
 
 // ---------------- FORGOT PASSWORD ----------------
 router.post('/forgot-password', async (req, res) => {
@@ -499,7 +581,6 @@ router.post('/reset-password/:token', async (req, res) => {
     res.status(400).json({ message: 'Invalid or expired token' });
   }
 });
-
 
 // ---------- VERIFY TRAINER VIA EMAIL LINK ---------------
 router.get('/verify-trainer/:token', async (req, res) => {

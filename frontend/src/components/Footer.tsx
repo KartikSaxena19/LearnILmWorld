@@ -38,7 +38,7 @@ const Footer = () => (
               <a href="#" aria-label="Facebook"><Facebook /></a>
               <a href="#" aria-label="Twitter"><Twitter /></a>
               <a href="#" aria-label="Instagram"><Instagram /></a>
-              <a href="#" aria-label="LinkedIn"><Linkedin /></a>
+              <a href="https://www.linkedin.com/company/learn-ilm-world/?viewAsMember=true"  target="_blank"  rel="noopener noreferrer" aria-label="LinkedIn"><Linkedin /></a>
             </div>
             <div className='Logo'>
               <img src={logo} width={'150px'} />

@@ -731,35 +731,84 @@ export default function LandingPageAlt() {
             Show More Languages
           </motion.button>
 
-          {/* To add in more language just change the below section and handleMorelanguage function */}
           {/* Modal for More Languages */}
           {showMoreLanguages && (
-            <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50">
-              <div className="bg-white rounded-2xl p-8 max-w-md w-full relative shadow-lg">
+            <div
+              className="fixed inset-0 flex items-center justify-center bg-black/60 z-50"
+              onClick={() => setShowMoreLanguages(false)}
+            >
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="
+                  rounded-3xl p-10 max-w-3xl w-[90%] relative 
+                  shadow-2xl
+                  bg-gradient-to-br from-[#ffffff] via-[#f0f6ff] to-[#dceaff]
+                  border border-white/40
+                "
+              >
+                {/* Close Button */}
                 <button
                   onClick={() => setShowMoreLanguages(false)}
-                  className="absolute top-3 right-3 text-gray-600 hover:text-black text-2xl"
+                  className="absolute top-4 right-4 text-[#2D274B] hover:text-black text-2xl"
                 >
                   ✕
                 </button>
-                <h3 className="text-2xl font-bold text-[#2D274B] mb-4">
+
+                {/* Title */}
+                <h3 className="text-3xl font-bold text-[#2D274B] mb-6">
                   Explore More Languages
                 </h3>
-                <ul className="space-y-3 text-left">
-                  {["Sanskrit", "Russian", "Mandarin"].map((lang, i) => (
-                    <li
+
+                {/* Languages Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 mt-6">
+                  {[
+                    { name: "Thai", flag: "th" },
+                    { name: "Bengali", flag: "bd" },
+                    { name: "Sanskrit", flag: "in" },
+                    { name: "Russian", flag: "ru" },
+                    { name: "Mandarin", flag: "cn" },
+                    { name: "Swahili", flag: "ke" },
+                    { name: "Italian", flag: "it" },
+                    { name: "Portuguese", flag: "pt" },
+                    { name: "Korean", flag: "kr" },
+                  ].map((lang, i) => (
+                    <div
                       key={i}
-                      onClick={() => handleMoreLanguageClick(lang)}
-                      className="cursor-pointer text-[#2D274B] font-semibold hover:text-[#dc8d33] transition"
+                      onClick={() => handleMoreLanguageClick(lang.name)}
+                      className="
+                        group cursor-pointer 
+                        h-32 rounded-2xl 
+                        bg-white 
+                        shadow-md hover:shadow-xl 
+                        border border-slate-200
+                        transition-all duration-300 
+                        flex flex-col items-center justify-center
+                        hover:-translate-y-1 hover:scale-[1.05]
+                      "
                     >
-                      • {lang}
-                    </li>
+                      {/* SVG Flag */}
+                      <img
+                        src={`https://flagcdn.com/${lang.flag}.svg`}
+                        alt={lang.name}
+                        className="w-12 h-12 mb-2 rounded-md shadow-sm group-hover:scale-110 transition-transform"
+                      />
+
+                      {/* Name */}
+                      <div
+                        className="
+                          text-[#2D274B] text-lg font-semibold 
+                          text-center group-hover:text-[#dc8d33]
+                          transition-colors
+                        "
+                      >
+                        {lang.name}
+                      </div>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             </div>
           )}
-
         </div>
       </section>
 
@@ -885,28 +934,76 @@ export default function LandingPageAlt() {
 
         {/* Modal for More Hobbies */}
         {showMoreHobbies && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50">
-            <div className="bg-white rounded-2xl p-8 max-w-md w-full relative shadow-lg">
+          <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50" onClick={() => setShowMoreHobbies(false)}>
+
+            <div
+              className="
+                rounded-3xl p-10 max-w-4xl w-[90%] relative 
+                shadow-2xl
+                bg-gradient-to-br from-[#ffffff] via-[#f1fff8] to-[#d8ffe7]
+                border border-white/40
+              " onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
               <button
                 onClick={() => setShowMoreHobbies(false)}
-                className="absolute top-3 right-3 text-gray-600 hover:text-black text-2xl"
+                className="absolute top-4 right-4 text-[#2D274B] hover:text-black text-2xl"
               >
                 ✕
               </button>
-              <h3 className="text-2xl font-bold text-[#2D274B] mb-4">
+
+              {/* Title */}
+              <h3 className="text-3xl font-bold text-[#2D274B] mb-6">
                 Explore More Hobbies
               </h3>
-              <ul className="space-y-3 text-left">
-                {["Yoga", "Calligraphy", "Gardening", "Knitting"].map((hb, i) => (
-                  <li
+
+              {/* Hobbies Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+
+                {[
+                  { name: "Yoga", icon: "🧘‍♀️" },
+                  { name: "Knitting", icon: "🧶" },
+
+                  { name: "Guitar", icon: "🎸" },
+                  { name: "Piano (Theory)", icon: "🎹" },
+                  { name: "Chess", icon: "♟️" },
+                  { name: "Public Speaking", icon: "🎙️" },
+
+                  { name: "Meditation", icon: "🕉️" },
+                  { name: "Creative Writing", icon: "📖" },
+                ].map((hb, i) => (
+                  <div
                     key={i}
-                    onClick={() => handleMoreHobbyClick(hb)}
-                    className="cursor-pointer text-[#2D274B] font-semibold hover:text-[#dc8d33] transition"
+                    onClick={() => handleMoreHobbyClick(hb.name)}
+                    className="
+                      group cursor-pointer 
+                      h-36 rounded-2xl 
+                      bg-white 
+                      shadow-md hover:shadow-xl 
+                      border border-slate-200
+                      transition-all duration-300 
+                      flex flex-col items-center justify-center
+                      hover:-translate-y-1 hover:scale-[1.05]
+                    "
                   >
-                    • {hb}
-                  </li>
+                    <div className="text-4xl mb-2 group-hover:scale-125 transition-transform duration-300">
+                      {hb.icon}
+                    </div>
+
+                    <div
+                      className="
+                        text-[#1C6B4A] text-lg font-semibold 
+                        text-center 
+                        group-hover:text-[#0d4a32]
+                        transition-colors
+                      "
+                    >
+                      {hb.name}
+                    </div>
+                  </div>
                 ))}
-              </ul>
+
+              </div>
             </div>
           </div>
         )}
@@ -1037,36 +1134,77 @@ export default function LandingPageAlt() {
 
         {/* Modal for More Subjects */}
         {showMore && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50">
-            <div className="bg-white rounded-2xl p-8 max-w-md w-full relative shadow-lg">
+          <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50" onClick={() => setShowMore(false)}>
+            
+            <div className="
+              rounded-3xl p-10 max-w-4xl w-[90%] relative 
+              shadow-2xl
+              bg-gradient-to-br from-[#ffffff] via-[#f8f1ff] to-[#e9d8ff]
+              border border-white/40
+            ">
+              
+              {/* Close Button */}
               <button
                 onClick={() => setShowMore(false)}
-                className="absolute top-3 right-3 text-gray-600 hover:text-black text-2xl"
+                className="absolute top-4 right-4 text-[#2D274B] hover:text-black text-2xl"
               >
                 ✕
               </button>
-              <h3 className="text-2xl font-bold text-[#2D274B] mb-4">
+
+              {/* Title */}
+              <h3 className="text-3xl font-bold text-[#2D274B] mb-6">
                 Explore More Subjects
               </h3>
-              <ul className="space-y-3 text-left">
+
+              {/* Subjects Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
                 {[
-                  "Economics",
-                  "Hindi",
-                  "Bengali",
-                  "Psychology",
-                  "Philosophy",
-                  "Environmental Science (EVS)",
-                  "Accounts & Finance",
+                  { name: "Economics", icon: "📊" },
+                  { name: "Hindi", icon: "📝" },
+                  { name: "Bengali", icon: "📚" },
+                  { name: "Psychology", icon: "🧠" },
+                  { name: "Philosophy", icon: "⚖️" },
+                  { name: "Environmental Science", icon: "🌿" },
+                  { name: "Accounts & Finance", icon: "💰" },
                 ].map((subj, i) => (
-                  <li
+                  <div
                     key={i}
-                    onClick={() => handleMoreSubjectClick(subj)}
-                    className="cursor-pointer text-[#2D274B] font-semibold hover:text-[#dc8d33] transition"
+                    onClick={() => handleMoreSubjectClick(subj.name)}
+                    className="
+                      group cursor-pointer 
+                      h-36 rounded-2xl 
+                      bg-white 
+                      shadow-md hover:shadow-xl 
+                      border border-slate-200
+                      transition-all duration-300 
+                      flex flex-col items-center justify-center
+                      hover:-translate-y-1 hover:scale-[1.05]
+                    "
                   >
-                    • {subj}
-                  </li>
+                    {/* Icon */}
+                    <div
+                      className="
+                        text-4xl mb-2 
+                        group-hover:scale-125 
+                        transition-transform duration-300
+                      "
+                    >
+                      {subj.icon}
+                    </div>
+
+                    {/* Label */}
+                    <div
+                      className="
+                        text-[#593C9F] text-lg font-semibold 
+                        text-center group-hover:text-[#2D1B69]
+                        transition-colors
+                      "
+                    >
+                      {subj.name}
+                    </div>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           </div>
         )}
@@ -1261,9 +1399,9 @@ export default function LandingPageAlt() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             viewport={{ once: true }}
-            className="mt-16 text-lg text-center text-[#2D274B] max-w-3xl mx-auto"
+            className="mt-16 text-lg text-center text-white font-bold max-w-3xl mx-auto"
           >
-            Personalized support and guidance ensure every learner’s success at LearniLM 🌎 World.
+            Personalized support and guidance ensure every learner’s success at <br/> LearniLM 🌎 World.
           </motion.p>
         </div>
       </section>
@@ -1300,7 +1438,7 @@ export default function LandingPageAlt() {
           <p className="text-[#2D274B] text-xl font-bold mt-2">Sign up to Claim Your Free Trial Session. Get a Personalized 7-Day Learning Path After Your First Session.</p>
           <div className="mt-6 flex justify-center gap-4">
             <Link to="/main" className="inline-flex items-center gap-3 px-6 py-3 rounded-lg bg-[#CBE56A] text-[#2D274B]">Browse trainers <ChevronRight /></Link>
-            <Link to="/register" className="inline-flex items-center gap-3 px-6 py-3 rounded-lg border bg-[#CBE56A] border-[#CBE56A] text-[#2D274B] hover:bg-[#CBE56A]">Become a trainer</Link>
+            <Link to="/become-trainer" className="inline-flex items-center gap-3 px-6 py-3 rounded-lg border bg-[#CBE56A] border-[#CBE56A] text-[#2D274B] hover:bg-[#CBE56A]">Become a trainer</Link>
           </div>
         </div>
       </section>

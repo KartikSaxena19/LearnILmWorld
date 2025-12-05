@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react'
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Home } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 // , User - removed from above
 import '../theme.css' // ensure theme is imported (or import once in index.tsx)
@@ -106,11 +106,16 @@ const Login: React.FC = () => {
 
    return (
     <div
-      className="min-h-screen flex items-center justify-center py-12 bg-[#CBE56A]"
-      // style={{
-      //   background: 'linear-gradient(180deg, #F5F3FF, #EAEFFE)',
-      // }}
-    >
+      className="min-h-screen flex items-center justify-center py-12 bg-[#CBE56A]">
+      {/* Home Icon Button */}
+      <Link
+  to="/"
+  className="absolute top-6 right-6 p-2 rounded-lg bg-white/20 backdrop-blur-md hover:bg-white/30 transition flex items-center justify-center"
+  aria-label="Go to Home"
+>
+  <Home className="h-6 w-6 text-[#2D274B] hover:text-[#dc8d33] transition-colors duration-300" />
+</Link>
+
       {/* Decorative orbs */}
       <div className="fixed inset-0 pointer-events-none">
         <div
@@ -251,14 +256,6 @@ const Login: React.FC = () => {
                 Sign up here
               </Link>
             </p>
-            <div className="mt-2">
-              <Link
-                to="/"
-                className="text-base font-semibold text-[#4f4382] hover:underline hover:text-[#2D274B] transition-colors duration-300"
-              >
-                ← Go back to Home
-              </Link>
-            </div>
           </div>
         </div>
       </div>

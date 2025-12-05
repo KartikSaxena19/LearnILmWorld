@@ -61,8 +61,6 @@ interface FiltersState {
   hobby?: string;
 }
 
-
-
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 const MainPage: React.FC = () => {
@@ -633,8 +631,8 @@ if (filters.hobby && filters.hobby.trim() !== '') {
 
             {/* Language Filter */}
             {learningType === "language" && (
-            <div className="relative p-3  rounded-xl shadow-sm ">
-              <label className="text-base font-bold text-[#2D274B]">What's Next?</label>
+            <div className="relative p-3  rounded-xl shadow-sm bg-[#6b48af] ">
+              <label className="text-base font-bold text-white">What's Next?</label>
 
               <button
                 onClick={() => setShowFilters((prev) => ({ ...prev, language: !prev.language }))}
@@ -698,8 +696,8 @@ if (filters.hobby && filters.hobby.trim() !== '') {
 
             {/* Specialization / Subjects Dropdown */}
             {learningType === "subject" && (
-            <div className="relative p-3 rounded-xl shadow-sm">
-              <label className="text-base font-bold text-[#2D274B]">Area of Mastery</label>
+            <div className="relative p-3 rounded-xl shadow-sm bg-[#6b48af]">
+              <label className="text-base font-bold text-white">Area of Mastery</label>
 
               <button
                 onClick={() => setShowFilters((prev) => ({ ...prev, subject: !prev.subject }))}
@@ -746,8 +744,8 @@ if (filters.hobby && filters.hobby.trim() !== '') {
 
 
             {/* Experience */}
-            <div className="p-3 rounded-xl shadow-sm  ">
-              <label className="text-base font-semibold text-[#2D274B]">Experience (yrs)</label>
+            <div className="p-3 rounded-xl shadow-sm bg-[#6b48af] ">
+              <label className="text-base font-semibold text-white">Experience (yrs)</label>
               {/* <input
                 type="number"
                 value={filters.experience}
@@ -767,8 +765,8 @@ if (filters.hobby && filters.hobby.trim() !== '') {
             </div>
 
             {/* Rating */}
-            <div className="p-3  rounded-xl shadow-sm ">
-              <label className="text-base font-semibold text-[#2D274B]">Rating</label>
+            <div className="p-3  rounded-xl shadow-sm bg-[#6b48af] ">
+              <label className="text-base font-semibold text-white">Rating</label>
               <select
                 value={filters.rating}
                 onChange={e => setFilters(p => ({ ...p, rating: e.target.value }))}
@@ -782,8 +780,8 @@ if (filters.hobby && filters.hobby.trim() !== '') {
             </div>
 
             {/* Sort By */}
-            <div className="p-3 rounded-xl shadow-sm ">
-              <label className="text-base font-bold text-[#2D274B]">Sort By</label>
+            <div className="p-3 rounded-xl shadow-sm bg-[#6b48af]">
+              <label className="text-base font-bold text-white">Sort By</label>
               <select
                 value={filters.sortBy}
                 onChange={e => setFilters(p => ({ ...p, sortBy: e.target.value }))}
@@ -797,30 +795,30 @@ if (filters.hobby && filters.hobby.trim() !== '') {
             </div>
 
             {/* Min + Max Price Combined */}
-            <div className="py-3 px-2 rounded-xl shadow-sm ">
-              <label className="text-base font-bold text-[#2D274B]">Price Range ($/hr)</label>
+            <div className="py-3 px-2 rounded-xl shadow-sm bg-[#6b48af] ">
+              <label className="text-base font-bold text-white">Price Range ($/hr)</label>
 
               <div className="flex items-center gap-2 mt-1 text-[#2D274B]">
                 <input
                   type="number"
                   value={filters.minRate}
                   onChange={(e) => setFilters(p => ({ ...p, minRate: e.target.value }))}
-                  className="w-1/2 px-2 py-2 border border-gray-300  bg-[#CBE56A] rounded-lg text-sm font-semibold"
+                  className="w-1/2 px-2 py-2 border border-gray-300  bg-[#CBE56A] rounded-lg text-sm text-[#2D274B] font-semibold"
                   placeholder="Min"
                 />
                 <input
                   type="number"
                   value={filters.maxRate}
                   onChange={(e) => setFilters(p => ({ ...p, maxRate: e.target.value }))}
-                  className="w-1/2 px-2 py-2 border border-gray-300 bg-[#CBE56A] rounded-lg text-sm font-bold"
+                  className="w-1/2 px-2 py-2 border border-gray-300 bg-[#CBE56A] rounded-lg text-sm text-[#2D274B] font-bold"
                   placeholder="Max"
                 />
               </div>
             </div>
 
             {/* Nationality Filter */}
-            <div className="relative p-3  rounded-xl shadow-sm">
-              <label className="text-base font-bold text-[#2D274B]">Nationality</label>
+            <div className="relative p-3  rounded-xl shadow-sm bg-[#6b48af]">
+              <label className="text-base font-bold text-white">Nationality</label>
 
               <button
                 onClick={() =>
