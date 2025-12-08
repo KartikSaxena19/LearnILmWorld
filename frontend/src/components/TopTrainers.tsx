@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 // import axios from "axios";
 import { Link } from "react-router-dom";
 import trainer_profile from "../assets/trainer_profile.png";
+import spanish from "../assets/Spanish_Trainer.png";
+import german from "../assets/German_Trainer.jpeg";
+import english from "../assets/English_Trainer.png";
 // import Marquee from "./Marquee";
 
 // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
@@ -122,11 +125,11 @@ export default function TopTrainers(): JSX.Element {
 
       {
         _id: "68ef33d0cad95b62472f382a",
-        name: "Trainer 2",
+        name: "Shannet",
         role: "trainer",
         profile: {
-          imageUrl: "",
-          languages: ["English", "Hindi", "Arabic"],
+          imageUrl: spanish,
+          languages: ["Spanish"],
           subjects: [],
           experience: 8,
         },
@@ -134,12 +137,12 @@ export default function TopTrainers(): JSX.Element {
       },
 
       {
-        _id: "690dc8cb64cc3e1c19580f24",
-        name: "Alfa Trainer",
+        _id: "691c5f3ca0cce9bf08c670da",
+        name: "SINQOBILE MAZIBUKO",
         role: "trainer",
         profile: {
-          imageUrl: "",
-          languages: ["English", "Japanese", "Hindi"],
+          imageUrl: english,
+          languages: ["English"],
           subjects: [],
           experience: 5,
         },
@@ -148,13 +151,13 @@ export default function TopTrainers(): JSX.Element {
 
       {
         _id: "691c58dba0cce9bf08c670c0",
-        name: "German Trainer",
+        name: "Esraa Mohamed",
         role: "trainer",
         profile: {
-          imageUrl: "",
-          languages: ["German", "English", "Russian"],
+          imageUrl: german,
+          languages: ["German"],
           subjects: [],
-          experience: 4,
+          experience: 10,
         },
         pickRole: "language",
       },
@@ -164,8 +167,8 @@ export default function TopTrainers(): JSX.Element {
       // -------------------------
 
       {
-        _id: "691c5f3ca0cce9bf08c670da",
-        name: "German Trainer 2",
+        _id: "690dc8cb64cc3e1c19580f24",
+        name: "Alfa",
         role: "trainer",
         profile: {
           imageUrl: "",

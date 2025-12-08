@@ -64,7 +64,7 @@ const StudentHome: React.FC = () => {
   }
 
   return (
-    <div className="space-y-8 max-w-[1200px] mx-auto bg-[#dc8d33] p-6 rounded-2xl">
+    <div className="space-y-8 max-w-[1200px] mx-auto p-6 rounded-2xl">
       {/* Welcome Section ( Shiny) */}
       <div className="rounded-2xl p-6 bg-gradient-to-r from-[#f97316] to-[#9787F3] shadow-2xl text-white">
         <div className="flex items-center gap-3 mb-3">
