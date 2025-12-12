@@ -55,8 +55,6 @@ const Register: React.FC = () => {
   const steps = formData.role === "trainer"
   ? ['role', 'basic', 'trainerTeach', 'trainerDocs', 'trainerDetails', 'final'] as const
   : ['role', 'basic', 'learningType', 'details', 'final'] as const;
-
-
   
   type StepKey = typeof steps[number]
 
@@ -213,6 +211,8 @@ const Register: React.FC = () => {
       }
 
       const result = await register(payload)
+      console.log("FINAL PAYLOAD BEING SENT →", payload);
+
 
       if (result?.success) {
         navigate(formData.role === 'student' ? '/student' : '/login')
@@ -224,7 +224,6 @@ const Register: React.FC = () => {
     }
     setLoading(false)
   }
-
 
   const containerVariants = {
     enter: (direction: number) => ({ x: direction > 0 ? 300 : -300, opacity: 0 }),

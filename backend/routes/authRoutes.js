@@ -3,236 +3,220 @@ import { sendEmail } from '../utils/sendEmail.js';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import { authenticate } from '../middleware/auth.js';
+import axios from "axios";
+
+const isValidLink = async (url) => {
+  try {
+    const res = await axios.head(url, { timeout: 5000 });
+    return res.status >= 200 && res.status < 400;
+  } catch (err) {
+    return false;
+  }
+};
+
 
 const router = express.Router();
 
 // Register
 router.post('/register', async (req, res) => {
   try {
-    const {
-      name,
-      email,
-      password,
-      role,
-      profile: {
-        education,
-        teachingExperienceDetails,
-        certifications,
-        dob,
-        bio,
-        resume,
-        phone,
-        nationalityCode,
-      } = {}
-    } = req.body;
-
-    // CountDown for Re registration
-    const COOLDOWN_MS = 2 * 60 * 1000; // 2 mins for testing, later 6 months ~ 6*30*24*60*60*1000
-
-    let existingUser = await User.findOne({ email });
-
-    if (existingUser) {
-      // Trainer re-registration logic
-      if (
-        existingUser.role === 'trainer' &&
-        existingUser.profile.verificationStatus === 'rejected'
-      ) {
-        const now = new Date();
-        const rejectionTime = existingUser.profile.rejectionDate || now;
-        if (now - rejectionTime < COOLDOWN_MS) {
-          return res.status(400).json({
-            message:
-              'You can re-register only after the cooldown period. Please wait a few minutes for testing.',
-          });
-        }
-
-        // Reset trainer data for re-registration (preserve other fields unless provided)
-        existingUser.password = password;
-
-        // Basic profile fields
-        existingUser.profile.education = education || req.body.profile?.education || existingUser.profile.education || '';
-        existingUser.profile.teachingExperienceDetails =
-          teachingExperienceDetails || req.body.profile?.teachingExperienceDetails || existingUser.profile.teachingExperienceDetails || '';
-
-        // Certifications — normalize same as new registration
-        const incomingCerts = certifications || req.body.profile?.certifications || [];
-        existingUser.profile.certifications = Array.isArray(incomingCerts)
-          ? incomingCerts.map(cert => ({
-            ...cert,
-            year: cert.issuedDate ? new Date(cert.issuedDate).getFullYear() : cert.year || null,
-            certificateImage: typeof cert.certificateImage === 'string'
-              ? cert.certificateImage
-              : '',
-          }))
-          : [];
-
-        // Phone, dob, bio
-        existingUser.profile.phone = phone || req.body.profile?.phone || existingUser.profile.phone || '';
-        existingUser.profile.dob = req.body.profile?.dob || dob || existingUser.profile.dob || null;
-        existingUser.profile.bio = req.body.profile?.bio || bio || existingUser.profile.bio || '';
-
-        // Languages (accept array or CSV string)
-        const incomingLanguages = req.body.profile?.languages || req.body.languages || null;
-        existingUser.profile.languages = Array.isArray(incomingLanguages)
-          ? incomingLanguages
-          : typeof incomingLanguages === 'string'
-            ? incomingLanguages.split(',').map(l => l.trim()).filter(Boolean)
-            : existingUser.profile.languages || [];
-
-        // Specializations / subjects (normalize to array)
-        const incomingSubjects = req.body.profile?.subjects || req.body.subjects || null;
-        existingUser.profile.specializations = Array.isArray(incomingSubjects)
-          ? incomingSubjects
-          : typeof incomingSubjects === 'string'
-            ? incomingSubjects.split(',').map(s => s.trim()).filter(Boolean)
-            : existingUser.profile.specializations || [];
-
-        // Standards (accept array or single string)
-        const incomingStandards = req.body.profile?.standards ?? req.body.standards ?? null;
-        existingUser.profile.standards = Array.isArray(incomingStandards)
-          ? incomingStandards
-          : incomingStandards ? [incomingStandards] : existingUser.profile.standards || [];
-
-        // Optional: nationalityCode (ISO2 lowercase) if you add it to frontend
-        existingUser.profile.nationalityCode = req.body.profile?.nationalityCode
-          || req.body.nationalityCode
-          || existingUser.profile.nationalityCode || '';
-
-        // Mark pending & clear rejection time
-        existingUser.profile.verificationStatus = 'pending';
-        existingUser.profile.rejectionDate = null;
-
-        await existingUser.save();
-        sendTrainerVerificationEmail(existingUser, resume);
-        return res.status(200).json({
-          message: 'You have re-registered successfully. Awaiting verification.',
-          user: existingUser,
-        });
-      } else {
-        return res.status(400).json({ message: 'User already exists' });
+    // --- Helper utilities ---
+    const normalizeArray = (value) => {
+      if (value == null) return [];
+      if (Array.isArray(value)) return value;
+      if (typeof value === 'string') {
+        return value
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
       }
-    }
-
-    // For new User Registration
-    const userData = {
-      name,
-      email,
-      password,
-      role,
-      profile: {}
+      return [value];
     };
 
-    //  Use extracted or nested values safely
-    // const edu = education || req.body.profile?.education || '';
-    // const exp =
-    //   teachingExperienceDetails || req.body.profile?.teachingExperienceDetails || '';
-    // const certs = certifications || req.body.profile?.certifications || [];
+    const normalizeCerts = (certs) => {
+      if (!certs) return [];
+      const arr = Array.isArray(certs) ? certs : [certs];
+      return arr.map((c) => ({
+        name: String(c?.name || c || ''),
+        issuer: c?.issuer || '',
+        year: c?.year ? Number(c.year) : (c?.issuedDate ? new Date(c.issuedDate).getFullYear() : null),
+        issuedDate: c?.issuedDate || null,
+        certificateLink: c?.certificateLink || '',
+        certificateImage: typeof c?.certificateImage === 'string' ? c.certificateImage : '',
+      }));
+    };
 
-    // Prevent malicious admin creation
+    // prints the body for debugging
+    const cleanBody = JSON.parse(JSON.stringify(req.body || {}));
+    if (cleanBody.profile && cleanBody.profile.resume) {
+      delete cleanBody.profile.resume;
+    }
+    // console.log('REGISTER API RECEIVED →', JSON.stringify(cleanBody, null, 2));
+
+    // ---logic starts
+
+    // Destructure top-level fields
+    const { name, email, password, role } = req.body || {};
+
+    // Safe-get profile object
+    const incomingProfile = req.body?.profile || {};
+
+    // Normalize all expected profile fields (we accept multiple aliases)
+    const education = incomingProfile.education || incomingProfile.educationLevel || '';
+    const teachingExperienceDetails = incomingProfile.teachingExperienceDetailsDescription
+      || incomingProfile.teachingExperienceDetails
+      || incomingProfile.teachingDetails
+      || '';
+    // Experience number: prefer numeric 'experience', or try parse teachingExperienceDetails if numeric string
+    const experienceRaw = incomingProfile.experience ?? incomingProfile.yearsOfExperience ?? incomingProfile.teachingExperience;
+    const experience = Number.isFinite(Number(experienceRaw)) ? parseInt(String(experienceRaw), 10) : 0;
+
+    const certificationsRaw = incomingProfile.certifications || incomingProfile.certs || [];
+    const certifications = normalizeCerts(certificationsRaw);
+
+    const dob = incomingProfile.dob || null;
+    const bio = incomingProfile.bio || '';
+    const resume = incomingProfile.resume || ''; // keep for email attach only, don't save to DB
+    const phone = incomingProfile.phone || '';
+    const nationalityCode = incomingProfile.nationalityCode || incomingProfile.countryCode || incomingProfile.country || '';
+    const location = incomingProfile.location || incomingProfile.city || '';
+    const hobbies = normalizeArray(incomingProfile.hobbies || incomingProfile.hobby || incomingProfile.interests);
+    const languages = normalizeArray(incomingProfile.languages || incomingProfile.langs || incomingProfile.language);
+    const subjects = normalizeArray(incomingProfile.subjects || incomingProfile.specializations || incomingProfile.teachingSubjects);
+    const standards = normalizeArray(incomingProfile.standards || incomingProfile.gradeLevels || incomingProfile.levels);
+
+    // Security: validate role
     const allowedRoles = ['student', 'trainer'];
     if (!allowedRoles.includes(role)) {
       return res.status(403).json({ message: 'Invalid role' });
     }
 
-    // If trainer, attach verification-related data
+    // Cooldown for re-registration (trainer)
+    const COOLDOWN_MS = 2 * 60 * 1000;
+    // testing 2 minutes, change to 6 months in prod as needed
+
+    // Check if user already exists
+    let existingUser = await User.findOne({ email });
+
+    // -------- Existing user flow
+    if (existingUser) {
+      // Trainer re-registration (only allowed when previous status was 'rejected')
+      if (existingUser.role === 'trainer' && existingUser.profile?.verificationStatus === 'rejected') {
+        const now = new Date();
+        const rejectionTime = existingUser.profile.rejectionDate ? new Date(existingUser.profile.rejectionDate) : now;
+        if (now - rejectionTime < COOLDOWN_MS) {
+          return res.status(400).json({
+            message: 'You can re-register only after the cooldown period. Please wait a few minutes for testing.',
+          });
+        }
+
+        // Update password
+        existingUser.password = password;
+
+        // Update trainer profile fields (preserve old values if new ones not provided)
+        existingUser.profile.education = education || incomingProfile.education || existingUser.profile.education || '';
+        existingUser.profile.teachingExperienceDetails =
+          teachingExperienceDetails || incomingProfile.teachingExperienceDetails || existingUser.profile.teachingExperienceDetails || '';
+        existingUser.profile.experience = Number.isFinite(experience) ? experience : (existingUser.profile.experience || 0);
+
+        // Certifications
+        existingUser.profile.certifications = certifications.length ? certifications : (existingUser.profile.certifications || []);
+
+        // Phone, dob, bio
+        existingUser.profile.phone = phone || incomingProfile.phone || existingUser.profile.phone || '';
+        existingUser.profile.dob = dob || incomingProfile.dob || existingUser.profile.dob || null;
+        existingUser.profile.bio = bio || incomingProfile.bio || existingUser.profile.bio || '';
+
+        // Languages / specializations / standards / hobbies / location / nationalityCode
+        existingUser.profile.languages = languages.length ? languages : (existingUser.profile.languages || []);
+        existingUser.profile.specializations = subjects.length ? subjects : (existingUser.profile.specializations || []);
+        existingUser.profile.standards = standards.length ? standards : (existingUser.profile.standards || []);
+        existingUser.profile.hobbies = hobbies.length ? hobbies : (existingUser.profile.hobbies || []);
+        existingUser.profile.location = location || incomingProfile.location || existingUser.profile.location || '';
+        existingUser.profile.nationalityCode = nationalityCode || incomingProfile.nationalityCode || existingUser.profile.nationalityCode || '';
+
+        // Mark pending & clear rejection date
+        existingUser.profile.verificationStatus = 'pending';
+        existingUser.profile.rejectionDate = null;
+
+        await existingUser.save();
+
+        // Send verification email (attach resume if provided) — still pass resume string to email helper
+        sendTrainerVerificationEmail(existingUser, resume)
+          .then(() => console.log('✅ Verification email sent'))
+          .catch(err => console.error('❌ Email sending failed:', err));
+
+        return res.status(200).json({
+          message: 'You have re-registered successfully. Awaiting verification.',
+          user: existingUser,
+        });
+      }
+
+      // Otherwise user exists and can't re-register
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    // ----------------- New user registration -----------------
+    // Build profile payload consistently for both trainer & student
+    const profilePayload = {
+      // common fields
+      phone,
+      location,
+      nationalityCode,
+      bio,
+    };
+
     if (role === 'trainer') {
-      const {
-        education,
-        teachingExperienceDetails,
-        certifications,
-        dob,
-        bio,
-        resume,
-        phone,
-        subjects,
-        languages,
-        standards,
-        nationalityCode,
-      } = req.body.profile || {};
+      profilePayload.education = education || '';
+      profilePayload.teachingExperienceDetails = teachingExperienceDetails || '';
+      profilePayload.experience = Number.isFinite(experience) ? experience : 0;
+      profilePayload.certifications = certifications;
+      profilePayload.dob = dob || null;
+      profilePayload.verificationStatus = 'pending';
 
-      userData.profile = {
-        education: education || '',
+      profilePayload.hobbies = hobbies;
+      profilePayload.languages = languages;
+      profilePayload.specializations = subjects;
+      profilePayload.standards = standards;
 
-        teachingExperienceDetails:
-          req.body.profile?.teachingExperienceDetailsDescription || teachingExperienceDetails || '',
-        experience: parseInt(req.body.profile?.experience) || parseInt(teachingExperienceDetails) || 0,
-
-        certifications: Array.isArray(certifications)
-          ? certifications.map(cert => ({
-            ...cert,
-            year: cert.issuedDate ? new Date(cert.issuedDate).getFullYear() : null,
-          }))
-          : [],
-        dob: dob || null,
-        bio: bio || '',
-        phone: phone || '',
-        verificationStatus: 'pending',
-
-        nationalityCode: nationalityCode || req.body.profile?.nationalityCode || '',
-
-        languages: Array.isArray(languages)
-          ? languages
-          : typeof languages === 'string'
-            ? languages.split(',').map(l => l.trim()).filter(Boolean)
-            : [],
-        specializations: Array.isArray(subjects)
-          ? subjects
-          : typeof subjects === 'string'
-            ? subjects.split(',').map(s => s.trim()).filter(Boolean)
-            : [],
-        standards: Array.isArray(standards)
-          ? standards : standards ? [standards] : [],
-      };
+      // Note: we DO NOT save resume to DB (we only pass it to email for verification)
     } else if (role === 'student') {
-      userData.profile = {
-        phone: phone || '',
-        learningType: req.body.profile?.learningType || '',
-        learningValues: Array.isArray(req.body.profile?.learningValues)
-          ? req.body.profile.learningValues
-          : req.body.profile?.learningValues
-            ? [req.body.profile.learningValues]
-            : [],
-        standards: Array.isArray(req.body.profile?.standards)
-          ? req.body.profile.standards
-          : req.body.profile?.standards
-            ? [req.body.profile.standards]
-            : [],
-        specializations: Array.isArray(req.body.profile?.subjects)
-          ? req.body.profile.subjects
-          : req.body.profile?.subjects
-            ? [req.body.profile.subjects]
-            : [],
-      };
+      profilePayload.phone = phone || '';
+      profilePayload.learningType = incomingProfile.learningType || '';
+      profilePayload.learningValues = Array.isArray(incomingProfile.learningValues)
+        ? incomingProfile.learningValues
+        : incomingProfile.learningValues
+          ? normalizeArray(incomingProfile.learningValues)
+          : [];
+      profilePayload.standards = standards;
+      // stores student selected subjects under 'specializations' 
+      profilePayload.specializations = subjects;
     }
 
-    if (userData.profile?.certifications?.length) {
-      userData.profile.certifications = userData.profile.certifications.map(cert => ({
-        ...cert,
-        certificateImage:
-          typeof cert.certificateImage === 'string'
-            ? cert.certificateImage
-            : '',
-      }));
-    }
+    // Build final user object
+    const userData = {
+      name,
+      email,
+      password,
+      role,
+      profile: profilePayload,
+    };
 
+    // Save user
     const user = new User(userData);
     await user.save();
 
+    // If trainer -> send verification email (non-blocking)
     if (role === 'trainer') {
-      // Send verification email with resume attached, but don’t store resume
-      // and Send email asynchronously (non-blocking)
       sendTrainerVerificationEmail(user, resume)
         .then(() => console.log('✅ Verification email sent'))
         .catch(err => console.error('❌ Email sending failed:', err));
     }
 
-    // JWT token for immediate use
-    const token = jwt.sign(
-      { userId: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN }
-    );
+    // Issue JWT token (unchanged)
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
 
+    // Respond with created user info (profile returned as saved)
     res.status(201).json({
       message: role === 'trainer'
         ? 'Trainer registered successfully. Awaiting verification.'
@@ -243,11 +227,12 @@ router.post('/register', async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        profile: user.profile
+        profile: user.profile,
       }
     });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error('REGISTER ERROR:', error);
+    res.status(400).json({ message: error?.message || 'Registration error' });
   }
 });
 
@@ -336,36 +321,50 @@ router.post('/check-email', async (req, res) => {
   }
 });
 
-
 // Helper to send email to admin for trainer verification
 const sendTrainerVerificationEmail = async (user, resumeData) => {
   const { profile } = user;
 
-  // teachingValues snippet (use exactly as instructed)
-  const teachingValues =
-    (profile.specializations && profile.specializations.length)
-      ? profile.specializations
-      : profile.languages && profile.languages.length
-        ? profile.languages
-        : profile.hobbies && profile.hobbies.length
-          ? profile.hobbies
-          : ['N/A'];
+  // Determine teaching type and values
+  let teachingType = 'N/A';
+  let teachingValues = ['N/A'];
 
-  // Build certification list
-  const certList = (profile.certifications || [])
-    .map(
-      (c, i) => `
-      <div style="margin-bottom:10px;">
+  if (profile.specializations?.length) {
+    teachingType = 'Subjects';
+    teachingValues = profile.specializations;
+  } else if (profile.languages?.length) {
+    teachingType = 'Languages';
+    teachingValues = profile.languages;
+  } else if (profile.hobbies?.length) {
+    teachingType = 'Hobbies';
+    teachingValues = profile.hobbies;
+  }
+
+  // Certifications List (HTML)
+  const certList =
+    profile.certifications && profile.certifications.length
+      ? profile.certifications
+        .map(
+          (c, i) => `
+      <div style="padding:8px; border-left:3px solid #4f46e5; background:#f8f8ff; margin-bottom:12px;">
         <b>${i + 1}. ${c.name || 'N/A'}</b><br>
         <b>Issuer:</b> ${c.issuer || 'N/A'}<br>
-        <b>Issued Date:</b> ${c.issuedDate ? new Date(c.issuedDate).toLocaleDateString() : 'N/A'}<br>
-        <b>Certificate Link:</b> <a href="${c.certificateLink || '#'}">${c.certificateLink || 'No link'}</a>
+        <b>Issued:</b> ${c.issuedDate ? new Date(c.issuedDate).toLocaleDateString() : 'N/A'
+            }<br>
+        <b>Year:</b> ${c.year || 'N/A'}<br>
+        <b>Certificate Link (optional):</b> ${c.certificateLink
+              ? isValid
+                ? `<a href="${c.certificateLink}" target="_blank">View</a>`
+                : `<span style="color:red;">Invalid Link</span>`
+              : 'None'
+            }
       </div>
     `
-    )
-    .join('') || '<p>No certificates provided</p>';
+        )
+        .join('')
+      : `<p>No certifications provided.</p>`;
 
-  // Approve/Reject links
+  // Approve / Reject Links
   const verifyToken = jwt.sign({ trainerId: user._id }, process.env.JWT_SECRET, {
     expiresIn: '7d',
   });
@@ -373,32 +372,47 @@ const sendTrainerVerificationEmail = async (user, resumeData) => {
   const approveLink = `${process.env.FRONTEND_URL}/api/auth/verify-trainer/${verifyToken}?action=approve`;
   const rejectLink = `${process.env.FRONTEND_URL}/api/auth/verify-trainer/${verifyToken}?action=reject`;
 
+  // FINAL BODY
   const htmlBody = `
-    <h2>Trainer Registration - Verification Required</h2>
+    <h2 style="color:#4f46e5;">Trainer Registration - Verification Required</h2>
 
     <p><b>Name:</b> ${user.name}</p>
     <p><b>Email:</b> ${user.email}</p>
     <p><b>Phone:</b> ${profile.phone || 'N/A'}</p>
+    <p><b>Location:</b> ${profile.location || 'N/A'}</p>
+    <p><b>Nationality:</b> ${profile.nationalityCode || 'N/A'}</p>
 
     <hr>
 
     <h3>Trainer Details</h3>
     <p><b>Highest Qualification:</b> ${profile.education || 'N/A'}</p>
+    <p><b>Experience (Years):</b> ${profile.experience || 0}</p>
     <p><b>Bio:</b> ${profile.bio || 'N/A'}</p>
 
-    <p><b>Teaching Type:</b> ${profile.specializations?.length ? 'Subjects' :
-      profile.languages?.length ? 'Languages' :
-        profile.hobbies?.length ? 'Hobbies' : 'N/A'
-    }</p>
-
+    <p><b>Teaching Type:</b> ${teachingType}</p>
     <p><b>Teaching Values:</b> ${teachingValues.join(', ')}</p>
 
-    <p><b>Experience (Years):</b> ${profile.experience || 0}</p>
+    ${profile.languages?.length
+      ? `<p><b>Languages:</b> ${profile.languages.join(', ')}</p>`
+      : ''
+    }
 
-    <p><b>Standards:</b> ${Array.isArray(profile.standards) && profile.standards.length
-      ? profile.standards.join(', ')
-      : 'N/A'
-    }</p>
+    ${profile.hobbies?.length
+      ? `<p><b>Hobbies:</b> ${profile.hobbies.join(', ')}</p>`
+      : ''
+    }
+
+    ${profile.specializations?.length
+      ? `<p><b>Subjects:</b> ${profile.specializations.join(', ')}</p>`
+      : ''
+    }
+
+    ${profile.specializations?.length
+      ? `<p><b>Standards:</b> ${profile.standards?.length ? profile.standards.join(', ') : 'None'
+      }</p>`
+      : ''
+    }
+
 
     <p><b>Date of Birth:</b> ${profile.dob ? new Date(profile.dob).toLocaleDateString() : 'N/A'
     }</p>
@@ -410,23 +424,42 @@ const sendTrainerVerificationEmail = async (user, resumeData) => {
 
     <hr>
 
+    <h3>Verification Controls</h3>
     <p>Click below to verify or reject this trainer:</p>
-    <a href="${approveLink}" style="color:green;">✅ Approve Trainer</a><br>
-    <a href="${rejectLink}" style="color:red;">❌ Reject Trainer</a>
+    <p>
+      <a href="${approveLink}" style="padding:10px 15px; background:#22c55e; color:white; text-decoration:none; border-radius:6px;">Approve</a>
+    </p>
+    <p>
+      <a href="${rejectLink}" style="padding:10px 15px; background:#ef4444; color:white; text-decoration:none; border-radius:6px;">Reject</a>
+    </p>
   `;
 
-  // Attachments (unchanged)
+  // Attach Resume 
   const attachments = [];
   if (resumeData && typeof resumeData === 'string' && resumeData.startsWith('data:')) {
     const base64Data = resumeData.split(';base64,').pop();
     attachments.push({
       filename: 'resume.pdf',
       content: base64Data,
-      encoding: 'base64'
+      encoding: 'base64',
     });
   }
 
-  // Send email
+  // Certifications for attachments
+  if (profile.certifications?.length) {
+    for (const cert of profile.certifications) {
+      const file = cert.certificateFile || cert.certificateImage;
+
+      if (file && file.startsWith('data:')) {
+        attachments.push({
+          filename: `${cert.name || 'certificate'}.png`,
+          content: file.split(';base64,').pop(),
+          encoding: 'base64',
+        });
+      }
+    }
+  }
+  // Send Email
   await sendEmail({
     to: process.env.ADMIN_VERIFICATION_EMAIL,
     subject: `Trainer Verification Required - ${user.name}`,

@@ -26,7 +26,7 @@ const LANGUAGE_OPTIONS = [
 ];
 
 // Trainer Hobbies (Professional Expertise Labels)
-export const HOBBY_OPTIONS = [
+const HOBBY_OPTIONS = [
   { value: "Drawing", label: "Visual Arts / Drawing Instruction" },
   { value: "Dancing", label: "Dance Instruction" },
   { value: "Singing", label: "Vocal Coaching / Singing Lessons" },
@@ -201,36 +201,10 @@ export default function StepTrainerTeach({
   const [customFrom, setCustomFrom] = useState("");
   const [customTo, setCustomTo] = useState("");
 
-  useEffect(() => {
-    setFormData((prev: any) => {
-      const updated: any = {
-        ...prev,
-        teachingType,
-        teachingSubjects: subjects,
-        teachingLanguages: languages,
-        teachingHobbies: hobbies,
-        teachingStandards: standards,
-      };
+  // Control teachingType change only if fields are cleared
+  const [pendingTeachingType, setPendingTeachingType] = useState(teachingType);
 
-      // Map to backend-expected fields
-      if (teachingType === "subjects") {
-        updated.subjects = subjects;
-      } 
-      else if (teachingType === "languages") {
-        updated.languages = languages;
-      } 
-      else if (teachingType === "hobbies") {
-        updated.hobbies = hobbies;  // ← THIS FIXES YOUR ISSUE
-      }
-
-      updated.standards = standards;
-
-      return updated;
-    });
-  }, [teachingType, subjects, languages, hobbies, standards]);
-
-  //Reset selections when teaching type changes
-  useEffect(() => {
+  const handleClear = () => {
     setSubjects([]);
     setLanguages([]);
     setHobbies([]);
@@ -238,7 +212,54 @@ export default function StepTrainerTeach({
     setShowCustomStandard(false);
     setCustomFrom("");
     setCustomTo("");
-  }, [teachingType]);
+
+    setFormData((prev: any) => ({
+      ...prev,
+      teachingSubjects: [],
+      teachingLanguages: [],
+      teachingHobbies: [],
+      teachingStandards: [],
+      subjects: [],
+      languages: [],
+      hobbies: [],
+      standards: [],
+    }));
+
+    // Allow switching teaching type
+    setTeachingType("");
+    setPendingTeachingType("");
+  };
+
+  const handleTeachingTypeChange = (val: string) => {
+    // If any selection exists, prevent changing
+    const hasSelection =
+      subjects.length > 0 || languages.length > 0 || hobbies.length > 0;
+
+    if (hasSelection) {
+      alert("Please clear existing selections before changing teaching type.");
+      return;
+    }
+
+    setTeachingType(val);
+  };
+
+  // Sync formData whenever selections change
+  useEffect(() => {
+    setFormData((prev: any) => ({
+      ...prev,
+      teachingType,
+      // always update the keys that onSubmit expects
+      subjects: subjects,
+      languages: languages,
+      hobbies: hobbies,
+      standards: standards,
+      // optionally keep the internal teachingX keys for UI
+      teachingSubjects: subjects,
+      teachingLanguages: languages,
+      teachingHobbies: hobbies,
+      teachingStandards: standards,
+    }));
+  }, [teachingType, subjects, languages, hobbies, standards]);
 
   const canProceed = () => {
     if (!teachingType) return false;
@@ -266,8 +287,6 @@ export default function StepTrainerTeach({
       {/* Teaching Type */}
       <div>
         <FormLabel required>Teaching Type</FormLabel>
-
-        {/* <label className="font-medium">Teaching Type</label> */}
         <MultiSelect
           single
           options={[
@@ -276,58 +295,87 @@ export default function StepTrainerTeach({
             { value: "hobbies", label: "Hobbies" },
           ]}
           selected={teachingType ? [teachingType] : []}
-          setSelected={(val: any) => setTeachingType(val[0] || "")}
+          setSelected={(val: any) => handleTeachingTypeChange(val[0] || "")}
           placeholder="Select teaching type"
         />
+
+        {/* Clear Button */}
+        {(subjects.length > 0 || languages.length > 0 || hobbies.length > 0) && (
+          <button
+            onClick={handleClear}
+            className="mt-2 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+          >
+            Clear Selection
+          </button>
+        )}
       </div>
 
-      {/* Subjects */}
-      {(teachingType === "subjects" ) && (
+      {/* SUBJECTS */}
+      {teachingType === "subjects" && (
         <div>
-         <FormLabel required={teachingType === "subjects"}>Subjects (Max 3)</FormLabel>
-
+          <FormLabel required>Subjects (Max 3)</FormLabel>
           <MultiSelect
             options={SUBJECT_OPTIONS}
             selected={subjects}
-            setSelected={(vals: string[]) => vals.length <= 3 && setSubjects(vals)}
+            setSelected={(vals: string[]) => {
+              if (vals.length <= 3) {
+                setSubjects(vals);
+              }
+            }}
             placeholder="Select subjects"
           />
-          <SelectedChips items={subjects} setItems={setSubjects} options={SUBJECT_OPTIONS} />
+          <SelectedChips
+            items={subjects}
+            setItems={(vals: any) => setSubjects(vals)}
+            options={SUBJECT_OPTIONS}
+          />
         </div>
       )}
 
-      {/* Languages */}
-      {(teachingType === "languages" ) && (
+      {/* LANGUAGES */}
+      {teachingType === "languages" && (
         <div>
-          <FormLabel required={teachingType === "languages"}>Languages (Max 2)</FormLabel>
+          <FormLabel required>Languages (Max 2)</FormLabel>
           <MultiSelect
             options={LANGUAGE_OPTIONS}
             selected={languages}
-            setSelected={(vals: string[]) => vals.length <= 2 && setLanguages(vals)}
+            setSelected={(vals: string[]) => {
+              if (vals.length <= 2) setLanguages(vals);
+            }}
             placeholder="Select languages"
           />
-          <SelectedChips items={languages} setItems={setLanguages} options={LANGUAGE_OPTIONS} />
+          <SelectedChips
+            items={languages}
+            setItems={(vals: any) => setLanguages(vals)}
+            options={LANGUAGE_OPTIONS}
+          />
         </div>
       )}
 
-      {/* Hobbies */}
-      {(teachingType === "hobbies") && (
+      {/* HOBBIES */}
+      {teachingType === "hobbies" && (
         <div>
-          <FormLabel required={teachingType === "hobbies"}>Hobbies (Max 2)</FormLabel>
+          <FormLabel required>Hobbies (Max 2)</FormLabel>
           <MultiSelect
             options={HOBBY_OPTIONS}
             selected={hobbies}
-            setSelected={(vals: string[]) => vals.length <= 2 && setHobbies(vals)}
+            setSelected={(vals: string[]) => {
+              if (vals.length <= 2) setHobbies(vals);
+            }}
             placeholder="Select hobbies"
           />
-          <SelectedChips items={hobbies} setItems={setHobbies} options={HOBBY_OPTIONS} />
+          <SelectedChips
+            items={hobbies}
+            setItems={(vals: any) => setHobbies(vals)}
+            options={HOBBY_OPTIONS}
+          />
         </div>
       )}
 
-      {/* Standards for Subjects */}
+      {/* STANDARDS → visible only when subjects selected */}
       {subjects.length > 0 && (
         <div>
-          <FormLabel required={subjects.length > 0}>Standards Required</FormLabel>
+          <FormLabel required>Standards Required</FormLabel>
           <MultiSelect
             options={[...STANDARD_OPTIONS, { value: "custom", label: "Custom Range" }]}
             selected={standards}
@@ -340,8 +388,11 @@ export default function StepTrainerTeach({
             }}
             placeholder="Select standards"
           />
-
-          <SelectedChips items={standards} setItems={setStandards} options={STANDARD_OPTIONS} />
+          <SelectedChips
+            items={standards}
+            setItems={(vals: any) => setStandards(vals)}
+            options={STANDARD_OPTIONS}
+          />
 
           {showCustomStandard && (
             <div className="mt-3 p-3 border rounded-lg bg-gray-50 space-y-3">
@@ -365,7 +416,12 @@ export default function StepTrainerTeach({
               <button
                 onClick={() => {
                   if (!customFrom || !customTo) return;
-                  setStandards([...standards, `Class ${customFrom}-${customTo}`]);
+
+                  const newRange = `Class ${customFrom}-${customTo}`;
+                  const updated = [...standards, newRange];
+
+                  setStandards(updated);
+
                   setShowCustomStandard(false);
                   setCustomFrom("");
                   setCustomTo("");

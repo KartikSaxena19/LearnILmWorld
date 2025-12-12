@@ -44,7 +44,8 @@ const AvailabilitySchema = new mongoose.Schema({
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true },
   email: { type: String, required: true, unique: true, lowercase: true, trim: true, index: true },
-  secondaryEmail: { type: String, lowercase: true, trim: true, default: null, unique: true, sparse: true },
+  secondaryEmail: { type: String, lowercase: true, trim: true, unique: true, sparse: true },
+
   password: { type: String, required: true, minlength: 8 },
   role: { type: String, enum: ['student', 'trainer', 'admin'], required: true },
   profile: {
@@ -159,5 +160,33 @@ userSchema.methods.ensureFullAvailability = function () {
   });
   return this;
 };
+
+// Optimizing Indexes for Trainer filtering/fetching in "/main" trainers page
+
+// For fast search by trainers only
+userSchema.index({ role: 1, isActive: 1 });
+
+// Languages
+userSchema.index({ 'profile.languages': 1 });
+
+// Specializations
+userSchema.index({ 'profile.specializations': 1 });
+
+// Rating sorting
+userSchema.index({ 'stats.rating': -1 });
+
+// Hourly rate sorting
+userSchema.index({ 'profile.hourlyRate': 1 });
+
+// Experience sorting
+userSchema.index({ 'profile.experience': -1 });
+
+// Search text (optional but powerful)
+userSchema.index({
+  name: 'text',
+  'profile.bio': 'text',
+  'profile.languages': 'text',
+  'profile.specializations': 'text'
+});
 
 export default mongoose.model('User', userSchema);

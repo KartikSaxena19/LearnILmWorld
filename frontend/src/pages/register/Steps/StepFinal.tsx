@@ -103,11 +103,10 @@ const StepFinal: React.FC<Props> = ({
             <PhoneInput
               country={'in'}
               value={formData.phone}
-              onChange={(phone, country) =>
+              onChange={(phone) =>
                 setFormData(prev => ({
                   ...prev,
                   phone,
-                  nationalityCode: (country as any)?.iso2?.toUpperCase()
                 }))
               }
               inputStyle={{

@@ -13,7 +13,6 @@ export default function Marquee({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [width, setWidth] = useState(0);
-  const [isUserScrolling, setIsUserScrolling] = useState(false);
   const timeoutRef = useRef<any>(null);
 
   // Handle auto animation
@@ -46,12 +45,10 @@ export default function Marquee({
     if (!container) return;
 
     const handleScroll = () => {
-      setIsUserScrolling(true);
       stopAnimation();
 
       clearTimeout(timeoutRef.current);
       timeoutRef.current = setTimeout(() => {
-        setIsUserScrolling(false);
         startAnimation();
       }, 1500);
     };

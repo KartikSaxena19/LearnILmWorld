@@ -24,8 +24,8 @@ const StepBasicInfo: React.FC<Props> = ({
 
   const [emailStatus, setEmailStatus] = useState<{ message?: string; blocked?: boolean }>({});
 
-  const country = formData.location?.split("|")[0] || "";
-  const city = formData.location?.split("|")[1] || "";
+  const city = formData.location || "";
+
 
   const checkEmail = async (email: string) => {
     if (!email || !/^\S+@\S+\.\S+$/.test(email)) return;
@@ -53,7 +53,8 @@ const StepBasicInfo: React.FC<Props> = ({
     else if (!/^\S+@\S+\.\S+$/.test(formData.email))
       temp.email = "Invalid email format";
 
-    if (!country) temp.country = "Please select your country";
+    if (!formData.nationalityCode) temp.country = "Please select your country";
+
 
     setErrors(temp);
     return Object.keys(temp).length === 0;
@@ -128,14 +129,11 @@ const StepBasicInfo: React.FC<Props> = ({
               searchable={true}
               searchPlaceholder="Search country..."
               onSelect={(code) => {
-                let countryName =
-                  new Intl.DisplayNames(["en"], { type: "region" }).of(code) ||
-                  "";
+                const upper = code.toUpperCase();
 
-                setFormData((prev) => ({
+                setFormData(prev => ({
                   ...prev,
-                  nationalityCode: code,
-                  location: `${countryName}|${city}`,
+                  nationalityCode: upper
                 }));
               }}
               placeholder="Select country"
@@ -161,7 +159,7 @@ const StepBasicInfo: React.FC<Props> = ({
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
-                  location: `${country}|${e.target.value}`,
+                   location: e.target.value,
                 }))
               }
               placeholder="City, area or pin code"
