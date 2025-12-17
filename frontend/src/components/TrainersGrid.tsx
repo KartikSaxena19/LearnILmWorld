@@ -101,6 +101,14 @@ const TrainersGrid: React.FC<Props> = ({ searchTerm, filters, learningType, setN
                     )
                 }
 
+                // Filter by learning type - only show trainers with hobbies for hobby learning
+                if (learningType === 'hobby') {
+                    verified = verified.filter((t: any) => {
+                        const hobbies = t.profile?.hobbies || t.profile?.interests || t.profile?.skills
+                        return hobbies && Array.isArray(hobbies) && hobbies.length > 0
+                    })
+                }
+
                 // Apply frontend nationality filter
                 if (filters.nationality && filters.nationality.trim()) {
                     verified = verified.filter((t: any) => t.profile?.nationalityCode === filters.nationality)

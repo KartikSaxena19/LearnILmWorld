@@ -104,17 +104,17 @@ const Login: React.FC = () => {
     }
   }
 
-   return (
+  return (
     <div
       className="min-h-screen flex items-center justify-center py-12 bg-[#CBE56A]">
       {/* Home Icon Button */}
       <Link
-  to="/"
-  className="absolute top-6 right-6 p-2 rounded-lg bg-[#4f4382] backdrop-blur-md hover:bg-[#dc8d33]/30 transition flex items-center justify-center"
-  aria-label="Go to Home"
->
-  <Home className="h-6 w-6 text-white hover:text-[#dc8d33] transition-colors duration-300" />
-</Link>
+        to="/"
+        className="absolute top-6 right-6 p-2 rounded-lg bg-[#4f4382] backdrop-blur-md hover:bg-[#dc8d33]/30 transition flex items-center justify-center"
+        aria-label="Go to Home"
+      >
+        <Home className="h-6 w-6 text-white hover:text-[#dc8d33] transition-colors duration-300" />
+      </Link>
 
       {/* Decorative orbs */}
       <div className="fixed inset-0 pointer-events-none">

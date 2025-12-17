@@ -10,12 +10,26 @@ import FormLabel from "../../../components/FormLabel";
 
 const SUBJECT_OPTIONS = [
   { value: "Maths", label: "Maths" },
-  { value: "Science", label: "Science" },
-  { value: "English", label: "English" },
+
   { value: "Physics", label: "Physics" },
   { value: "Chemistry", label: "Chemistry" },
   { value: "Biology", label: "Biology" },
+  { value: "Environmental Science", label: "Environmental Science" },
+
+  { value: "Computer Science", label: "Computer Science" },
+
+  { value: "History", label: "History" },
+  { value: "Geography", label: "Geography" },
+  { value: "Economics", label: "Economics" },
+  { value: "Accounts & Finance", label: "Accounts & Finance" },
+
+  { value: "Psychology", label: "Psychology" },
+  { value: "Philosophy", label: "Philosophy" },
+
+  { value: "Hindi", label: "Hindi" },
+  { value: "Bengali", label: "Bengali" },
 ];
+
 
 const LANGUAGE_OPTIONS = [
   { value: "English", label: "English" },
@@ -91,8 +105,8 @@ function MultiSelect({
             {(!selected || selected.length === 0)
               ? placeholder
               : single
-              ? options.find((o: any) => o.value === selected[0])?.label
-              : `${selected.length} selected`}
+                ? options.find((o: any) => o.value === selected[0])?.label
+                : `${selected.length} selected`}
           </span>
 
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -112,17 +126,15 @@ function MultiSelect({
                 key={idx}
                 value={option.value}
                 className={({ active }) =>
-                  `relative cursor-pointer select-none py-2 pl-10 pr-4 ${
-                    active ? "bg-blue-100 text-blue-900" : "text-gray-900"
+                  `relative cursor-pointer select-none py-2 pl-10 pr-4 ${active ? "bg-blue-100 text-blue-900" : "text-gray-900"
                   }`
                 }
               >
                 {({ selected: isSelected }) => (
                   <>
                     <span
-                      className={`block truncate ${
-                        isSelected ? "font-medium" : "font-normal"
-                      }`}
+                      className={`block truncate ${isSelected ? "font-medium" : "font-normal"
+                        }`}
                     >
                       {option.label}
                     </span>
@@ -447,11 +459,10 @@ export default function StepTrainerTeach({
         <button
           onClick={onNext}
           disabled={!canProceed()}
-          className={`px-5 py-2 rounded-md text-white ${
-            canProceed()
+          className={`px-5 py-2 rounded-md text-white ${canProceed()
               ? "bg-blue-600 hover:bg-blue-700"
               : "bg-blue-300 cursor-not-allowed"
-          }`}
+            }`}
         >
           Next
         </button>

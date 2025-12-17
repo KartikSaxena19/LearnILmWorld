@@ -10,6 +10,7 @@ import reviewRoutes from './routes/reviewRoutes.js';
 import adminRoutes from './routes/adminRoutes.js'
 import feedbackRoutes from "./routes/feedbackRoutes.js";
 import chatbotRoutes from './routes/chatbotRoutes.js';
+import careerRoutes from './routes/careerRoutes.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -60,6 +61,7 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/admin', adminRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use('/api/chatbot', chatbotRoutes);
+app.use('/api/careers', careerRoutes);
 
 
 // Connect to MongoDB

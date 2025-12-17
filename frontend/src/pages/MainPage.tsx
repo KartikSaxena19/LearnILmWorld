@@ -1,9 +1,3 @@
-// Project: Modularized MainPage for Trainers (Corrected & Complete)
-// Language: TypeScript React (TSX)
-// This document contains multiple files separated by `// FILE:` markers. Paste each file into your project.
-// Purpose: preserve your UI while modularizing so only TrainersGrid fetches data and re-renders.
-
-
 // FILE: src/pages/MainPage.tsx
 import React, { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
@@ -14,12 +8,27 @@ import SearchBar from '../components/SearchBar'
 import LearningTypeSelector from '../components/LearningTypeSelector'
 import FiltersPanel from '../components/FiltersPanel'
 import TrainersGrid from '../components/TrainersGrid'
+import { useAuth } from '../contexts/AuthContext'
 
 
 const MainPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [learningType, setLearningType] = useState<'language' | 'subject' | 'hobby'>('language')
   const [languageMode, setLanguageMode] = useState<string>('subject')
+
+  const { user, loading } = useAuth();
+
+  const getDashboardPath = () => {
+    if (!user) return "/login";
+
+    const role = user.role.toLowerCase();
+
+    if (role === "student") return "/student";
+    if (role === "trainer") return "/trainer";
+    if (role === "admin") return "/admin";
+
+    return "/main"; // fallback
+  };
 
   const [nationalities, setNationalities] = useState<string[]>([])
 
@@ -85,9 +94,16 @@ const MainPage: React.FC = () => {
 
 
             <nav className="flex items-center space-x-4">
-              <Link to="/login" className="relative overflow-hidden group px-5 py-2 rounded-xl font-semibold text-[#2D274B] bg-[#CBE56A] hover:bg-[#CBE56A] transition-all duration-300 shadow-md hover:shadow-lg">
-                <span className="relative z-10">Sign In</span>
-              </Link>
+              {!user ? (
+                <Link to="/login" className="px-5 py-2 rounded-xl bg-[#CBE56A] text-[#2D274B]">
+                  Sign In
+                </Link>
+              ) : (
+                <Link to={getDashboardPath()} className="px-5 py-2 rounded-xl bg-[#CBE56A] text-[#2D274B]">
+                  Dashboard
+                </Link>
+              )}
+
             </nav>
           </div>
         </div>

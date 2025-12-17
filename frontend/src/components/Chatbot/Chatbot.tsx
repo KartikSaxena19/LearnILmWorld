@@ -1,430 +1,402 @@
-import React, { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
-import './Chatbot.css';
-import { chatTranslations } from './chatTranslations';
+// Chatbot.tsx - FIXED LANGUAGE SELECTOR
+import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { createPortal } from "react-dom";
+import "./Chatbot.css";
+import { chatTranslations, type ChatTranslation } from "./chatTranslations";
 
-
+// Define TypeScript interfaces
 interface Message {
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   message: string;
   timestamp: Date;
 }
 
-interface UserData {
-  name: string;
-  phone: string;
-  email: string;
-  role: 'Student' | 'Trainer';
+interface UserInfo {
+  name: string | null;
+  email: string | null;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+interface Suggestion {
+  id: string;
+  text: string;
+}
 
+interface ChatbotResponse {
+  success: boolean;
+  reply: string;
+  step: string;
+  infoComplete: boolean;
+  showSuggestions: boolean;
+  userInfo: UserInfo;
+  conversation: Array<{
+    role: "user" | "assistant";
+    message: string;
+    timestamp: Date;
+    language?: string;
+    isInfoCollection?: boolean;
+  }>;
+}
 
-const SUPPORTED_LANGUAGES = [
-  { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'de', name: 'German', flag: '🇩🇪' },
-  { code: 'fr', name: 'French', flag: '🇫🇷' },
-  { code: 'ja', name: 'Japanese', flag: '🇯🇵' },
-  { code: 'es', name: 'Spanish', flag: '🇪🇸' },
-  { code: 'sa', name: 'Sanskrit', flag: '🇮🇳' }
-];
+interface LanguageOption {
+  code: string;
+  name: string;
+}
 
-const Chatbot: React.FC = () => {
+type LanguageCode = 'en' | 'hi' | 'sa' | 'fr' | 'de' | 'es' | 'ja';
+
+const API = import.meta.env.VITE_API_BASE_URL;
+
+// Language selection component - SIMPLIFIED WITHOUT EMOJIS
+const LanguageSelector: React.FC<{
+  currentLanguage: LanguageCode;
+  onLanguageChange: (lang: LanguageCode) => void;
+}> = ({ currentLanguage, onLanguageChange }) => {
+  const languages: LanguageOption[] = [
+    { code: 'en', name: 'English' },
+    { code: 'hi', name: 'Hindi' },
+    { code: 'sa', name: 'Sanskrit' },
+    { code: 'fr', name: 'French' },
+    { code: 'de', name: 'German' },
+    { code: 'es', name: 'Spanish' },
+    { code: 'ja', name: 'Japanese' },
+  ];
+
+  return (
+    <div className="language-selector">
+      <select
+        value={currentLanguage}
+        onChange={(e) => onLanguageChange(e.target.value as LanguageCode)}
+        className="language-dropdown"
+        aria-label="Select language"
+      >
+        {languages.map((lang) => (
+          <option key={lang.code} value={lang.code}>
+            {lang.name}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
+const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [inputMessage, setInputMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
+  const [input, setInput] = useState("");
   const [sessionId, setSessionId] = useState<string | null>(null);
-  const [hasProvidedData, setHasProvidedData] = useState(false);
-  const [showForm, setShowForm] = useState(true);
-  const t = chatTranslations[selectedLanguage] || chatTranslations.en;
-  const [formData, setFormData] = useState<UserData>({
-    name: '',
-    phone: '',
-    email: '',
-    role: 'Student'
-  });
-  const [formErrors, setFormErrors] = useState<{[key: string]: string}>({});
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [currentLanguage, setCurrentLanguage] = useState<LanguageCode>("en");
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [userInfo, setUserInfo] = useState<UserInfo>({ name: null, email: null });
+  const [isLoading, setIsLoading] = useState(false);
 
+  const t = chatTranslations[currentLanguage] as ChatTranslation;
+  const bottomRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Only show 3-4 suggestions
+  const optimizedSuggestions = t.suggestions.slice(0, 4);
+
+  /* ================= INITIALIZE CHAT ================= */
+  const initializeChat = async () => {
+    try {
+      const response = await axios.post(`${API}/api/chatbot/start`, {
+        language: currentLanguage
+      });
+
+      const data = response.data;
+      setSessionId(data.sessionId);
+      setMessages([
+        {
+          role: "assistant",
+          message: data.reply,
+          timestamp: new Date()
+        }
+      ]);
+    } catch (error) {
+      console.error("Failed to initialize chat:", error);
+      // Simple fallback
+      setMessages([
+        {
+          role: "assistant",
+          message: t.welcome + "\n\n" + t.intro + "\n" + t.points.map((p: any) => `• ${p}`).join('\n') + "\n\n" + t.question,
+          timestamp: new Date()
+        }
+      ]);
+    }
+  };
+
+  /* ================= HANDLE WINDOW OPEN/CLOSE ================= */
   useEffect(() => {
-    scrollToBottom();
+    if (!isOpen) return;
+
+    if (!sessionId) {
+      initializeChat();
+    }
+  }, [isOpen, currentLanguage]);
+
+  // Reinitialize when language changes while chat is open
+  useEffect(() => {
+    if (isOpen && sessionId) {
+      initializeChat();
+    }
+  }, [currentLanguage]);
+
+  /* ================= AUTO-SCROLL TO BOTTOM ================= */
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Start chat automatically when modal opens
+  /* ================= AUTO-FOCUS TEXTAREA ================= */
   useEffect(() => {
-    if (isOpen && !sessionId) {
-      // Don't start chat immediately - show form first
-      setShowForm(true);
+    if (isOpen && textareaRef.current) {
+      setTimeout(() => {
+        textareaRef.current?.focus();
+      }, 100);
     }
   }, [isOpen]);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const validateForm = (): boolean => {
-    const errors: {[key: string]: string} = {};
-
-    // Name validation
-    if (!formData.name.trim()) {
-      errors.name = 'Please enter your name';
+  /* ================= ADJUST TEXTAREA HEIGHT ================= */
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = Math.min(textarea.scrollHeight, 100) + "px";
     }
+  }, [input]);
 
-    // Phone validation
-    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-    if (!formData.phone.trim() || !phoneRegex.test(formData.phone.replace(/[\s\-\(\)]/g, ''))) {
-      errors.phone = 'Please enter a valid phone number';
-    }
+  /* ================= SEND MESSAGE ================= */
+  const sendMessage = async (msg: string) => {
+    if (!msg.trim() || !sessionId || isLoading) return;
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!formData.email.trim() || !emailRegex.test(formData.email)) {
-      errors.email = 'Please enter a valid email address';
-    }
-
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
-  const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) return;
-
-    setIsLoading(true);
-
-    try {
-      // 1. START CHAT SESSION (NO USER DATA YET)
-      const startRes = await axios.post(
-        `${API_BASE_URL}/api/chatbot/start`,
-        { language: selectedLanguage },
-        { timeout: 60000 }
-      );
-
-      const newSessionId = startRes.data.sessionId;
-      setSessionId(newSessionId);
-
-      // 2. SAVE USER DATA INTO MONGO USING SESSION ID
-      await axios.post(
-        `${API_BASE_URL}/api/chatbot/save-user`,
-        {
-          sessionId: newSessionId,
-          name: formData.name,
-          phone: formData.phone,
-          email: formData.email,
-          role: formData.role.toLowerCase()
-        },
-        { timeout: 60000 }
-      );
-
-      //  3. LOAD CONVERSATION FROM DB
-      setMessages(startRes.data.conversation);
-      setHasProvidedData(true);
-      setShowForm(false);
-
-    } catch (error) {
-      const welcomeMessage = `🎉 ${t.welcome}\n\n${t.intro}\n\n• ${t.points.join('\n• ')}\n\n💡 ${t.question}`;
-
-      setMessages([{
-        role: 'assistant',
-        message: welcomeMessage,
-        timestamp: new Date()
-        }]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-
-  const handleFormChange = (field: keyof UserData, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-    // Clear error when user starts typing
-    if (formErrors[field]) {
-      setFormErrors(prev => ({
-        ...prev,
-        [field]: ''
-      }));
-    }
-  };
-
-  const sendMessage = async () => {
-    if (!inputMessage.trim() || !sessionId) return;
-
-    const userMessage = inputMessage;
-    setInputMessage('');
-    setIsLoading(true);
+    const userMessage = msg.trim();
 
     // Add user message immediately
-    const newUserMessage: Message = {
-      role: 'user',
-      message: userMessage,
-      timestamp: new Date()
-    };
-    setMessages(prev => [...prev, newUserMessage]);
+    setMessages((prev) => [
+      ...prev,
+      { role: "user", message: userMessage, timestamp: new Date() }
+    ]);
+
+    setInput("");
+    setIsLoading(true);
+    setShowSuggestions(false);
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.post(`${API_BASE_URL}/api/chatbot/message`, 
-        {
-          sessionId,
-          message: userMessage,
-          language: selectedLanguage
-        },
-        { 
-          headers: { Authorization: `Bearer ${token}` },
-          timeout: 60000 
-        }
-      );
+      const response = await axios.post<ChatbotResponse>(`${API}/api/chatbot/message`, {
+        sessionId,
+        message: userMessage,
+        language: currentLanguage
+      });
 
-      setMessages(response.data.conversation);
-      setHasProvidedData(!response.data.needsData);
+      const data = response.data;
+
+      // Update user info if available
+      if (data.userInfo) {
+        setUserInfo(data.userInfo);
+      }
+
+      // Add assistant response
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          message: data.reply,
+          timestamp: new Date()
+        }
+      ]);
+
+      // Show suggestions if backend says to
+      if (data.showSuggestions) {
+        setTimeout(() => {
+          setShowSuggestions(true);
+        }, 300);
+      }
     } catch (error) {
-      console.error('Failed to send message:', error);
-      // Show error message if backend fails
-      const errorMessage: Message = {
-        role: 'assistant',
-        message: "I apologize, but I'm having trouble connecting to the service. Please try again later.",
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, errorMessage]);
+      console.error("Failed to send message:", error);
+      // Add error message
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          message: "Sorry, I'm having trouble connecting. Please try again.",
+          timestamp: new Date()
+        }
+      ]);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+  /* ================= HANDLE SUGGESTION CLICK ================= */
+  const handleSuggestionClick = (suggestion: Suggestion) => {
+    sendMessage(suggestion.text);
+  };
+
+  /* ================= HANDLE KEY PRESS ================= */
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      sendMessage();
+      sendMessage(input);
     }
   };
 
-  const suggestedQuestions = t.quickReplies;
-
-  const resetChat = () => {
-    setSessionId(null);
-    setMessages([]);
-    setHasProvidedData(false);
-    setShowForm(true);
-    setFormData({
-      name: '',
-      phone: '',
-      email: '',
-      role: 'Student'
-    });
-    setFormErrors({});
+  /* ================= FORMAT MESSAGE TIME ================= */
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  const handleClose = () => {
-    setIsOpen(false);
-    // Reset chat when closing
-    setTimeout(resetChat, 300);
-  };
-
-  
-
-  return (
-    <>
-      {/* Chatbot Toggle Button */}
-      <button 
-        className="chatbot-toggle"
-        onClick={() => setIsOpen(!isOpen)}
+  /* ================= RENDER MESSAGES ================= */
+  const renderMessages = () => {
+    return messages.map((m, i) => (
+      <div
+        key={i}
+        className={`message ${m.role === "user" ? "user-message" : "assistant-message"}`}
       >
-        💬 Ask iLM
+        <div className="message-text">{m.message}</div>
+        <div className="message-time">
+          {formatTime(m.timestamp)}
+        </div>
+      </div>
+    ));
+  };
+
+  /* ================= RENDER USER INFO SUMMARY ================= */
+  const renderUserInfoSummary = () => {
+    if (!userInfo.name && !userInfo.email) return null;
+
+    return (
+      <div className="user-info-summary">
+        {userInfo.name && <span>👤 {userInfo.name}</span>}
+        {userInfo.email && <span> • ✉️ {userInfo.email}</span>}
+      </div>
+    );
+  };
+
+  /* ================= RENDER SUGGESTIONS ================= */
+  const renderSuggestions = () => {
+    if (!showSuggestions || optimizedSuggestions.length === 0) return null;
+
+    return (
+      <div className="suggestions-container">
+        <div className="suggestions-title">
+          {t.suggestionsTitle}
+        </div>
+        <div className="suggestions-row">
+          {optimizedSuggestions.map((suggestion: Suggestion) => (
+            <button
+              key={suggestion.id}
+              className="suggestion-chip"
+              onClick={() => handleSuggestionClick(suggestion)}
+              disabled={isLoading}
+            >
+              {suggestion.text}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  /* ================= PORTAL RENDER ================= */
+  return createPortal(
+    <>
+      {/* CHAT TOGGLE BUTTON */}
+      <button
+        className="chatbot-toggle"
+        onClick={() => setIsOpen((prev: boolean) => !prev)}
+        aria-label="Open chat"
+      >
+        <span className="chat-icon">💬</span>
+        <span className="chat-text">Chat with iLM</span>
       </button>
 
-      {/* Chatbot Modal */}
       {isOpen && (
         <div className="chatbot-modal">
+          {/* HEADER WITH LANGUAGE SELECTOR */}
           <div className="chatbot-header">
-            <h3>Ask iLM</h3>
-            <div className="chatbot-controls">
-              <select 
-                value={selectedLanguage}
-                onChange={(e) => setSelectedLanguage(e.target.value)}
-                className="language-select"
+            <div className="header-left">
+              <h3>Ask iLM </h3>
+              <span className="language-indicator">
+                {currentLanguage.toUpperCase()}
+              </span>
+            </div>
+            <div className="header-right">
+              <LanguageSelector
+                currentLanguage={currentLanguage}
+                onLanguageChange={setCurrentLanguage}
+              />
+              <button
+                className="close-button"
+                onClick={() => setIsOpen(false)}
+                aria-label="Close chat"
               >
-                {SUPPORTED_LANGUAGES.map(lang => (
-                  <option key={lang.code} value={lang.code}>
-                    {lang.flag} {lang.name}
-                  </option>
-                ))}
-              </select>
-              <button onClick={handleClose}>✕</button>
+                ×
+              </button>
             </div>
           </div>
 
+          {/* CHAT BODY */}
           <div className="chatbot-body">
-            {/* User Information Form */}
-            {showForm && (
-              <div className="user-form-container">
-                <div className="form-header">
-                  <h4>Get Started with LearniLM🌎World</h4>
-                  <p>Please provide your details to begin</p>
-                </div>
+            {/* USER INFO SUMMARY */}
+            {renderUserInfoSummary()}
 
-                <form onSubmit={handleFormSubmit} className="user-form">
-                  <div className="form-group">
-                    <label htmlFor="name">Your Name *</label>
-                    <input
-                      type="text"
-                      id="name"
-                      value={formData.name}
-                      onChange={(e) => handleFormChange('name', e.target.value)}
-                      placeholder="Enter your full name"
-                      className={formErrors.name ? 'error' : ''}
-                    />
-                    {formErrors.name && <span className="error-message">{formErrors.name}</span>}
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="phone">Phone Number *</label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      value={formData.phone}
-                      onChange={(e) => handleFormChange('phone', e.target.value)}
-                      placeholder="Enter your phone number"
-                      className={formErrors.phone ? 'error' : ''}
-                    />
-                    {formErrors.phone && <span className="error-message">{formErrors.phone}</span>}
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="email">Email Address *</label>
-                    <input
-                      type="email"
-                      id="email"
-                      value={formData.email}
-                      onChange={(e) => handleFormChange('email', e.target.value)}
-                      placeholder="Enter your email address"
-                      className={formErrors.email ? 'error' : ''}
-                    />
-                    {formErrors.email && <span className="error-message">{formErrors.email}</span>}
-                  </div>
-
-                  <div className="form-group">
-                    <label>You are joining as *</label>
-                    <div className="radio-group">
-                      <label className="radio-option">
-                        <input
-                          type="radio"
-                          name="role"
-                          value="Student"
-                          checked={formData.role === 'Student'}
-                          onChange={(e) => handleFormChange('role', e.target.value)}
-                        />
-                        <span className="radio-label">Student</span>
-                      </label>
-                      <label className="radio-option">
-                        <input
-                          type="radio"
-                          name="role"
-                          value="Trainer"
-                          checked={formData.role === 'Trainer'}
-                          onChange={(e) => handleFormChange('role', e.target.value)}
-                        />
-                        <span className="radio-label">Trainer</span>
-                      </label>
-                    </div>
-                  </div>
-
-                  <button 
-                    type="submit" 
-                    className="submit-btn"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? 'Starting Chat...' : 'Start Chatting →'}
-                  </button>
-                </form>
-              </div>
-            )}
-
-            {/* Chat Interface */}
-            {!showForm && sessionId && (
-              <>
-                <div className="messages-container">
-                  {messages.map((message, index) => (
-                    <div
-                      key={index}
-                      className={`message ${message.role}`}
-                    >
-                      <div className="message-content">
-                        {message.message.split('\n').map((line, i) => (
-                          <React.Fragment key={i}>
-                            {line}
-                            {i < message.message.split('\n').length - 1 && <br />}
-                          </React.Fragment>
+            {/* MESSAGES CONTAINER */}
+            <div className="messages-container">
+              {messages.length === 0 ? (
+                <div className="welcome-message">
+                  <div className="message assistant-message">
+                    <div className="message-text">
+                      <strong>{t.welcome}</strong>
+                      <br /><br />
+                      {t.intro}
+                      <ul>
+                        {t.points.map((point: string, index: number) => (
+                          <li key={index}>{point}</li>
                         ))}
-                      </div>
+                      </ul>
+                      <br />
+                      {t.question}
                     </div>
-                  ))}
-                  {isLoading && (
-                    <div className="message assistant">
-                      <div className="message-content typing-indicator">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                      </div>
-                    </div>
-                  )}
-                  <div ref={messagesEndRef} />
+                  </div>
                 </div>
+              ) : (
+                renderMessages()
+              )}
+              <div ref={bottomRef} />
+            </div>
 
-                {/* Suggested Questions */}
-                <div className="suggested-questions">
-                  {suggestedQuestions.map((question: string, index: number) => (
-                      <button
-                      key={index}
-                      className="suggestion-chip"
-                      onClick={() => setInputMessage(question)}
-                        >
-                    {question}
-                      </button>
-                    ))
-                  }
-                </div>
+            {/* SUGGESTIONS */}
+            {renderSuggestions()}
+          </div>
 
-                {/* Input Area */}
-                <div className="input-section">
-                  <textarea
-                    value={inputMessage}
-                    onChange={(e) => setInputMessage(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    placeholder={t.placeholder}
-                    disabled={isLoading}
-                    rows={2}
-                  />
-                  <button 
-                    onClick={sendMessage}
-                    disabled={!inputMessage.trim() || isLoading}
-                  >
-                    {isLoading ? '...' : 'Send'}
-                  </button>
-                </div>
-              </>
-            )}
-
-            {/* Loading state when starting chat */}
-            {!sessionId && isLoading && (
-              <div className="loading-state">
-                <div className="typing-indicator">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-                <p>Starting chat...</p>
-              </div>
-            )}
+          {/* INPUT SECTION */}
+          <div className="input-section">
+            <textarea
+              ref={textareaRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder={t.placeholder}
+              disabled={isLoading}
+              rows={1}
+            />
+            <button
+              className="send-button"
+              onClick={() => sendMessage(input)}
+              disabled={isLoading || !input.trim()}
+              aria-label="Send message"
+            >
+              {isLoading ? (
+                <span className="loading-spinner"></span>
+              ) : (
+                <span className="send-icon">➤</span>
+              )}
+            </button>
           </div>
         </div>
       )}
-    </>
+    </>,
+    document.body
   );
 };
 

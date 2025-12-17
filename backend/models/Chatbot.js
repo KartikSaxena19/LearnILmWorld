@@ -1,3 +1,4 @@
+// Chatbot.js - Update the schema
 import mongoose from 'mongoose';
 
 const chatbotSchema = new mongoose.Schema({
@@ -17,7 +18,7 @@ const chatbotSchema = new mongoose.Schema({
   },
   language: {
     type: String,
-    enum: ['en', 'de', 'fr', 'ja', 'es', 'sa'],
+    enum: ['en', 'de', 'fr', 'ja', 'es', 'sa', 'hi'],
     default: 'en'
   },
   conversation: [{
@@ -36,12 +37,32 @@ const chatbotSchema = new mongoose.Schema({
     }
   }],
   userContext: {
-    name: String,
+    name: {
+      type: String,
+      default: null
+    },
     phone: String,
-    email: String,
+    email: {
+      type: String,
+      default: null,
+      validate: {
+        validator: function (v) {
+          return !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+        },
+        message: props => `${props.value} is not a valid email address!`
+      }
+    },
     userRole: String,
     learningGoal: String,
-    targetLanguage: String
+    targetLanguage: String,
+    infoRequestCount: {
+      type: Number,
+      default: 0
+    },
+    isInfoComplete: {
+      type: Boolean,
+      default: false
+    }
   }
 }, {
   timestamps: true

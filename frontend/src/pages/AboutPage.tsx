@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { Link, useLocation } from "react-router-dom"
 import { motion } from "framer-motion"
-import { HelpCircle, FileText, BookOpen, Briefcase
+import {
+  HelpCircle, FileText, BookOpen, Briefcase
 } from "lucide-react"
 // Facebook, Twitter, Instagram, Linkedin, removed ffrom above
 // import logo from "../assets/LearnilmworldLogo.jpg";
@@ -9,9 +10,10 @@ import bg_img from '../assets/purple_gradient.jpg'
 import about_us from '../assets/About_us1.png';
 import our_story from '../assets/our_story.png';
 import careers_img from '../assets/careers_img.png';
-import {Nav, Container, Offcanvas, Button } from "react-bootstrap"
+import { Nav, Container, Offcanvas, Button } from "react-bootstrap"
 //  Navbar,  removed from above react-bootstrap
 import Footer from "../components/Footer";
+import CareerApplicationForm from "../components/CareerApplicationForm"
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -27,6 +29,8 @@ export default function AboutPage() {
 
   const [feedbackStatus, setFeedbackStatus] = useState<String | null>(null);
   const [showFeedback, setShowFeedback] = React.useState(false);
+  const [showCareerForm, setShowCareerForm] = useState(false)
+
 
 
   useEffect(() => {
@@ -44,44 +48,44 @@ export default function AboutPage() {
   }
 
   const handleFeedbackSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setFeedbackStatus(null);
+    e.preventDefault();
+    setFeedbackStatus(null);
 
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/feedback`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(feedbackData),
-    });
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/feedback`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(feedbackData),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!res.ok) {
-      throw new Error(data.message || 'Failed to send feedback');
+      if (!res.ok) {
+        throw new Error(data.message || 'Failed to send feedback');
+      }
+
+      setFeedbackStatus('success');
+      setFeedbackData({ name: '', email: '', category: '', message: '' });
+    } catch (err: any) {
+      console.error(err);
+      setFeedbackStatus('error');
     }
+  };
 
-    setFeedbackStatus('success');
-    setFeedbackData({ name: '', email: '', category: '', message: '' });
-  } catch (err: any) {
-    console.error(err);
-    setFeedbackStatus('error');
-  }
-};
-  
 
   return (
     <div className="min-h-screen font-inter bg-fixed text-[#e0fa84] scroll-smooth"
-    style={{
-      backgroundImage:
-        `url(${bg_img})`,
+      style={{
+        backgroundImage:
+          `url(${bg_img})`,
         position: "relative",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         width: "100%",
-    }}>
+      }}>
       {/* HEADER */}
       <header className="sticky top-0 z-40 bg-[#6b48af]/95 backdrop-blur-sm border-b border-white/30 text-[#e0fa84]">
         <Container className="py-3">
@@ -91,16 +95,16 @@ export default function AboutPage() {
               <div className="text-2xl md:text-3xl font-[Good Vibes] font-extrabold tracking-wide relative inline-flex items-center">
                 <span className="text-[#e0fa84]">
                   LearniLM</span>
-                <motion.span 
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
-                className="inline-block mx-1 text-3xl"
+                <motion.span
+                  animate={{ rotate: 360 }}
+                  transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
+                  className="inline-block mx-1 text-3xl"
                 >
-                🌎
+                  🌎
                 </motion.span>
                 <span className="text-[#e0fa84]">
                   World</span>
-                  {/* <motion.div
+                {/* <motion.div
                   className="absolute top-0 left-0 w-full h-full bg-white/20 rounded-full blur-xl pointer-events-none"
                   animate={{ x: [-200, 200] }}
                   transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
@@ -398,24 +402,133 @@ export default function AboutPage() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-2xl font-semibold mb-4 text-[#CBE56A]">Open Roles</h3>
-              <ul className="space-y-2 text-lg text-[#2D274B]">
-                <li>• Product Manager</li>
-                <li>• Marketing Executive</li>
-                <li>• Full Stack Developer</li>
-                <li>• Community Manager (more roles updated regularly)</li>
-              </ul>
+              <h3 className="text-3xl font-semibold mb-6 text-[#CBE56A]">
+                Open Roles
+              </h3>
 
-              <Link
-                to="/careers"
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-[#2D274B]">
+
+                {/* India */}
+                <div>
+                  <h4 className="font-bold mb-3 text-2xl">India</h4>
+                  <ul className="space-y-2 text-xl font-semibold">
+                    <li>• Sales Intern</li>
+                    <li>• Digital Marketing Intern</li>
+                    <li>• UX / UI Designer Intern</li>
+                    <li>• HR Intern</li>
+                  </ul>
+                </div>
+
+                {/* International */}
+                <div>
+                  <h4 className="font-bold mb-3 text-2xl">🌍 International</h4>
+                  <ul className="space-y-2 text-xl font-semibold">
+                    <li>• Sales Intern – Bahrain</li>
+                    <li>• Sales Intern – Kuwait</li>
+                    <li>• Sales Intern – Oman</li>
+                    <li>• Sales Intern – Jordan</li>
+                    <li>• Sales Intern – Azerbaijan</li>
+                    <li>• Sales Intern – Belarus</li>
+                  </ul>
+                </div>
+
+              </div>
+
+              <button
+                onClick={() => setShowCareerForm(true)}
                 className="mt-8 inline-block px-6 py-3 bg-[#CBE56A] text-[#2D274B] font-bold rounded-full hover:scale-105 transition"
               >
-                Explore Careers →
-              </Link>
+                Apply Now →
+              </button>
             </motion.div>
+
           </div>
         </div>
+        {showCareerForm && (
+          <CareerApplicationForm onClose={() => setShowCareerForm(false)} />
+        )}
+
+
       </section>
+
+      {/* POLICY & REFUND */}
+      {/* e0fa84 CBE56A 2D274B */}
+      <section id="policy-refund" className="py-24 px-6 text-[#e0fa84]">
+        <div className="max-w-6xl mx-auto text-center">
+          <FileText size={40} className="mx-auto mb-4 text-[#CBE56A]" />
+
+          <h2 className="text-4xl font-serif font-bold">
+            Policy & Refund
+          </h2>
+
+          <p className="mt-4 text-lg text-[#2D274B] font-semibold max-w-3xl mx-auto">
+            We believe in transparency and fairness. Our policies are designed to protect learners,
+            trainers, and ensure a smooth learning experience for everyone on LearniLM🌎World.
+          </p>
+
+          {/* POLICY CARDS */}
+          <div className="mt-16 grid md:grid-cols-2 gap-8 text-left">
+            {[
+              {
+                title: "Payment Policy",
+                content:
+                  "All payments on LearniLM🌎World are processed securely through trusted payment partners. Once a session is successfully booked, you will receive a confirmation via email or dashboard notification.",
+              },
+              {
+                title: "Refund Eligibility",
+                content:
+                  "Refunds are applicable if a session is cancelled within the allowed time window or if a trainer fails to attend a scheduled session. Eligible refunds are processed back to the original payment method.",
+              },
+              {
+                title: "Cancellations & Rescheduling",
+                content:
+                  "Learners can cancel or reschedule sessions from their dashboard as per the platform’s cancellation policy. Late cancellations may not qualify for a refund.",
+              },
+              {
+                title: "Trainer No-Show Policy",
+                content:
+                  "If a trainer does not join a confirmed session without prior notice, learners are entitled to a full refund or a free reschedule, based on preference.",
+              },
+              {
+                title: "Non-Refundable Cases",
+                content:
+                  "Refunds are not applicable for completed sessions, partial attendance, or misuse of the platform. Any suspicious activity may lead to account review.",
+              },
+              {
+                title: "Support & Resolution",
+                content:
+                  "If you face any issues related to payments or refunds, our support team is here to help. We aim to resolve all refund-related queries within a reasonable timeframe.",
+              },
+            ].map((policy, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-white/10 rounded-2xl p-6 shadow hover:scale-105 transition backdrop-blur-md"
+              >
+                <h3 className="text-xl font-bold text-[#CBE56A] mb-2">
+                  {policy.title}
+                </h3>
+                <p className="text-[#2D274B] leading-relaxed">
+                  {policy.content}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* CLOSING NOTE */}
+          <p className="mt-16 text-[#2D274B] text-base font-medium max-w-3xl mx-auto">
+            For detailed refund requests or payment-related concerns, please contact us at{" "}
+            <span className="font-semibold text-[#CBE56A]">
+              support@learnilmworld.com
+            </span>.
+            We’re committed to making your learning experience safe, fair, and reliable.
+          </p>
+        </div>
+      </section>
+
 
       {/* BLOG / INSIGHTS */}
       {/* 2D274B CBE56A e0fa84 */}
@@ -551,24 +664,33 @@ export default function AboutPage() {
 
             {/* Feedback Form */}
             {showFeedback && (
-              <div className="fixed inset-0 bg-[black]/70 flex items-center justify-center z-50">
-                <div className="bg-[#6b48af] text-white rounded-2xl p-8 w-[90%] max-w-lg relative">
+              <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+                <motion.div
+                  initial={{ scale: 0.85, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  className="bg-gray-100 text-[#2D274B] rounded-3xl p-8 w-[90%] max-w-lg relative"
+                >
+                  {/* Close */}
                   <button
                     onClick={() => setShowFeedback(false)}
-                    className="absolute top-3 right-3 text-red-500 hover:text-red-700 text-3xl font-bold"
+                    className="absolute top-4 right-4 text-3xl font-bold text-red-400 hover:text-red-600"
                   >
                     ×
                   </button>
 
-                  <h3 className="text-2xl font-bold text-[#d5f56a] mb-4">We value your feedback 🌟</h3>
+                  <h3 className="text-3xl font-bold mb-6 text-center">
+                    We Value Your Feedback 🌟
+                  </h3>
 
                   <form onSubmit={handleFeedbackSubmit} className="space-y-4">
                     <input
                       type="text"
                       placeholder="Your Name"
                       value={feedbackData.name}
-                      onChange={(e) => setFeedbackData({ ...feedbackData, name: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-[#CBE56A] focus:border-[#CBE56A] transition-all duration-300"
+                      onChange={(e) =>
+                        setFeedbackData({ ...feedbackData, name: e.target.value })
+                      }
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6b48af]"
                       required
                     />
 
@@ -576,15 +698,19 @@ export default function AboutPage() {
                       type="email"
                       placeholder="Your Email"
                       value={feedbackData.email}
-                      onChange={(e) => setFeedbackData({ ...feedbackData, email: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-200 focus:outline-none focus:border-[#CBE56A]"
+                      onChange={(e) =>
+                        setFeedbackData({ ...feedbackData, email: e.target.value })
+                      }
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6b48af]"
                       required
                     />
 
                     <select
                       value={feedbackData.category}
-                      onChange={(e) => setFeedbackData({ ...feedbackData, category: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-[#6b48af] border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#CBE56A] focus:border-[#CBE56A] transition-all duration-300 appearance-none"
+                      onChange={(e) =>
+                        setFeedbackData({ ...feedbackData, category: e.target.value })
+                      }
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6b48af]"
                       required
                     >
                       <option value="">Select a category</option>
@@ -597,32 +723,36 @@ export default function AboutPage() {
                       placeholder="Your Message"
                       rows={4}
                       value={feedbackData.message}
-                      onChange={(e) => setFeedbackData({ ...feedbackData, message: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-200 focus:outline-none focus:border-[#CBE56A]"
+                      onChange={(e) =>
+                        setFeedbackData({ ...feedbackData, message: e.target.value })
+                      }
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6b48af]"
                       required
                     />
 
                     <button
                       type="submit"
-                      className="w-full bg-[#CBE56A] text-[#2D274B] font-semibold py-3 rounded-xl hover:scale-105 transition"
+                      className="w-full bg-[#CBE56A] text-[#2D274B] font-bold py-3 rounded-xl hover:scale-105 transition"
                     >
                       Submit Feedback
                     </button>
                   </form>
 
-                  {feedbackStatus === 'success' && (
-                    <p className="text-[#CBE56A] font-semibold mt-4 text-center">
-                      Thank you! Your feedback has been submitted.
+                  {feedbackStatus === "success" && (
+                    <p className="text-green-600 mt-4 text-center font-semibold">
+                      ✅ Thank you! Your feedback has been submitted.
                     </p>
                   )}
-                  {feedbackStatus === 'error' && (
-                    <p className="text-red-600 font-semibold mt-4 text-center">
-                      ❌ FAILED to send feedback. Please try again.
+
+                  {feedbackStatus === "error" && (
+                    <p className="text-red-500 mt-4 text-center font-semibold">
+                      ❌ Failed to send feedback. Please try again.
                     </p>
                   )}
-                </div>
+                </motion.div>
               </div>
             )}
+
           </div>
 
         </div>

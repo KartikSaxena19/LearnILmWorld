@@ -121,6 +121,23 @@ const TrainerCard: React.FC<Props> = ({ trainer, learningType }) => {
         <div className="mb-3"><p className="text-xs text-gray-500 mb-1 font-medium">📚 Subjects I Teach</p><div className="flex flex-wrap gap-2">{trainer.profile.specializations.slice(0, 4).map((s: any, i: number) => (<span key={i} className="px-3 py-1 bg-purple-50 border border-purple-200 rounded-xl text-sm text-purple-800 shadow-sm">{s}</span>))}{trainer.profile.specializations.length > 4 && <span className="px-3 py-1 bg-gray-200 text-gray-700 rounded-xl text-sm">+{trainer.profile.specializations.length - 4} more</span>}</div></div>
       )}
 
+      {learningType === 'hobby' && (() => {
+        const hobbies = trainer.profile?.hobbies || trainer.profile?.interests || trainer.profile?.skills || []
+        return hobbies.length > 0
+      })() && (
+        <div className="mb-3">
+          <p className="text-xs text-gray-500 mb-1 font-medium">🎨 Hobbies I Teach</p>
+          <div className="flex flex-wrap gap-2">
+            {(trainer.profile?.hobbies || trainer.profile?.interests || trainer.profile?.skills || []).slice(0, 4).map((h: any, i: number) => (
+              <span key={i} className="px-3 py-1 bg-green-50 border border-green-200 rounded-xl text-sm text-green-800 shadow-sm">{h}</span>
+            ))}
+            {(trainer.profile?.hobbies || trainer.profile?.interests || trainer.profile?.skills || []).length > 4 && (
+              <span className="px-3 py-1 bg-gray-200 text-gray-700 rounded-xl text-sm">+{(trainer.profile?.hobbies || trainer.profile?.interests || trainer.profile?.skills || []).length - 4} more</span>
+            )}
+          </div>
+        </div>
+      )}
+
 
       <p className="text-[#6A6592] mb-4 line-clamp-3 flex-1">
         {trainer.profile?.bio || 'Experienced trainer helping students achieve fluency through personalized lessons.'}
