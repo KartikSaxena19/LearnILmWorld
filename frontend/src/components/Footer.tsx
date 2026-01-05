@@ -36,8 +36,8 @@ const Footer = () => (
         <div className="font-semibold">Stay in touch</div>
         <div className="mt-4 flex items-center gap-3 text-slate-300">
           <a href="#" aria-label="Facebook"><Facebook /></a>
-          <a href="#" aria-label="Twitter"><Twitter /></a>
-          <a href="#" aria-label="Instagram"><Instagram /></a>
+          <a href="https://x.com/bishnuffw?s=21" aria-label="Twitter"><Twitter /></a>
+          <a href="https://www.instagram.com/learnilmworld?igsh=MXczNnFrdHJ5Nm1vZg%3D%3D&utm_source=qr" aria-label="Instagram"><Instagram /></a>
           <a href="https://www.linkedin.com/company/learn-ilm-world/?viewAsMember=true" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Linkedin /></a>
         </div>
         <div className='Logo'>
@@ -46,9 +46,9 @@ const Footer = () => (
       </div>
     </div>
 
-    <div className="max-w-7xl mx-auto px-6 mt-8 border-t border-white/10 pt-6 text-sm  flex flex-col sm:flex-row justify-between">
-      <div>Made with ❤️ in LearniLM🌎World</div>
-      <div className="mt-3 sm:mt-0">Version 1.0 • Privacy policy</div>
+    <div className="max-w-7xl mx-auto px-6 mt-8 border-t border-white/10 pt-6 text-lg flex flex-col sm:flex-row justify-between font-semibold">
+      <div>Helping learners grow, emotionally and intellectually.</div>
+      <div className="mt-3 sm:mt-0">Version 2.0 • Privacy policy</div>
     </div>
   </footer>
 )

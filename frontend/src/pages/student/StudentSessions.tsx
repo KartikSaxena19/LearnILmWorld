@@ -1,8 +1,8 @@
 // src/pages/student/StudentSession.tsx
 import React, { useEffect, useState, FormEvent } from 'react'
-import {  Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
-User, Calendar, Star, Clock,
+  User, Calendar, Star, Clock,
   Video, X
 } from 'lucide-react'
 import axios from 'axios'
@@ -10,10 +10,7 @@ import axios from 'axios'
 /* ---------- Types ---------- */
 type AnyObj = Record<string, any>
 
-
-// const FRONTEND_URL= import.meta.env.VITE_FRONTEND_URL;
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 /* ---------------- StudentSessions ---------------- */
 const StudentSessions: React.FC = () => {
@@ -132,9 +129,9 @@ const StudentSessions: React.FC = () => {
                       <p className="text-xs text-gray-500 mt-1">
                         {session.scheduledDate
                           ? new Date(session.scheduledDate).toLocaleString(undefined, {
-                              dateStyle: 'medium',
-                              timeStyle: 'short'
-                            })
+                            dateStyle: 'medium',
+                            timeStyle: 'short'
+                          })
                           : '—'}
                       </p>
                     </div>
@@ -142,15 +139,14 @@ const StudentSessions: React.FC = () => {
 
                   <div className="flex flex-col items-end gap-2">
                     <div
-                      className={`text-xs font-semibold px-3 py-1 rounded-full ${
-                        session.status === 'completed'
-                          ? 'bg-green-100 text-green-800'
-                          : session.status === 'scheduled'
+                      className={`text-xs font-semibold px-3 py-1 rounded-full ${session.status === 'completed'
+                        ? 'bg-green-100 text-green-800'
+                        : session.status === 'scheduled'
                           ? 'bg-blue-100 text-blue-800'
                           : session.status === 'active'
-                          ? 'bg-amber-100 text-amber-800'
-                          : 'bg-gray-100 text-gray-800'
-                      }`}
+                            ? 'bg-amber-100 text-amber-800'
+                            : 'bg-gray-100 text-gray-800'
+                        }`}
                     >
                       {String(session.status).toUpperCase()}
                     </div>
@@ -159,7 +155,7 @@ const StudentSessions: React.FC = () => {
                     <div className="flex gap-2">
                       {(session.status === 'scheduled' || session.status === 'active') ? (
                         <Link
-                          to={`/student/session/${session._id}`}
+                          to={`/session/${session._id}`}
                           className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#9787F3] text-white rounded-md text-sm hover:bg-[#7f6ee5] focus:outline-none"
                         >
                           <Video className="h-4 w-4" /> <span>Join</span>
@@ -244,11 +240,10 @@ const StudentSessions: React.FC = () => {
                       key={star}
                       type="button"
                       onClick={() => setReviewData((prev) => ({ ...prev, rating: star }))}
-                      className={`p-1 rounded-md transition-colors ${
-                        star <= reviewData.rating
-                          ? 'text-yellow-400'
-                          : 'text-gray-300 hover:text-yellow-300'
-                      }`}
+                      className={`p-1 rounded-md transition-colors ${star <= reviewData.rating
+                        ? 'text-yellow-400'
+                        : 'text-gray-300 hover:text-yellow-300'
+                        }`}
                       aria-label={`Rate ${star}`}
                     >
                       <Star className="h-5 w-5" />

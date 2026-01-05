@@ -1,96 +1,65 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Video, Users, Clock, Globe, ArrowLeft } from 'lucide-react'
-import { useAuth } from '../contexts/AuthContext'
+// import { Video } from 'lucide-react'
 import axios from 'axios'
+import bg_main from '../assets/bg_main.jpeg'
 
+// import { ZegoExpressEngine } from 'zego-express-engine-webrtc'
+import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt'
+import { useAuth } from '../contexts/AuthContext'
+
+// TYPES 
 interface Session {
   _id: string
   title: string
+  roomId: string
   description?: string
   trainer: { _id: string; name: string; email: string }
   students: Array<{ _id: string; name: string; email: string }>
-  jitsiLink?: string
-  jitsiRoomName?: string
-  status: string
+  status: 'scheduled' | 'active' | 'ended' | 'cancelled'
   duration?: number
   scheduledDate?: string
   language?: string
   level?: string
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+// CONSTANTS 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string
+// const ZEGO_SERVER = import.meta.env.VITE_ZEGO_SERVER_LINK
+// const ZEGO_DEMO_SECRET = import.meta.env.VITE_ZEGO_DEMO_SECRET
+// const ZEGO_APP_ID = Number(import.meta.env.VITE_ZEGO_APP_ID)
 
-// helper to load Jitsi script and wait until window.JitsiMeetExternalAPI exists
-const loadJitsiScript = (): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    if ((window as any).JitsiMeetExternalAPI) {
-      return resolve()
-    }
-
-    const existing = document.querySelector('script[data-jitsi-api]')
-    if (existing) {
-      // if a script is already injected but api not yet available, wait a bit
-      const checkInterval = setInterval(() => {
-        if ((window as any).JitsiMeetExternalAPI) {
-          clearInterval(checkInterval)
-          resolve()
-        }
-      }, 200)
-      // safety timeout
-      setTimeout(() => {
-        clearInterval(checkInterval)
-        if ((window as any).JitsiMeetExternalAPI) resolve()
-        else reject(new Error('Jitsi API load timeout'))
-      }, 10000)
-      return
-    }
-
-    const script = document.createElement('script')
-    script.src = 'https://meet.jit.si/external_api.js'
-    script.async = true
-    script.setAttribute('data-jitsi-api', 'true')
-    script.onload = () => {
-      // in some cases onload fires before API attached; wait shortly
-      const checkInterval = setInterval(() => {
-        if ((window as any).JitsiMeetExternalAPI) {
-          clearInterval(checkInterval)
-          resolve()
-        }
-      }, 150)
-      setTimeout(() => {
-        clearInterval(checkInterval)
-        if ((window as any).JitsiMeetExternalAPI) resolve()
-        else reject(new Error('Jitsi API did not initialize after script load'))
-      }, 8000)
-    }
-    script.onerror = () => reject(new Error('Failed to load Jitsi script'))
-    document.body.appendChild(script)
-  })
-}
-
+// COMPONENT
 const SessionRoom: React.FC = () => {
-  const { sessionId } = useParams()
+  const { sessionId } = useParams<{ sessionId: string }>()
   const navigate = useNavigate()
   const { user } = useAuth()
-  const [session, setSession] = useState<Session | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-  const [sessionStarted, setSessionStarted] = useState(false)
-  const [jitsiLoading, setJitsiLoading] = useState(false)
-  const jitsiApiRef = useRef<any>(null)
-  const containerRef = useRef<HTMLDivElement | null>(null)
 
+  const [session, setSession] = useState<Session | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string>('')
+  const [sessionStarted, setSessionStarted] = useState<boolean>(false)
+
+  const hasJoinedRef = useRef(false)
+
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const zpRef = useRef<any>(null)
+
+  // -------FETCH SESSION
   useEffect(() => {
-    if (sessionId) fetchSession()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!sessionId) return
+    fetchSession()
   }, [sessionId])
 
   const fetchSession = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/sessions/${sessionId}`)
-      setSession(response.data)
-      if (response.data.status === 'active') {
+      // console.log('[ZEGO] Fetching session', { sessionId })
+      const res = await axios.get<Session>(
+        `${API_BASE_URL}/api/sessions/${sessionId}`
+      )
+      // console.log('[ZEGO] Session fetched', res.data)
+      setSession(res.data)
+      if (res.data.status === 'active') {
         setSessionStarted(true)
       }
     } catch (err) {
@@ -101,107 +70,164 @@ const SessionRoom: React.FC = () => {
     }
   }
 
-  // start the session (trainer)
+  // START SESSION (TRAINER)
   const startSession = async () => {
+
     if (!session || user?.role !== 'trainer') return
+
     try {
-      await axios.put(`${API_BASE_URL}/api/sessions/${session._id}/status`, { status: 'active' })
+      await axios.put(
+        `${API_BASE_URL}/api/sessions/${session._id}/status`,
+        { status: 'active' }
+      )
+      // console.log('[ZEGO] Starting session', { sessionId: session._id });
       setSessionStarted(true)
       setSession({ ...session, status: 'active' })
-      // optionally auto-scroll into view:
-      setTimeout(() => containerRef.current?.scrollIntoView({ behavior: 'smooth' }), 300)
     } catch (err) {
       console.error('Failed to start session', err)
     }
   }
 
+  //Forcely ends session for everyone (by TRAINER)  
   const endSession = async () => {
+
     if (!session || user?.role !== 'trainer') return
+
     try {
-      await axios.put(`${API_BASE_URL}/api/sessions/${session._id}/status`, { status: 'completed' })
-      // dispose Jitsi if active
-      if (jitsiApiRef.current) {
-        try { jitsiApiRef.current.dispose() } catch {}
-        jitsiApiRef.current = null
-      }
-      navigate(user.role === 'trainer' ? '/trainer/sessions' : '/student/sessions')
+      await axios.put(
+        `${API_BASE_URL}/api/sessions/${session._id}/end`
+      )
+
+      // console.log('[ZEGO] Ending session', { sessionId: session._id })
+
+      leaveRoom()
+
+      navigate(
+        user.role === 'trainer'
+          ? '/trainer/sessions'
+          : '/student/sessions'
+      )
     } catch (err) {
       console.error('Failed to end session', err)
     }
   }
 
-  // create the Jitsi instance (safe initialization)
-  const startEmbeddedJitsi = async () => {
-    if (!session || !session.jitsiRoomName) {
-      setError('Missing jitsiRoomName for this session')
+  const joinRoomWithToken = async () => {
+    if (!session || !containerRef.current) return
+
+    // HARD GUARD — prevents double join
+    if (hasJoinedRef.current) {
+      console.warn('[ZEGO][FRONTEND] joinRoom blocked (already joined)')
       return
     }
-    if (jitsiApiRef.current) return // already created
+
+    hasJoinedRef.current = true
 
     try {
-      setJitsiLoading(true)
-      await loadJitsiScript()
-      if (!(window as any).JitsiMeetExternalAPI) {
-        setError('Jitsi API not available')
-        setJitsiLoading(false)
-        return
+      console.log('[ZEGO][FRONTEND] Requesting token from backend')
+
+      const res = await axios.post(
+        `${API_BASE_URL}/api/sessions/${session._id}/zego-token`
+      )
+
+      const { appID, roomID, userID, userName, token } = res.data
+
+      console.log('[ZEGO][FRONTEND] Token received', {
+        appID,
+        roomID,
+        userID,
+        userName,
+        tokenPrefix: token.slice(0, 4),
+        tokenLength: token.length
+      })
+
+      if (!token || !token.startsWith('04')) {
+        throw new Error('Invalid ZEGO token received')
       }
 
-      const domain = 'meet.jit.si'
-      const options = {
-        roomName: session.jitsiRoomName,
-        parentNode: containerRef.current,
-        width: '100%',
-        height: 600,
-        userInfo: { displayName: user?.name || 'Guest' },
-        configOverwrite: {
-          prejoinPageEnabled: false // optional: skip prejoin
+      const kitToken = ZegoUIKitPrebuilt.generateKitTokenForProduction(
+        Number(appID),
+        token,        // Express token from backend
+        roomID,
+        userID,
+        userName
+      )
+
+      const zp = ZegoUIKitPrebuilt.create(kitToken)
+      zpRef.current = zp
+
+      zp.joinRoom({
+        container: containerRef.current,
+
+        scenario: {
+          mode: ZegoUIKitPrebuilt.VideoConference
         },
-        interfaceConfigOverwrite: {
-          SHOW_WATERMARK_FOR_GUESTS: false
-        }
-      }
 
-      // @ts-ignore
-      const api = new (window as any).JitsiMeetExternalAPI(domain, options)
-      jitsiApiRef.current = api
+        onJoinRoom: () => {
+          console.log('[ZEGO][UIKIT] Joined room successfully')
+        },
 
-      api.addEventListener('videoConferenceJoined', () => {
-        console.log('Joined Jitsi room', session.jitsiRoomName)
+        onLeaveRoom: () => {
+          console.log('[ZEGO][UIKIT] Left room')
+        },
+
+        onUserJoin: (users: any[]) => {
+          console.log('[ZEGO][UIKIT] User joined', users)
+        },
+
+        onUserLeave: (users: any[]) => {
+          console.log('[ZEGO][UIKIT] User left', users)
+        },
+
+        turnOnCameraWhenJoining: false,
+        turnOnMicrophoneWhenJoining: false,
+
+        showMyCameraToggleButton: true,
+        showMyMicrophoneToggleButton: true,
+        showAudioVideoSettingsButton: true,
+        showScreenSharingButton: user?.role === 'trainer',
+        showTextChat: true,
+        showUserList: true
       })
 
-      api.addEventListener('readyToClose', () => {
-        // cleanup then navigate back
-        try { api.dispose() } catch {}
-        jitsiApiRef.current = null
-        navigate(user?.role === 'trainer' ? '/trainer/sessions' : '/student/sessions')
-      })
-
-      // also listen for participantLeft / ended events if needed
 
     } catch (err) {
-      console.error('Failed to initialize Jitsi:', err)
-      setError('Failed to load meeting. Check console.')
-    } finally {
-      setJitsiLoading(false)
+      console.error('[ZEGO][FRONTEND] Join failed', err)
+      setError('Failed to join meeting')
+      hasJoinedRef.current = false
     }
   }
 
-  // when sessionStarted flips to true, start Jitsi
-  useEffect(() => {
-    if (sessionStarted) startEmbeddedJitsi()
-    // cleanup if user navigates away
-    return () => {
-      if (jitsiApiRef.current) {
-        try { jitsiApiRef.current.dispose() } catch {}
-        jitsiApiRef.current = null
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sessionStarted, session?.jitsiRoomName])
 
+
+  const leaveRoom = () => {
+    hasJoinedRef.current = false
+    if (zpRef.current) {
+      zpRef.current.destroy()   // 👈 THIS IS THE LEAVE
+      zpRef.current = null
+    }
+
+    if (containerRef.current) {
+      containerRef.current.innerHTML = ''
+    }
+  }
+
+
+  useEffect(() => {
+    if (!sessionStarted) return
+    if (user?.role === 'trainer') {
+      joinRoomWithToken()
+    }
+  }, [sessionStarted])
+
+
+  // UI STATES  
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading session…</div>
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="loading-dots"><div></div><div></div><div></div><div></div></div>
+      </div>
+    )
   }
 
   if (error || !session) {
@@ -210,68 +236,147 @@ const SessionRoom: React.FC = () => {
         <div>
           <h2 className="text-xl font-semibold">Session not available</h2>
           <p className="text-sm text-red-600 mt-2">{error}</p>
-          <button onClick={() => navigate(-1)} className="mt-4 btn-primary">Go back</button>
+          <button
+            onClick={() => navigate(-1)}
+            className="mt-4 btn-primary"
+          >
+            Go back
+          </button>
         </div>
       </div>
     )
   }
 
+  // Rendering  
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+    <div className="min-h-screen bg-fixed"
+      style={{
+        backgroundImage:
+          `url(${bg_main})`,
+        position: "relative",
+        backgroundSize: "cover",
+        backgroundPosition: "right bottom",
+        backgroundRepeat: "no-repeat",
+        width: "100%",
+      }}>
+      {/* HEADER */}
+      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
           <div>
-            <div className="font-bold">LEARN🌎SPHERE</div>
-            <div className="text-xs text-gray-500">Live lessons</div>
+            <div className="text-lg font-bold">LearniLM🌎World</div>
+            <div className="text-xs text-gray-500">
+              {session.title} • {session.trainer.name}
+            </div>
           </div>
-          <button onClick={() => navigate(-1)} className="text-sm">Back</button>
+
+          <button
+            onClick={() => navigate(-1)}
+            className="text-sm text-gray-600 hover:text-gray-900"
+          >
+            Back
+          </button>
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto p-6">
-        <div className="bg-white rounded-lg p-6 shadow mb-6">
-          <div className="flex justify-between items-start">
+      <main className="max-w-7xl mx-auto px-4 py-6 space-y-6">
+        {/* SESSION INFO CARD */}
+        <div className="bg-white rounded-2xl shadow p-6">
+          <div className="flex flex-wrap justify-between items-start gap-4">
             <div>
-              <h1 className="text-2xl font-bold">{session.title}</h1>
-              <p className="text-sm text-gray-600">with {session.trainer.name}</p>
+              <h1 className="text-2xl font-bold text-gray-900">
+                {session.title}
+              </h1>
+              <p className="text-sm text-gray-600 mt-1">
+                with {session.trainer.name}
+              </p>
             </div>
-            <div className="text-sm px-3 py-1 rounded-full bg-gray-100">{session.status}</div>
+
+            {/* STATUS BADGE */}
+            <div
+              className={`text-xs font-semibold px-3 py-1 rounded-full
+              ${session.status === 'scheduled'
+                  ? 'bg-yellow-100 text-yellow-700'
+                  : session.status === 'active'
+                    ? 'bg-green-100 text-green-700'
+                    : session.status === 'ended'
+                      ? 'bg-gray-200 text-gray-600'
+                      : 'bg-red-100 text-red-700'
+                }`}
+            >
+              {session.status.toUpperCase()}
+            </div>
           </div>
 
-          <p className="mt-4 text-gray-700">{session.description}</p>
+          {session.description && (
+            <p className="mt-4 text-gray-700">
+              {session.description}
+            </p>
+          )}
 
-          <div className="mt-6 flex items-center gap-3">
+          {/* ACTIONS */}
+          <div className="mt-6 flex flex-wrap items-center gap-4">
+            {/* TRAINER: START */}
             {session.status === 'scheduled' && user?.role === 'trainer' && (
-              <button onClick={startSession} className="btn-primary">Start Session</button>
+              <button
+                onClick={startSession}
+                className="px-5 py-2 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition"
+              >
+                Start Session
+              </button>
             )}
 
-            {(session.status === 'active' || sessionStarted) && (
+            {/* STUDENT WAITING */}
+            {session.status === 'scheduled' && user?.role === 'student' && (
+              <div className="px-4 py-2 rounded-lg bg-blue-50 text-blue-700 text-sm">
+                Waiting for trainer to start the session…
+              </div>
+            )}
+
+            {/* LIVE SESSION */}
+            {sessionStarted && (
               <>
-                {!sessionStarted ? (
-                  <button onClick={() => setSessionStarted(true)} className="btn-primary">
-                    <Video className="inline-block mr-2" /> Join Video Call
+                {user?.role === 'student' && (
+                  <button
+                    onClick={joinRoomWithToken}
+                    className="px-5 py-2 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition"
+                  >
+                    Join Session
                   </button>
-                ) : (
-                  <div className="text-sm text-gray-600">Meeting is live below</div>
                 )}
+
                 {user?.role === 'trainer' && (
-                  <button onClick={endSession} className="btn-secondary ml-3">End Session</button>
+                  <button
+                    onClick={endSession}
+                    className="px-5 py-2 rounded-lg bg-red-500 text-white font-medium hover:bg-red-600 transition"
+                  >
+                    End Session
+                  </button>
                 )}
               </>
             )}
           </div>
         </div>
 
-        {/* Jitsi container */}
-        <div ref={containerRef} id="jitsi-container" className="w-full rounded-lg overflow-hidden shadow" style={{ minHeight: 200 }}>
-          {jitsiLoading && (
-            <div className="p-8 text-center text-gray-600">Loading meeting…</div>
-          )}
-          {!sessionStarted && <div className="p-6 text-sm text-gray-500">Click “Join Video Call” to load the meeting here.</div>}
+        {/* VIDEO STAGE */}
+        <div className="bg-black rounded-2xl shadow-2xl overflow-hidden">
+          <div className="h-[70vh] min-h-[520px] relative">
+            <div
+              ref={containerRef}
+              className="w-full h-full zego-uikit-prebuilt"
+            />
+
+            {/* JOINING OVERLAY */}
+            {sessionStarted && !zpRef.current && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/40 text-white text-sm">
+                Joining session…
+              </div>
+            )}
+          </div>
         </div>
       </main>
     </div>
   )
+
 }
 
 export default SessionRoom

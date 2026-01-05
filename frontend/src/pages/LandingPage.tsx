@@ -12,17 +12,30 @@ import { useAuth } from "../contexts/AuthContext";
 // import russian_student from '../assets/russian_student.png'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import arab_student from '../assets/arabian_student.png'
-// import chi_student from '../assets/chinese_student.png'
-// import indian_st from '../assets/Indian_student.png';
-import bg_img from '../assets/purple_gradient.jpg'
-import french_st from '../assets/French_student.png';
-import german_st from '../assets/German_student.png';
-import british_st from '../assets/British_student.png';
-import spanish_st from '../assets/Spanish_student.png';
-import japanese_st from '../assets/Japanese_student.png';
+// import bg_img from '../assets/purple_gradient.jpg'
+import bg_main from '../assets/bg_main.jpeg'
+import bg_img from '../assets/header_bg.jpg'
 
-import heroImage1 from '../assets/Hero_image1.png'
+import french_st from '../assets/French_student1.jpeg';
+import german_st from '../assets/German_student1.jpeg';
+import british_st from '../assets/British_student1.jpeg';
+import spanish_st from '../assets/Spanish_student1.jpeg';
+import japanese_st from '../assets/Japanese_student1.jpeg';
+import arab_student from '../assets/arabian_student1.jpeg'
+import indian_st from '../assets/Indian_student1.jpeg';
+// import chi_student from '../assets/chinese_student.png'
+
+import spain_flag from '../assets/Spain_flag.jpeg';
+import france_flag from '../assets/france_flag.jpeg';
+import jap_flag from '../assets/Jap_flag.jpeg';
+import ind_flag from '../assets/Indian_flag.jpeg';
+import ger_flag from '../assets/German_flag.jpeg'
+import brit_flag from '../assets/brit_flag.jpeg'
+import arab_flag from '../assets/arab_flag.jpeg'
+
+// import heroImage1 from '../assets/Hero_image1.png'
+// import heroImage2 from '../assets/Hero_image2.jpg'
+import heroImage3 from '../assets/Hero_image3.png'
 
 import math from '../assets/Math.jpeg'
 import hist from '../assets/history.png'
@@ -31,16 +44,11 @@ import phy from '../assets/Physics.jpeg'
 import chem from '../assets/chemistry.jpeg'
 import bio from '../assets/Biology.jpeg'
 import cs from '../assets/Computer Science.jpeg'
-
-
-
-
-
 import Footer from '../components/Footer'
 import TopTrainers from '../components/TopTrainers'
-import CurrencySelector from '../components/CurrencySelector'
+import { LanguageCard } from '../components/LanguageCard'
+// import CurrencySelector from '../components/CurrencySelector'
 // import MoreLanguages from '../components/MoreLanguages'
-
 
 // LinguaNest — Enhanced Landing Page (single-file React component)
 // Adjusted image positions: hero image lifted up slightly and the three overlapping
@@ -60,59 +68,8 @@ export default function LandingPageAlt() {
   const { user } = useAuth();
 
   // languages
-  const handleLanguageClick = async (language: string) => {
-    // try {
-    //   const res = await axios.get(`${API_BASE_URL}/api/users/trainers`);
-    //   const trainers = res.data;
-    //   console.log("✅ Trainers fetched:", trainers);
+  const handleLanguageClick = async (language: any) => {
 
-    //   if (!Array.isArray(trainers)) {
-    //     console.error("Unexpected trainers format:", trainers);
-    //     alert("API did not return a valid trainer list.");
-    //     return;
-    //   }
-
-    //   const matching = trainers.filter((t: any) => {
-    //     const verified = t?.profile?.verificationStatus === "verified";
-    //     const allLangs = [
-    //       ...(t?.profile?.languages || []),
-    //       ...(t?.profile?.trainerLanguages?.map((tl: any) => tl.language) || []),
-    //     ]
-    //       .filter(Boolean)
-    //       .map((l: string) => l.toLowerCase());
-    //     return verified && allLangs.includes(language.toLowerCase());
-    //   });
-
-    //   console.log(`🔍 Matching trainers for ${language}:`, matching);
-
-    //   if (!matching.length) {
-    //     alert(`No trainers found for ${language} yet.`);
-    //     return;
-    //   }
-
-    //   const bestTrainer = matching.sort(
-    //     (a: any, b: any) =>
-    //       (b?.profile?.averageRating || 0) - (a?.profile?.averageRating || 0)
-    //   )[0];
-
-    //   const trainerId = bestTrainer?._id;
-    //   console.log("🎯 Best trainer ID:", trainerId);
-
-    //   if (!trainerId) {
-    //     alert("Trainer ID missing!");
-    //     return;
-    //   }
-
-    //   if (!user) {
-    //     localStorage.setItem("redirectAfterLogin", `/book/${trainerId}`);
-    //     navigate("/login");
-    //   } else {
-    //     navigate(`/book/${trainerId}`);
-    //   }
-    // } catch (err) {
-    //   console.error("❌ Error finding trainer:", err);
-    //   alert("Something went wrong while finding a trainer.");
-    // }
 
     const trainerMap: Record<string, string> = {
       German: "trainer_id_for_german",
@@ -139,12 +96,20 @@ export default function LandingPageAlt() {
     }
   };
 
-  const handleMoreLanguageClick = (languageName: string) => {
+  const handleMoreLanguageClick = (languageName: any) => {
+
     const languageTrainerMap: Record<string, string> = {
       Sanskrit: "68f244c9e88b2371b4194d2c",
       Russian: "68f244c9e88b2371b4194d2c",
       Mandarin: "trainer_id_for_mandarin",
+      Thai: "trainer_id_for_thai",
+      Bengali: "trainer_id_for_bengali",
+      Swahili: "trainer_id_for_swahili",
+      Italian: "trainer_id_for_italian",
+      Portuguese: "trainer_id_for_portuguese",
+      Korean: "trainer_id_for_korean",
     };
+
 
     const trainerId = languageTrainerMap[languageName];
 
@@ -305,6 +270,116 @@ export default function LandingPageAlt() {
 
   useEffect(() => setMounted(true), [])
 
+  const languages = [
+    {
+      lang: "English",
+      flag: "gb",
+      bg: brit_flag,
+      hoverBg: british_st,
+      pattern: "Cambridge English",
+      headline: "Master English for Real-World Communication",
+      subtitle: "Build confidence for global conversations",
+      levels: [
+        "A2 — Understand daily expressions & common conversations",
+        "B1 — Participate in detailed discussions with confidence",
+        "B2 — Communicate fluently in academic & professional settings",
+      ],
+      idealFor: "🌍 Ideal for work, travel, study & global opportunities",
+    },
+    {
+      lang: "Spanish",
+      flag: "es",
+      bg: spain_flag,
+      hoverBg: spanish_st,
+      pattern: "DELE Pattern",
+      headline: "Learn Spanish for Everyday Life & Global Communication",
+      subtitle: "Speak confidently in real-world situations",
+      levels: [
+        "A1 — Everyday vocabulary & essential phrases",
+        "A2 — Converse confidently about daily life",
+        "B1 — Express opinions, travel & work conversations",
+      ],
+      idealFor: "🌍 Ideal for students, travelers & career growth",
+    },
+    {
+      lang: "Japanese",
+      flag: "jp",
+      bg: jap_flag,
+      hoverBg: japanese_st,
+      pattern: "JLPT / Japan Foundation",
+      headline: "Learn Japanese the Right Way",
+      subtitle: "From basics to real Japanese understanding",
+      levels: [
+        "N5 — Basic greetings & essential phrases",
+        "N4 — Daily conversation & reading practice",
+        "N3 — Understand news, articles & real content",
+      ],
+      idealFor: "🎌 Ideal for exams, anime lovers & Japan aspirants",
+    },
+    {
+      lang: "German",
+      flag: "de",
+      bg: ger_flag,
+      hoverBg: german_st,
+      pattern: "MMB Pattern",
+      headline: "Learn German with Confidence — Step by Step",
+      subtitle: "Structured learning for life, work & study",
+      levels: [
+        "A1 — Basic introductions & everyday phrases",
+        "A2 — Travel, shopping & daily conversations",
+        "B1 — Speak confidently for work, study & life",
+      ],
+      idealFor: "🌍 Perfect for students, professionals & study-abroad aspirants",
+    },
+    {
+      lang: "French",
+      flag: "fr",
+      bg: france_flag,
+      hoverBg: french_st,
+      pattern: "DELF Pattern",
+      headline: "Master French for Real Conversations",
+      subtitle: "Learn French the natural, practical way",
+      levels: [
+        "A1 — Greetings & simple interactions",
+        "A2 — Conversations on daily topics",
+        "B1 — Fluent discussions, media & opinions",
+      ],
+      idealFor: "✨ Learn French for culture, travel & communication",
+    },
+    {
+      lang: "Arabic",
+      flag: "sa",
+      bg: arab_flag,
+      hoverBg: arab_student,
+      pattern: "ALPT / Arabic Language Proficiency Test",
+      headline: "Master Arabic from Basics to Fluent Understanding",
+      subtitle: "Build strong foundations in Modern Arabic",
+      levels: [
+        "A1 — Learn alphabets, pronunciation & greetings",
+        "A2 — Daily conversation & short texts",
+        "B1 — Understand media, formal speech & writing",
+      ],
+      idealFor: "🌙 Ideal for work, travel, education & cultural learning",
+    },
+    {
+      lang: "Sanskrit",
+      flag: "in",
+      bg: ind_flag,
+      hoverBg: indian_st,
+      pattern: "Yoga, Mantras & Ancient Texts",
+      headline: "Unlock the Wisdom of Sanskrit",
+      subtitle: "Connect with India’s ancient knowledge system",
+      levels: [
+        "A1 — Read & understand basic Sanskrit letters and words",
+        "A2 — Chant and understand traditional mantras",
+        "B1 — Comprehend ancient texts, shlokas & scriptures",
+      ],
+      idealFor: "🌿 Ideal for culture, spirituality, yoga & heritage learners",
+    },
+  ];
+
+
+
   const steps = [
     {
       icon: Users,
@@ -394,70 +469,95 @@ export default function LandingPageAlt() {
 
 
   return (
-    <div className="min-h-screen font-inter text-[#2D274B] transition-colors duration-500 bg-fixed"
+    <div className="min-h-screen font-inter text-[#2D274B] transition-colors duration-500 bg-[#FFFAF1] bg-fixed"
       style={{
         backgroundImage:
-          `url(${bg_img})`,
+          `url(${bg_main})`,
         position: "relative",
         backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundPosition: "right bottom",
         backgroundRepeat: "no-repeat",
         width: "100%",
       }}
     >
 
       {/* 2D274B  text- #dc8d33*/}
-      <header className="sticky top-0 z-40 bg-[#6B48AF]/95 backdrop-blur-sm border-b border-white/30 text-white">
+      {/* bg-[#6B48AF]/95 backdrop-blur-sm border-b border-white/30 text-white */}
+      <header className="sticky top-0 z-40 bg-fixed">
+        <div className="px-4 pt-4">
+          <div
+            className="
+        mx-auto
+        max-w-7xl
+        rounded-full
+        bg-[#6B48AF]/90
+        backdrop-blur-md
+        shadow-xl
+        border border-white/30
+      "
+            style={{
+              backgroundImage:
+                `url(${bg_img})`,
+              position: "relative",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              width: "100%",
+            }}
+          >
+            <Container className="py-7 px-10">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
 
-        <Container className="py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+                  <div className="flex flex-col items-center gap-1">
 
-              <div className="flex flex-col items-center gap-1">
+                    {/* Main Logo */}
+                    <div className="text-3xl md:text-4xl font-[Good Vibes] font-extrabold tracking-wide relative inline-flex items-center">
 
-                {/* Main Logo */}
-                <div className="text-2xl md:text-3xl font-[Good Vibes] font-extrabold tracking-wide relative inline-flex items-center">
+                      {/* LEARN e0fa84*/}
+                      <span className="text-[#FFFAF1] bg-clip-text drop-shadow-lg"> LearniLM </span>
 
-                  {/* LEARN */}
-                  <span className="text-[#e0fa84] bg-clip-text drop-shadow-lg"> LearniLM </span>
+                      {/* Rotating Globe */}
+                      <motion.span animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 12, ease: "linear" }} className="inline-block mx-1 text-3xl" > 🌎 </motion.span>
 
-                  {/* Rotating Globe */}
-                  <motion.span animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 12, ease: "linear" }} className="inline-block mx-1 text-3xl" > 🌎 </motion.span>
+                      {/* World F64EBB */}
+                      <span className="text-[#FFFAF1] bg-clip-text drop-shadow-lg"> World </span>
+                    </div>
+                  </div>
+                </div>
 
-                  {/* World */}
-                  <span className="text-[#e0fa84] bg-clip-text drop-shadow-lg"> World </span>
+                <nav className="hidden sm:flex items-center gap-6">
+                  {/* <Link to="/main" className="text-base text-[#dc8d33] font-medium hover:text-[#CBE56A]">Browse our Mentors</Link>
+               */}
+                  {/* <CurrencySelector variant="header" /> */}
+                  <Link to="/login" className="text-lg font-medium text-[white] hover:text-[#6B48AF]">Sign In</Link>
+                  <Link to="/register" className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#F64EBB] text-white text-base font-semibold shadow hover:scale-105 transition">Get started</Link>
+                </nav>
+
+                <div className="sm:hidden ">
+                  <Button variant="light" onClick={() => setShowOffcanvas(true)} aria-label="Open menu">☰</Button>
+
+                  <Offcanvas show={showOffcanvas} onHide={() => setShowOffcanvas(false)} placement="end" aria-labelledby="offcanvas-nav">
+                    <Offcanvas.Header closeButton>
+                      <Offcanvas.Title id="offcanvas-nav">Menu</Offcanvas.Title>
+                    </Offcanvas.Header>
+                    <Offcanvas.Body>
+                      <Nav className="flex-column gap-2">
+                        <Nav.Link as={Link} to="/main" onClick={() => setShowOffcanvas(false)}>Trainers</Nav.Link>
+                        <Nav.Link as={Link} to="/login" onClick={() => setShowOffcanvas(false)}>Sign In</Nav.Link>
+                        <div className="mt-3">
+                          <Link to="/register" onClick={() => setShowOffcanvas(false)} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#9787F3] text-white text-sm font-semibold">Get started</Link>
+                        </div>
+                      </Nav>
+                    </Offcanvas.Body>
+                  </Offcanvas>
                 </div>
               </div>
-            </div>
-
-            <nav className="hidden sm:flex items-center gap-6">
-              {/* <Link to="/main" className="text-base text-[#dc8d33] font-medium hover:text-[#CBE56A]">Browse our Mentors</Link>
-               */}
-              <CurrencySelector variant="header" />
-              <Link to="/login" className="text-base font-medium text-[white] hover:text-[#CBE56A]">Sign In</Link>
-              <Link to="/register" className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#CBE56A] text-[#2D274B] text-sm font-semibold shadow hover:scale-105 transition">Get started</Link>
-            </nav>
-
-            <div className="sm:hidden">
-              <Button variant="light" onClick={() => setShowOffcanvas(true)} aria-label="Open menu">☰</Button>
-
-              <Offcanvas show={showOffcanvas} onHide={() => setShowOffcanvas(false)} placement="end" aria-labelledby="offcanvas-nav">
-                <Offcanvas.Header closeButton>
-                  <Offcanvas.Title id="offcanvas-nav">Menu</Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                  <Nav className="flex-column gap-2">
-                    <Nav.Link as={Link} to="/main" onClick={() => setShowOffcanvas(false)}>Trainers</Nav.Link>
-                    <Nav.Link as={Link} to="/login" onClick={() => setShowOffcanvas(false)}>Sign In</Nav.Link>
-                    <div className="mt-3">
-                      <Link to="/register" onClick={() => setShowOffcanvas(false)} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#9787F3] text-white text-sm font-semibold">Get started</Link>
-                    </div>
-                  </Nav>
-                </Offcanvas.Body>
-              </Offcanvas>
-            </div>
+            </Container>
           </div>
-        </Container>
+        </div>
+
+
       </header>
 
       <main className="pt-12 pb-20">
@@ -469,10 +569,11 @@ export default function LandingPageAlt() {
               transition={{ duration: 0.7 }}
               className="text-left"
             >
-              <h1 className="text-5xl md:text-6xl font-serif leading-tight font-extrabold text-[#2D274B]">
-                Empower your future now, clarity comes with the
+              <h1 className="text-5xl md:text-5xl font-serif leading-tight font-extrabold text-[#2D274B]">
+                Clarity comes with the
                 <br />
-                <span className="text-[#e0fa84]"> Right Mentors.</span>
+                {/* e0fa84 */}
+                <span className="text-[#F64EBB]"> Right Mentors.</span>
               </h1>
 
               <p className="mt-6 text-2xl text-[#2D274B] font-bold max-w-xl">
@@ -480,11 +581,12 @@ export default function LandingPageAlt() {
               </p>
 
               <div className="mt-8 flex flex-wrap gap-4">
-                <Link to="/main" className="inline-flex items-center gap-3 px-6 py-3 bg-[#CBE56A] text-[#4B437C] text-lg rounded-lg shadow hover:scale-105 transition" aria-label="Start learning">
+                <Link to="/main" className="inline-flex items-center gap-3 px-6 py-3 bg-[#F64EBB] text-white hover:bg-[#6B48AF]  text-lg rounded-lg shadow hover:scale-105 transition" aria-label="Start learning">
                   <Play />
                   Start Learning
                 </Link>
-                <Link to="/become-trainer" className="inline-flex items-center gap-3 px-6 py-3 border border-[#9787F3] text-blue-50 text-lg rounded-lg hover:text-[#4B437C] hover:bg-[#CBE56A] transition" aria-label="Become a trainer">
+                {/* CBE56A hover:text-[#4B437C]*/}
+                <Link to="/become-trainer" className="inline-flex items-center gap-3 px-6 py-3 border border-[#9787F3] bg-[#F64EBB] text-blue-50 text-lg rounded-lg  hover:bg-[#6B48AF] transition" aria-label="Become a trainer">
                   <Users /> Become a Trainer
                 </Link>
               </div>
@@ -515,7 +617,7 @@ export default function LandingPageAlt() {
             </motion.div>
 
             <motion.div initial={{ opacity: 0 }} animate={mounted ? { opacity: 1 } : {}} transition={{ delay: 0.2 }} className="relative w-full max-w-2xl mx-auto rounded-2xl overflow-hidden  -translate-y-6 md:-translate-y-12">
-              <img loading="lazy" src={heroImage1} alt="students practicing a language together" className="w-full h-[420px] md:h-96 lg:h-[520px] object-contain" />
+              <img loading="lazy" src={heroImage3} alt="students practicing a language together" className="w-full h-[420px] md:h-96 lg:h-[520px] object-contain" />
 
               {/* Left card - moved up */}
               {/* <div className="absolute left-6 bottom-24 w-52 rounded-xl overflow-hidden shadow-lg border-2 border-white bg-white">
@@ -554,10 +656,10 @@ export default function LandingPageAlt() {
       {/* Language Levels Explanation */}
       {/*  bg-[#2D274B] */}
       <section
-        className="relative py-20 text-[#dc8d33]"
+        className="relative py-12 text-[#dc8d33]"
         aria-labelledby="sdil-courses"
       >
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8 text-center">
           {/* Heading */}
           <motion.h2
             id="sdil-courses"
@@ -565,10 +667,10 @@ export default function LandingPageAlt() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-5xl md:text-5xl font-extrabold font-serif text-[#e0fa84] tracking-tight"
+            className="text-5xl md:text-5xl font-extrabold font-serif text-[#F64EBB] tracking-tight"
           >
             Languages That Open Doors
-            <span className="block text-[#e0fa84] mt-1">
+            <span className="block text-[#F64EBB] mt-1">
               Speak to the World with Confidence
             </span>
           </motion.h2>
@@ -586,235 +688,116 @@ export default function LandingPageAlt() {
           </motion.p>
 
           {/* Tag */}
-          <div className="mt-6 flex justify-center">
+          <div className="mt-4 flex justify-center">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border text-sm font-medium text-[#4B437C] shadow-sm">
               🌍 Languages & Levels
             </div>
           </div>
 
           {/* Responsive Grid with Flags */}
-          <div className="mt-20 grid gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-            {[
-              {
-                lang: "German",
-                flag: "https://flagcdn.com/w40/de.png",
-                pattern: "MMB Pattern",
-                bg: german_st,
-                levels: [
-                  { name: "A1", desc: "Basic introductions & phrases." },
-                  { name: "A2", desc: "Everyday conversations & travel." },
-                  { name: "B1", desc: "Confident speaking in work & study." },
-                ],
-              },
-              {
-                lang: "French",
-                flag: "https://flagcdn.com/w40/fr.png",
-                pattern: "DELF Pattern",
-                bg: french_st,
-                levels: [
-                  { name: "A1", desc: "Greetings & simple interactions." },
-                  { name: "A2", desc: "Conversations on daily topics." },
-                  { name: "B1", desc: "Fluent discussions & media." },
-                ],
-              },
-              {
-                lang: "Japanese",
-                flag: "https://flagcdn.com/w40/jp.png",
-                pattern: "JLPT / Japan Foundation",
-                bg: japanese_st,
-                levels: [
-                  { name: "N5", desc: "Basic greetings & phrases." },
-                  { name: "N4", desc: "Daily conversation & reading." },
-                  { name: "N3", desc: "Understand news & articles." },
-                ],
-              },
-              {
-                lang: "Spanish",
-                flag: "https://flagcdn.com/w40/es.png",
-                pattern: "DELE Pattern",
-                bg: spanish_st,
-                levels: [
-                  { name: "A1", desc: "Everyday vocabulary & phrases." },
-                  { name: "A2", desc: "Converse about daily life." },
-                ],
-              },
-              {
-                lang: "English",
-                flag: "https://flagcdn.com/w40/gb.png",
-                pattern: "Cambridge English",
-                bg: british_st,
-                levels: [
-                  { name: "A2", desc: "Understand daily expressions." },
-                  { name: "B1", desc: "Detailed conversations." },
-                  { name: "B2", desc: "Fluent in professional settings." },
-                ],
-              },
-              {
-                lang: "Arabic",
-                flag: "https://flagcdn.com/w40/sa.png",
-                pattern: "ALPT / Arabic Lang. Proficiency Test",
-                bg: arab_student,
-                levels: [
-                  { name: "A1", desc: "Learn alphabets & greetings." },
-                  { name: "A2", desc: "Daily conversation & short texts." },
-                  { name: "B1", desc: "Understand media & formal speech." },
-                ],
-              },
-            ].map((course, idx) => (
-              <motion.div
+          <div className="mt-16 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {languages.map((lang, idx) => (
+              <LanguageCard
                 key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.15 }}
-                viewport={{ once: true }}
-                className="relative rounded-2xl overflow-hidden group hover:shadow-2xl transition-all duration-300 cursor-pointer"
-                onClick={() =>
-                  handleLanguageClick(course.lang)
-                }
-              >
-                {/* Language Header */}
-                <div className="flex items-center justify-between px-3 pt-4 pb-2">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full overflow-hidden border border-white">
-                      {course.flag === "🌍" ? (
-                        <span className="text-2xl">🌍</span>
-                      ) : (
-                        <img
-                          src={course.flag}
-                          alt={`${course.lang} flag`}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-                    <h3 className="text-2xl font-bold text-white">{course.lang}</h3>
-                  </div>
-                  {course.pattern && (
-                    <span className="text-xs bg-[#9787F3] text-white px-2 py-1 rounded-full">
-                      {course.pattern}
-                    </span>
-                  )}
-                </div>
-
-                {/* Image and Description */}
-                <div
-                  className="relative rounded-b-2xl overflow-hidden"
-                  style={{
-                    backgroundImage: `url(${course.bg})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    height: "280px",
-                  }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent group-hover:from-black/50 transition-all duration-300"></div>
-
-                  {(
-                    <div className="relative z-10 text-left p-6 flex flex-col justify-end h-full">
-                      <ul className="text-base font-semibold text-gray-200 space-y-1">
-                        {course.levels?.map((level, i) => (
-                          <li key={i} className="leading-snug">
-                            <strong>{level.name}:</strong> {level.desc}
-                          </li>
-                        ))}
-                      </ul>
-                      <p className="mt-3 text-[#CBE56A] font-semibold">
-                        Click to start learning →
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </motion.div>
+                data={lang}
+                onConfirm={handleLanguageClick}
+              />
             ))}
-          </div>
 
-          {/* "Show More Languages" Button (outside grid) */}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setShowMoreLanguages(true)}
-            className="mt-8 px-6 py-3 bg-[#CBE56A] text-[#2D274B] rounded-full shadow-md hover:bg-[#c2e24f] transition"
-          >
-            Show More Languages
-          </motion.button>
+            {/* More card separate */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
 
-          {/* Modal for More Languages */}
-          {showMoreLanguages && (
-            <div
-              className="fixed inset-0 flex items-center justify-center bg-black/60 z-50"
-              onClick={() => setShowMoreLanguages(false)}
+              whileHover={{ scale: 1.08, y: -8 }}
+              whileTap={{ scale: 0.96 }}
+
+              className="
+              group relative h-[230px] flex items-center justify-center cursor-pointer transition-all duration-500 ease-out "
+              onClick={() => setShowMoreLanguages(true)}
             >
               <div
-                onClick={(e) => e.stopPropagation()}
-                className="
-                  rounded-3xl p-10 max-w-3xl w-[90%] relative 
-                  shadow-2xl
-                  bg-gradient-to-br from-[#ffffff] via-[#f0f6ff] to-[#dceaff]
-                  border border-white/40
-                "
+                className=" 
+                w-40 h-40 rounded-full bg-[#F64EBB] text-white font-bold flex flex-col items-center justify-center shadow-[0_20px_30px_5px_rgba(0,0,0,0.3)] transition-all duration-500 ease-out group-hover:shadow-[0_40px_50px_10px_rgba(0,0,0,0.4)]"
               >
-                {/* Close Button */}
-                <button
-                  onClick={() => setShowMoreLanguages(false)}
-                  className="absolute top-4 right-4 text-[#2D274B] hover:text-black text-2xl"
-                >
-                  ✕
-                </button>
+                <span className="text-3xl leading-none">+</span>
+                <span className="text-sm mt-1">More</span>
+              </div>
+            </motion.div>
 
-                {/* Title */}
-                <h3 className="text-3xl font-bold text-[#2D274B] mb-6">
-                  Explore More Languages
-                </h3>
+          </div>
+        </div>
+        {/* Modal for More Languages */}
+        {showMoreLanguages && (
+          <div
+            className="fixed inset-0 flex items-center justify-center bg-black/60 z-50"
+            onClick={() => setShowMoreLanguages(false)}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="
+        rounded-3xl p-10 max-w-3xl w-[90%] relative 
+        shadow-2xl
+        bg-gradient-to-br from-[#ffffff] via-[#f0f6ff] to-[#dceaff]
+        border border-white/40
+      "
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setShowMoreLanguages(false)}
+                className="absolute top-4 right-4 text-[#2D274B] hover:text-black text-2xl"
+              >
+                ✕
+              </button>
 
-                {/* Languages Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 mt-6">
-                  {[
-                    { name: "Thai", flag: "th" },
-                    { name: "Bengali", flag: "bd" },
-                    { name: "Sanskrit", flag: "in" },
-                    { name: "Russian", flag: "ru" },
-                    { name: "Mandarin", flag: "cn" },
-                    { name: "Swahili", flag: "ke" },
-                    { name: "Italian", flag: "it" },
-                    { name: "Portuguese", flag: "pt" },
-                    { name: "Korean", flag: "kr" },
-                  ].map((lang, i) => (
-                    <div
-                      key={i}
-                      onClick={() => handleMoreLanguageClick(lang.name)}
-                      className="
-                        group cursor-pointer 
-                        h-32 rounded-2xl 
-                        bg-white 
-                        shadow-md hover:shadow-xl 
-                        border border-slate-200
-                        transition-all duration-300 
-                        flex flex-col items-center justify-center
-                        hover:-translate-y-1 hover:scale-[1.05]
-                      "
-                    >
-                      {/* SVG Flag */}
-                      <img
-                        src={`https://flagcdn.com/${lang.flag}.svg`}
-                        alt={lang.name}
-                        className="w-12 h-12 mb-2 rounded-md shadow-sm group-hover:scale-110 transition-transform"
-                      />
+              {/* Title */}
+              <h3 className="text-3xl font-bold text-[#2D274B] mb-6">
+                Explore More Languages
+              </h3>
 
-                      {/* Name */}
-                      <div
-                        className="
-                          text-[#2D274B] text-lg font-semibold 
-                          text-center group-hover:text-[#dc8d33]
-                          transition-colors
-                        "
-                      >
-                        {lang.name}
-                      </div>
+              {/* Languages Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 mt-6">
+                {[
+                  { name: "Thai", flag: "th" },
+                  { name: "Bengali", flag: "in" },
+                  { name: "Russian", flag: "ru" },
+                  { name: "Mandarin", flag: "cn" },
+                  { name: "Swahili", flag: "ke" },
+                  { name: "Italian", flag: "it" },
+                  { name: "Portuguese", flag: "pt" },
+                  { name: "Korean", flag: "kr" },
+                ].map((lang, i) => (
+                  <div
+                    key={i}
+                    onClick={() => handleMoreLanguageClick(lang.name)}
+                    className="
+              group cursor-pointer 
+              h-32 rounded-2xl 
+              bg-white 
+              shadow-md hover:shadow-xl 
+              border border-slate-200
+              transition-all duration-300 
+              flex flex-col items-center justify-center
+              hover:-translate-y-1 hover:scale-[1.05]
+            "
+                  >
+                    <img
+                      src={`https://flagcdn.com/${lang.flag}.svg`}
+                      alt={lang.name}
+                      className="w-12 h-12 mb-2 rounded-md shadow-sm"
+                    />
+                    <div className="text-[#2D274B] text-lg font-semibold text-center">
+                      {lang.name}
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
+
       </section>
 
       {/* Explore subjects section */}
@@ -831,7 +814,7 @@ export default function LandingPageAlt() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
             viewport={{ once: true }}
-            className="text-5xl md:text-5xl font-serif tracking-tight font-extrabold text-[#e0fa84]"
+            className="text-5xl md:text-5xl font-serif tracking-tight font-extrabold text-[#F64EBB]"
           >
             Subjects You Can Explore
           </motion.h2>
@@ -862,7 +845,7 @@ export default function LandingPageAlt() {
                 },
               },
             }}
-            className="mt-16 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+            className="mt-16 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 box "
           >
             {[
               {
@@ -907,21 +890,22 @@ export default function LandingPageAlt() {
                 }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
-                className="group relative h-56 rounded-xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-xl transition-all duration-300 cursor-pointer"
+                className="group relative h-60 w-60 rounded-[24px] bg-white shadow-[0_20px_30px_5px_rgba(0,0,0,0.3)] transition-all duration-500 ease-out hover:-translate-y-4 hover:shadow-[0_40px_50px_10px_rgba(0,0,0,0.4)] cursor-pointer"
                 style={{
                   backgroundImage: `url(${subject.img})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
+
                 }}
                 onClick={() => handleSubjectClick(subject)}
               >
                 {/* Overlay */}
-                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all duration-300"></div>
+                <div className=" rounded-[24px] absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all duration-300"></div>
 
                 {/* Subject Name */}
                 <div
                   className={`absolute top-3 left-3 ${subject.isMore
-                    ? "bg-[#CBE56A] text-[#2D274B]"
+                    ? "bg-[#F64EBB] text-[white]"
                     : "bg-white/90 text-[#2D274B]"
                     } px-3 py-1 rounded-md font-bold text-lg shadow`}
                 >
@@ -929,11 +913,11 @@ export default function LandingPageAlt() {
                 </div>
 
                 {/* “More” Hover Text */}
-                {subject.isMore && (
+                {/* {subject.isMore && (
                   <div className="absolute inset-0 flex items-center justify-center text-white font-bold text-xl bg-black/40 opacity-0 group-hover:opacity-100 transition">
                     Explore More →
                   </div>
-                )}
+                )} */}
               </motion.div>
             ))}
           </motion.div>
@@ -1031,7 +1015,7 @@ export default function LandingPageAlt() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
             viewport={{ once: true }}
-            className="text-5xl md:text-5xl font-serif tracking-tight font-extrabold text-[#e0fa84]"
+            className="text-5xl md:text-5xl font-serif tracking-tight font-extrabold text-[#F64EBB]"
           >
             Beyond Academics, Your Passion Awaits
           </motion.h2>
@@ -1213,96 +1197,6 @@ export default function LandingPageAlt() {
         )}
       </section>
 
-      {/* How it works section */}
-      <section className="py-16" aria-labelledby="how-it-works">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 id="how-it-works" className="text-4xl font-bold md:text-4xl font-serif text-[#e0fa84]">How it works — in 4 simple steps</h2>
-            <p className="mt-3 text-[#2D274B] text-lg font-bold max-w-2xl mx-auto">Designed to get you speaking fast: pick, book, practice and track.</p>
-          </div>
-
-          <div className="grid md:grid-cols-4 gap-6">
-            {steps.map((s, i) => (
-              <motion.div key={i} whileHover={{ y: -6 }} className="bg-gradient-to-b from-[#f0fdf4] to-white rounded-2xl p-6 shadow hover:shadow-xl transition" role="article">
-                <div className="w-14 h-14 rounded-lg bg-white shadow flex items-center justify-center mb-4">
-                  <s.icon className="text-[#9787F3]" aria-hidden />
-                </div>
-                <h3 className="font-semibold text-lg">{s.title}</h3>
-                <p className="text-sm text-[#4B437C] mt-2">{s.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Why learners love us section */}
-      {/* bg-[#2D274B] */}
-      <section className="py-16 ">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h3 className="text-4xl font-semibold font-serif text-[#e0fa84]">Why learners love <br /> LearniLM🌍World</h3>
-              <p className="mt-4 text-lg font-bold max-w-xl text-[#2D274B]">Short lessons, lots of speaking time and tutors focused on practical outcomes. Learn phrases you’ll use the very next day.</p>
-
-              <div className="mt-8 grid sm:grid-cols-3 gap-4">
-                {features.map((f, idx) => (
-                  <div key={idx} className="p-4 bg-blue-50 rounded-xl shadow hover:bg-[#CBE56A] hover:scale-[1.02] transition" role="group">
-                    <f.icon className="w-9 h-9 text-[#9787F3]" aria-hidden />
-                    <div className="font-bold mt-3">{f.title}</div>
-                    <div className="text-base font-semibold text-[#4B437C] mt-1">{f.text}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="bg-blue-50 p-6 rounded-2xl shadow ">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-lg bg-[#fde68a] flex items-center justify-center">⭐</div>
-                  <div>
-                    <div className="font-extrabold text-xl ">Real outcomes</div>
-                    <div className="text-base font-semibold text-[#4B437C]">Progress reports every 4 lessons</div>
-                  </div>
-                </div>
-                <p className="text-[#4B437C] font-semibold text-lg">From small talk to business calls — our curriculum is outcome-focused so you can see measurable improvement.</p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-blue-50 p-4 rounded-xl shadow font-extrabold  hover:bg-[#CBE56A] ">Quick lessons</div>
-                <div className="bg-blue-50 p-4 rounded-xl shadow font-extrabold  hover:bg-[#CBE56A] ">Excellent Material</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Reviews */}
-      <section className="py-16" aria-labelledby="reviews">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h3 id="reviews" className="text-4xl font-serif font-bold text-[#e0fa84]">What learners say</h3>
-            <p className="mt-2 text-[#2D274B] font-bold text-lg">Real reviews from students and professionals who used LearniLM🌍World.</p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {reviews.map((r, i) => (
-              <article key={i} className="bg-white rounded-xl shadow p-6 hover:shadow-2xl transition " aria-label={`Review by ${r.name}`}>
-                <div className="flex items-center gap-3 mb-3 ">
-                  <div className="w-12 h-12 rounded-full bg-[#fde68a] flex items-center justify-center font-semibold">{r.name.split(' ')[0][0]}</div>
-                  <div>
-                    <div className="font-semibold">{r.name}</div>
-                    {/* <div className="text-xs text-[#4B437C]">{r.role}</div> */}
-                  </div>
-                </div>
-                <p className="text-[#4B437C]">“{r.text}”</p>
-                {/* removed idx from map((_, idx) => '★') */}
-                <div className="mt-4 text-sm text-[#4B437C]">{Array.from({ length: r.rating }).map((_) => '★').join('')}</div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Highlights Section */}
       <section
         className="relative py-24  text-white"
@@ -1316,7 +1210,7 @@ export default function LandingPageAlt() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-serif text-[#e0fa84] tracking-tight text-center"
+            className="text-4xl md:text-5xl font-serif text-[#F64EBB] tracking-tight text-center"
           >
             Highlights of LearniLM 🌎 World
           </motion.h2>
@@ -1402,12 +1296,138 @@ export default function LandingPageAlt() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             viewport={{ once: true }}
-            className="mt-16 text-lg text-center text-white font-bold max-w-3xl mx-auto"
+            className="mt-16 text-lg text-center text-[#2D274B] font-bold max-w-3xl mx-auto"
           >
             Personalized support and guidance ensure every learner’s success at <br /> LearniLM 🌎 World.
           </motion.p>
         </div>
       </section>
+
+      {/* How it works section */}
+      <section className="py-16" aria-labelledby="how-it-works">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 id="how-it-works" className="text-4xl font-bold md:text-4xl font-serif text-[#F64EBB]">How it works — in 4 simple steps</h2>
+            <p className="mt-3 text-[#2D274B] text-lg font-bold max-w-2xl mx-auto">Designed to get you speaking fast: pick, book, practice and track.</p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-6">
+            {steps.map((s, i) => (
+              <motion.div key={i} whileHover={{ y: -6 }} className="bg-gradient-to-b from-[#f0fdf4] to-white rounded-2xl p-6 shadow hover:shadow-xl transition" role="article">
+                <div className="w-14 h-14 rounded-lg bg-white shadow flex items-center justify-center mb-4">
+                  <s.icon className="text-[#9787F3]" aria-hidden />
+                </div>
+                <h3 className="font-semibold text-lg">{s.title}</h3>
+                <p className="text-sm text-[#4B437C] mt-2">{s.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Why learners love us section */}
+      {/* bg-[#2D274B] */}
+      <section className="py-16 ">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-8 items-start">
+            {/* LEFT – Heading only */}
+            <div>
+              <h3 className="text-4xl font-semibold font-serif text-[#F64EBB]">
+                Why learners love <br /> LearniLM🌍World
+              </h3>
+            </div>
+
+            {/* EMPTY right cell for row balance */}
+            <div />
+
+            {/* PARAGRAPH – spans both columns */}
+            <div className="lg:col-span-2">
+              <p className="mt-4 text-lg font-bold max-w-4xl text-[#2D274B]">
+                Short lessons, lots of speaking time and tutors focused on practical
+                outcomes. Learn phrases you’ll use the very next day.
+              </p>
+            </div>
+
+            {/* LEFT – Feature cards */}
+            <div>
+              <div className="mt-8 grid sm:grid-cols-3 gap-4">
+                {features.map((f, idx) => (
+                  <div
+                    key={idx}
+                    className="p-4 bg-blue-50 rounded-xl shadow hover:bg-[#F64EBB] hover:text-gray-200 hover:scale-[1.02] transition"
+                    role="group"
+                  >
+                    <f.icon className="w-9 h-9 text-[#9787F3]" aria-hidden />
+                    <div className="font-bold mt-3">{f.title}</div>
+                    <div className="text-base font-semibold text-[#4B437C] hover:text-gray-50 mt-1">
+                      {f.text}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* RIGHT – Shifted down */}
+            <div className="space-y-4 mt-10">
+              <div className="bg-blue-50 p-6 rounded-2xl shadow">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-lg bg-[#fde68a] flex items-center justify-center">
+                    ⭐
+                  </div>
+                  <div>
+                    <div className="font-extrabold text-xl">Real outcomes</div>
+                    <div className="text-base font-semibold text-[#4B437C]">
+                      Progress reports every 4 lessons
+                    </div>
+                  </div>
+                </div>
+                <p className="text-[#4B437C] font-semibold text-lg">
+                  From small talk to business calls — our curriculum is outcome-focused
+                  so you can see measurable improvement.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-blue-50 p-4 rounded-xl shadow font-extrabold hover:bg-[#F64EBB] hover:text-white">
+                  Quick lessons
+                </div>
+                <div className="bg-blue-50 p-4 rounded-xl shadow font-extrabold hover:text-white hover:bg-[#F64EBB]">
+                  Excellent Material
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* Reviews */}
+      <section className="py-16" aria-labelledby="reviews">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h3 id="reviews" className="text-4xl font-serif font-bold text-[#F64EBB]">What learners say</h3>
+            <p className="mt-2 text-[#2D274B] font-bold text-lg">Real reviews from students and professionals who used LearniLM🌍World.</p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {reviews.map((r, i) => (
+              <article key={i} className="bg-white rounded-xl shadow p-6 hover:shadow-2xl transition " aria-label={`Review by ${r.name}`}>
+                <div className="flex items-center gap-3 mb-3 ">
+                  <div className="w-12 h-12 rounded-full bg-[#fde68a] flex items-center justify-center font-semibold">{r.name.split(' ')[0][0]}</div>
+                  <div>
+                    <div className="font-semibold">{r.name}</div>
+                    {/* <div className="text-xs text-[#4B437C]">{r.role}</div> */}
+                  </div>
+                </div>
+                <p className="text-[#4B437C]">“{r.text}”</p>
+                {/* removed idx from map((_, idx) => '★') */}
+                <div className="mt-4 text-sm text-[#4B437C]">{Array.from({ length: r.rating }).map((_) => '★').join('')}</div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
 
       {/* FAQ */}
       <section className="py-16" aria-labelledby="faq-heading">
@@ -1437,11 +1457,12 @@ export default function LandingPageAlt() {
       {/* CTA  bg-gradient-to-r from-[#9787F3]/10 to-[#f97316]/8*/}
       <section className="py-12 ">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h4 className="text-4xl font-extrabold text-[#e0fa84] ">Master Your Skills, Confidently</h4>
+          <h4 className="text-4xl font-extrabold text-[#F64EBB] ">Master Your Skills, Confidently</h4>
           <p className="text-[#2D274B] text-xl font-bold mt-2">Sign up to Claim Your Free Trial Session. Get a Personalized 7-Day Learning Path After Your First Session.</p>
+          {/* 2D274B */}
           <div className="mt-6 flex justify-center gap-4">
-            <Link to="/main" className="inline-flex items-center gap-3 px-6 py-3 rounded-lg bg-[#CBE56A] text-[#2D274B]">Browse trainers <ChevronRight /></Link>
-            <Link to="/become-trainer" className="inline-flex items-center gap-3 px-6 py-3 rounded-lg border bg-[#CBE56A] border-[#CBE56A] text-[#2D274B] hover:bg-[#CBE56A]">Become a trainer</Link>
+            <Link to="/main" className="inline-flex items-center gap-3 px-6 py-3 rounded-lg bg-[#F64EBB] text-[white] hover:bg-[#fe1fb0]">Browse trainers <ChevronRight /></Link>
+            <Link to="/become-trainer" className="inline-flex items-center gap-3 px-6 py-3 rounded-lg border bg-[#F64EBB] border-[#CBE56A] text-[white] hover:bg-[#fe1fb0]">Become a trainer</Link>
           </div>
         </div>
       </section>

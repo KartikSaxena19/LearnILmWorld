@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ChevronDown, ChevronRight} from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import { Container, Nav, Offcanvas, Button } from "react-bootstrap";
 // import logo from '../assets/LearnilmworldLogo.jpg'
-import image1 from '../assets/become-trainer3.png'
-import image2 from '../assets/become-trainer4.png'
-import bg_img from '../assets/purple_gradient.jpg'
+import image1 from '../assets/become-trainer2.1.jpeg'
+import image2 from '../assets/become-trainer2.2.jpeg'
+// import bg_img from '../assets/purple_gradient.jpg'
+import bg_img from '../assets/header_bg.jpg'
+import bg_main from '../assets/bg_trainer.jpeg'
 import Footer from "../components/Footer";
-
 
 
 const BecomeTrainer: React.FC = () => {
@@ -18,106 +19,109 @@ const BecomeTrainer: React.FC = () => {
 
   return (
     <div className="bg-fixed min-h-screen text-[#e0fa84]"
-    style={{
-      backgroundImage:
-        `url(${bg_img})`,
+      style={{
+        backgroundImage:
+          `url(${bg_main})`,
         position: "relative",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         width: "100%",
-    }}
+      }}
     >
       {/* text-[#e0fa84] text-[#2D274B] */}
-        <header className="sticky top-0 z-40 bg-[#6B48AF] backdrop-blur-sm border-b border-white/40">
-          <Container className="py-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="flex flex-col items-center gap-1">
-                  {/* Main Logo */}
-                  <Link to="/">
-                  <div className="text-2xl md:text-3xl font-[Good Vibes] font-extrabold tracking-wide relative inline-flex items-center">
-                    <span className="text-[#e0fa84]">
-                      LearniLM
-                    </span>
-                    <motion.span
-                      animate={{ rotate: 360 }}
-                      transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
-                      className="inline-block mx-1 text-3xl"
+      <header className="sticky top-0 z-40 bg-fixed">
+        <div className="px-4 pt-4">
+          <div
+            className="
+        mx-auto
+        max-w-7xl
+        rounded-full
+        bg-[#6B48AF]/90
+        backdrop-blur-md
+        shadow-xl
+        border border-white/30
+      "
+            style={{
+              backgroundImage:
+                `url(${bg_img})`,
+              position: "relative",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              width: "100%",
+            }}
+          >
+            <Container className="py-7 px-10">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+
+                  <div className="flex flex-col items-center gap-1">
+
+                    {/* Main Logo */}
+                    {/* Main Logo – clickable */}
+                    <Link
+                      to="/"
+                      className="text-3xl md:text-4xl font-[Good Vibes] font-extrabold tracking-wide relative inline-flex items-center cursor-pointer hover:opacity-90 transition"
                     >
-                      🌎
-                    </motion.span>
-                    <span className="text-[#e0fa84]">
-                      World
-                    </span>
-                    {/* <motion.div
-                      className="absolute top-0 left-0 w-full h-full bg-white/20 rounded-full blur-xl pointer-events-none"
-                      animate={{ x: [-200, 200] }}
-                      transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
-                    /> */}
+                      <span className="text-[#FFFAF1] drop-shadow-lg">
+                        LearniLM
+                      </span>
+
+                      <motion.span
+                        animate={{ rotate: 360 }}
+                        transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
+                        className="inline-block mx-1 text-3xl"
+                      >
+                        🌎
+                      </motion.span>
+
+                      <span className="text-[#FFFAF1] drop-shadow-lg">
+                        World
+                      </span>
+                    </Link>
+
                   </div>
-                  </Link>
+                </div>
+
+                <nav className="hidden sm:flex items-center gap-6">
+                  {/* <Link to="/main" className="text-base text-[#dc8d33] font-medium hover:text-[#CBE56A]">Browse our Mentors</Link>
+               */}
+                  {/* <CurrencySelector variant="header" /> */}
+                  <Link to="/login" className="text-lg font-medium text-[white] hover:text-[#6B48AF]">Sign In</Link>
+                  <Link to="/register" className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#F64EBB] text-white text-base font-semibold shadow hover:scale-105 transition">Get started</Link>
+                </nav>
+
+                <div className="sm:hidden">
+                  <Button variant="light" onClick={() => setShowOffcanvas(true)} aria-label="Open menu">☰</Button>
+
+                  <Offcanvas show={showOffcanvas} onHide={() => setShowOffcanvas(false)} placement="end" aria-labelledby="offcanvas-nav">
+                    <Offcanvas.Header closeButton>
+                      <Offcanvas.Title id="offcanvas-nav">Menu</Offcanvas.Title>
+                    </Offcanvas.Header>
+                    <Offcanvas.Body>
+                      <Nav className="flex-column gap-2">
+                        <Nav.Link as={Link} to="/main" onClick={() => setShowOffcanvas(false)}>Trainers</Nav.Link>
+                        <Nav.Link as={Link} to="/login" onClick={() => setShowOffcanvas(false)}>Sign In</Nav.Link>
+                        <div className="mt-3">
+                          <Link to="/register" onClick={() => setShowOffcanvas(false)} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#9787F3] text-white text-sm font-semibold">Get started</Link>
+                        </div>
+                      </Nav>
+                    </Offcanvas.Body>
+                  </Offcanvas>
                 </div>
               </div>
+            </Container>
+          </div>
+        </div>
 
-              {/* Desktop Navigation */}
-              <nav className="hidden sm:flex items-center gap-6">
-                {/* <Link to="/main" className="text-sm text-[#dc8d33] font-semibold hover:text-[#CBE56A]">
-                  Browse our Mentors
-                </Link> */}
 
-                <Link to="/login" className="text-sm text-gray-50 font-semibold  hover:text-[#CBE56A]">
-                  Sign In
-                </Link>
-              </nav>
-
-              {/* Mobile Navigation */}
-              <div className="sm:hidden">
-                <Button
-                  variant="light"
-                  onClick={() => setShowOffcanvas(true)}
-                  aria-label="Open menu"
-                >
-                  ☰
-                </Button>
-
-                <Offcanvas
-                  show={showOffcanvas}
-                  onHide={() => setShowOffcanvas(false)}
-                  placement="end"
-                  aria-labelledby="offcanvas-nav"
-                >
-                  <Offcanvas.Header closeButton>
-                    <Offcanvas.Title id="offcanvas-nav">Menu</Offcanvas.Title>
-                  </Offcanvas.Header>
-                  <Offcanvas.Body>
-                    <Nav className="flex-column gap-2">
-                      <Nav.Link
-                        as={Link}
-                        to="/trainers"
-                        onClick={() => setShowOffcanvas(false)}
-                      >
-                        Trainers
-                      </Nav.Link>
-                      <Nav.Link
-                        as={Link}
-                        to="/login"
-                        onClick={() => setShowOffcanvas(false)}
-                      >
-                        Sign In
-                      </Nav.Link>
-                    </Nav>
-                  </Offcanvas.Body>
-                </Offcanvas>
-              </div>
-            </div>
-          </Container>
-        </header>
+      </header>
 
       {/* Hero Section */}
       <section className="relative flex flex-col items-center justify-center text-center py-20 px-4">
         <motion.h1
-          className="text-5xl md:text-6xl font-extrabold text-[#e0fa84] mb-6"
+          className="text-5xl md:text-6xl font-extrabold text-[#F64EBB] mb-6"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -135,7 +139,7 @@ const BecomeTrainer: React.FC = () => {
         </motion.p>
         <motion.button
           onClick={() => navigate("/register?role=trainer")}
-          className="px-8 py-4 bg-[#CBE56A] text-[#2D274B] font-semibold text-lg rounded-full shadow-lg hover:bg-[#CBE56A] transition-all"
+          className="px-8 py-4 bg-[#F64EBB] text-[white] font-semibold text-lg rounded-full shadow-lg hover:bg-[#ea20a4] transition-all"
           whileHover={{ scale: 1.05 }}
         >
           Join as a Trainer
@@ -150,7 +154,7 @@ const BecomeTrainer: React.FC = () => {
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-4xl md:text-4xl font-bold text-[#e0fa84]">
+          <h2 className="text-4xl md:text-4xl font-bold text-[#F64EBB]">
             Teach, Inspire, and Make a Difference
           </h2>
           <p className="text-xl font-bold text-[#2D274B] leading-relaxed">
@@ -165,7 +169,7 @@ const BecomeTrainer: React.FC = () => {
           </ul>
           <button
             onClick={() => navigate("/register?role=trainer")}
-            className="mt-6 px-8 py-3 bg-[#CBE56A] text-[#2D274B] rounded-full font-semibold hover:bg-[#CBE56A] transition-all"
+            className="mt-6 px-8 py-3 bg-[#F64EBB] text-[white] rounded-full font-semibold hover:bg-[#f92eb2] transition-all"
           >
             Become a Trainer Today
           </button>
@@ -187,7 +191,7 @@ const BecomeTrainer: React.FC = () => {
 
       {/* Global Teaching Section */}
       <section className="py-20 px-6 md:px-16  flex flex-col-reverse md:flex-row items-center gap-10 max-w-6xl mx-auto rounded-2xl shadow-sm">
-        
+
         {/* left Image */}
         <motion.div
           className="flex-1 flex justify-center"
@@ -209,55 +213,55 @@ const BecomeTrainer: React.FC = () => {
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-4xl md:text-4xl font-bold text-[#e0fa84]">
+          <h2 className="text-4xl md:text-4xl font-bold text-[#F64EBB]">
             Empower Learners Across 150+ Countries 🌍
           </h2>
           <p className="text-xl text-[#2D274B] font-bold leading-relaxed">
-           Be part of LearniLM 🌎 World — where passionate educators and curious learners come together. Shape the future of learning and grow with our expanding global community. <br/>
+            Be part of LearniLM 🌎 World — where passionate educators and curious learners come together. Shape the future of learning and grow with our expanding global community. <br />
             {/* <span className="font-semibold text-[#8CA0E5]">800,000+</span> students.  */}
             {/* Join us and get all the tools you need to teach, inspire, and grow. */}
           </p>
           <ul className="space-y-3 text-lg text-[#2D274B] font-bold">
             <li className="flex items-start gap-3">
-              <span className="text-[#e0fa84] text-xl">✔</span>
+              <span className="text-[#F64EBB] text-xl">✔</span>
               Continuous Flow of Learners — Reach motivated students from around the world.
             </li>
             <li className="flex items-start gap-3">
-              <span className="text-[#e0fa84] text-xl">✔</span>
+              <span className="text-[#F64EBB] text-xl">✔</span>
               Smart Scheduling Tools — Manage your sessions effortlessly with our intuitive calendar.
             </li>
             <li className="flex items-start gap-3">
-              <span className="text-[#e0fa84] text-xl">✔</span>
+              <span className="text-[#F64EBB] text-xl">✔</span>
               Interactive Virtual Classrooms — Engage your students with real-time learning tools.
             </li>
             <li className="flex items-start gap-3">
-              <span className="text-[#e0fa84] text-xl">✔</span>
+              <span className="text-[#F64EBB] text-xl">✔</span>
               Secure & Flexible Payments — Get paid easily, wherever you are.
             </li>
             <li className="flex items-start gap-3">
-              <span className="text-[#e0fa84] text-xl">✔</span>
+              <span className="text-[#F64EBB] text-xl">✔</span>
               Growth-Focused Training — Access exclusive webinars and teaching resources.
             </li>
             <li className="flex items-start gap-3">
-              <span className="text-[#e0fa84] text-xl">✔</span>
+              <span className="text-[#F64EBB] text-xl">✔</span>
               Thriving Educator Community — Connect, share, and collaborate with fellow mentors.
             </li>
           </ul>
           <button
             onClick={() => navigate("/register?role=trainer")}
-            className="mt-8 px-8 py-3 bg-[#CBE56A] hover:bg-[#bdda54] text-[#2D274B] rounded-full font-bold  transition-all shadow-md"
+            className="mt-8 px-8 py-3 bg-[#F64EBB] hover:bg-[#f825ae] text-[white] rounded-full font-bold  transition-all shadow-md"
           >
             Create Your Tutor Profile
           </button>
         </motion.div>
-       
+
       </section>
 
 
       {/* Benefits Section */}
       {/* e0fa84 bg-[#2D274B] */}
       <section className=" py-16 px-6 md:px-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#e0fa84] mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#F64EBB] mb-12">
           Why Teach with LearniLM🌍World?
         </h2>
         <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto ">
@@ -294,7 +298,7 @@ const BecomeTrainer: React.FC = () => {
       {/* Testimonials Section - trainer review */}
       {/* bg-[#2D274B]  e0fa84*/}
       <section className=" py-20 px-6 ">
-        <h2 className="text-5xl md:text-4xl sm:text-3xl font-bold text-center mb-12 text-[#e0fa84]">
+        <h2 className="text-5xl md:text-4xl sm:text-3xl font-bold text-center mb-12 text-[#F64EBB]">
           Straight from the Heart ❤️
         </h2>
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 ">
@@ -329,7 +333,7 @@ const BecomeTrainer: React.FC = () => {
             </motion.div>
           ))}
         </div>
-      </section>    
+      </section>
 
       {/* Trainer FAQs Section */}
       <section
@@ -340,7 +344,7 @@ const BecomeTrainer: React.FC = () => {
           <div className="text-center mb-10">
             <h2
               id="trainer-faq"
-              className="text-4xl md:text-4xl font-extrabold text-[#e0fa84]"
+              className="text-4xl md:text-4xl font-extrabold text-[#F64EBB]"
             >
               Frequently Asked Questions
             </h2>
@@ -418,7 +422,7 @@ const BecomeTrainer: React.FC = () => {
         </div>
       </section>
 
-       {/* Call to Action Section */}
+      {/* Call to Action Section */}
       <section className="text-center py-20 px-6">
         <motion.h2
           className="text-3xl md:text-4xl font-extrabold mb-6 text-[#2D274B]"
@@ -430,7 +434,7 @@ const BecomeTrainer: React.FC = () => {
         </motion.h2>
         <motion.button
           onClick={() => navigate("/register?role=trainer")}
-          className="px-10 py-4  bg-[#CBE56A] hover:bg-[#bdda54] text-[#2D274B] font-semibold text-lg rounded-full shadow-lg transition-all"
+          className="px-10 py-4  bg-[#F64EBB] hover:bg-[#eb24a5] text-[white] font-semibold text-lg rounded-full shadow-lg transition-all"
           whileHover={{ scale: 1.05 }}
         >
           Get Started Now

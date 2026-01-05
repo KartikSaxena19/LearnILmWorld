@@ -169,8 +169,8 @@ const TrainersGrid: React.FC<Props> = ({ searchTerm, filters, learningType, setN
 
     if (loading && page === 1) {
         return (
-            <div className="py-20 text-center text-white">
-                <p className="text-lg animate-pulse">Loading trainers...</p>
+            <div className="py-20 text-center text-[#F64EBB]">
+                <p className="text-xl font-bold animate-pulse">Loading trainers...</p>
             </div>
         )
     }
@@ -178,7 +178,7 @@ const TrainersGrid: React.FC<Props> = ({ searchTerm, filters, learningType, setN
     return (
         <>
             <div className="mb-6 text-center">
-                <p className="text-lg text-white">
+                <p className="text-lg font-bold text-[#F64EBB]">
                     Found <span className="font-bold text-[#2D274B]">{trainers.length}</span> verified trainers
                 </p>
             </div>

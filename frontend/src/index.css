@@ -106,6 +106,18 @@
   }
 }
 
+/* Force ZEGO Prebuilt UI to fill its container */
+.zego-uikit-prebuilt,
+.zego-uikit-prebuilt * {
+  height: 100%;
+}
+
+.zego-uikit-prebuilt {
+  width: 100%;
+  display: flex;
+}
+
+
 .emoji {
   font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
     sans-serif;

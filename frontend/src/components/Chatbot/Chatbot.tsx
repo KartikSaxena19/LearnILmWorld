@@ -4,6 +4,7 @@ import axios from "axios";
 import { createPortal } from "react-dom";
 import "./Chatbot.css";
 import { chatTranslations, type ChatTranslation } from "./chatTranslations";
+import iLm from '../../assets/Ask_iLM2.jpeg'
 
 // Define TypeScript interfaces
 interface Message {
@@ -302,12 +303,16 @@ const Chatbot = () => {
     <>
       {/* CHAT TOGGLE BUTTON */}
       <button
-        className="chatbot-toggle"
+        className="chatbot-toggle chatbot-image-btn"
         onClick={() => setIsOpen((prev: boolean) => !prev)}
         aria-label="Open chat"
       >
-        <span className="chat-icon">💬</span>
-        <span className="chat-text">Chat with iLM</span>
+        <img
+          src={iLm}
+          alt="Chat with iLM"
+          className="chatbot-image"
+        />
+        {/* <span className="chat-text">Ask iLM</span> */}
       </button>
 
       {isOpen && (

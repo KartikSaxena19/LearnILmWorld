@@ -14,7 +14,7 @@ const SearchBar: React.FC<Props> = React.memo(({ value, onChange }) => {
                     placeholder="Search trainers by name, language, or specialization..."
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#9787F3] text-lg"
+                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-full focus:ring-2 focus:ring-[#9787F3] text-lg"
                 />
             </div>
         </div>
