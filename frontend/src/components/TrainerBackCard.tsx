@@ -44,7 +44,7 @@ export default function TrainerBackCard({
     return (
         <div
             className={`
-        bg-white text-[#2D274B]
+        bg-white cursor-pointer text-[#2D274B]
         rounded-[28px]
         shadow-xl
         flex flex-col
@@ -65,18 +65,18 @@ export default function TrainerBackCard({
             {/* BODY */}
             <div className="relative px-6 pb-6">
                 {/* AVATAR */}
-                <div className="-mt-14">
-                    <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-white shadow-md bg-white">
+                <div className="">
+                    <div className="w-14 h-14 rounded-full overflow-hidden border-4 border-white shadow-md bg-white">
                         <img
                             src={trainer.profile?.imageUrl || trainer_profile}
                             alt={trainer.name}
-                            className="w-full h-full object-cover"
+                            className="w-14 h-14 object-fill"
                         />
                     </div>
                 </div>
 
                 {/* NAME */}
-                <h3 className="mt-3 text-xl font-bold">
+                <h3 className="text-lg font-bold">
                     {trainer.name}
                 </h3>
 
@@ -90,10 +90,14 @@ export default function TrainerBackCard({
                 </div>
 
                 {/* ABOUT */}
-                <p className="mt-3 text-sm text-gray-600 leading-relaxed">
-                    {trainer.profile?.about ??
-                        "Native speaker with PhD-level expertise, specialized in professional and academic preparation."}
-                </p>
+                <div className="mt-3 h-[90px] w-full overflow-y-auto no-scrollbar">
+                    <p className="text-xs text-gray-600 leading-relaxed break-words pr-1">
+                        {trainer.profile?.about ??
+                            "Native speaker with PhD-level expertise, specialized in professional and academic preparation."}
+                    </p>
+                </div>
+
+
 
                 {/* TAGS */}
                 <div className="flex flex-wrap gap-2 mt-4">

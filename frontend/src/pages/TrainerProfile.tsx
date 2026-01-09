@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import {
   User, Star, Globe, Award, MapPin, Calendar,
-  Play, Instagram, Youtube, Linkedin, ArrowLeft, MessageSquare
+  Play, Instagram, Youtube, Linkedin, ArrowLeft, MessageSquare,
+  Book,
+  BookOpen,
+  LoaderIcon
 } from 'lucide-react'
 import axios from 'axios'
+import bg_img from '../assets/bg_main.jpeg'
 import Price from '../components/Price'
 import CurrencySelector from '../components/CurrencySelector'
 
@@ -154,11 +158,19 @@ const TrainerProfile: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen font-inter bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: `url(https://wallpapers.com/images/hd/blue-white-floral-aesthetic-background-58sqda8q7o6ba5my.jpg)` }}
+      className="min-h-screen font-inter text-[#2D274B] transition-colors duration-500 bg-[#FFFAF1] bg-fixed"
+      style={{
+        backgroundImage:
+          `url(${bg_img})`,
+        position: "relative",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        width: "100%",
+      }}
     >
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-white/90 backdrop-blur-md border-b border-white/30">
+      <header className="sticky top-0 z-10 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <Link to="/" className="flex items-center">
@@ -179,34 +191,36 @@ const TrainerProfile: React.FC = () => {
       </header>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-12 grid lg:grid-cols-3 gap-8">
+      <div className="max-w-7xl font-sans mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-12 grid lg:grid-cols-3 gap-8">
         {/* Left: Profile, Languages, Connect, Demo Video */}
         <div className="lg:col-span-2 space-y-8">
           {/* Profile Card */}
-          <div className="rounded-xl p-6 shadow-lg bg-white/90 backdrop-blur-md">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
-              <div className="flex items-center gap-5">
-                <div className="w-24 h-24 bg-[#9787F3] rounded-xl overflow-hidden flex items-center justify-center">
+          <div className="rounded-2xl p-8 bg-white/90 backdrop-blur-md shadow-[0_20px_45px_rgba(45,39,75,0.12)]">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-8">
+
+              <div className="flex items-center gap-6">
+                <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-[#9787F3] to-[#7C6CF2] overflow-hidden flex items-center justify-center shadow-md">
+
                   {avatarSrc ? (
                     <img
                       src={avatarSrc}
                       alt={trainer.name}
-                      className="w-full h-full rounded-xl object-cover"
+                      className="w-full h-full object-cover"
                     />
                   ) : (
                     <User className="h-10 w-10 text-white" />
                   )}
                 </div>
                 <div>
-                  <h1 className="text-3xl font-bold text-[var(--text)]">{trainer.name}</h1>
-                  <div className="flex items-center gap-2 text-lg text-gray-700 mt-1">
+                  <h1 className="text-3xl font-bold tracking-tight">{trainer.name}</h1>
+                  <div className="flex items-center gap-2 mt-1 text-lg">
                     <Star className="h-5 w-5 text-yellow-400" />
                     <span className="font-semibold">
                       {trainer.stats?.rating ?? trainer.profile?.averageRating ?? 0}
                     </span>
                     <span className="text-gray-500">({reviews.length} reviews)</span>
                   </div>
-                  <div className="flex items-center gap-1 text-gray-700 text-base mt-1">
+                  <div className="flex items-center gap-1 text-gray-700  mt-1">
                     <MapPin className="h-5 w-5" />
                     <span>{trainer.profile?.location || 'Online'}</span>
                   </div>
@@ -214,13 +228,13 @@ const TrainerProfile: React.FC = () => {
               </div>
               <div className="text-right">
                 <CurrencySelector />
-                <div className="text-2xl font-bold text-[var(--accent-orange)]">
+                <div className="text-3xl font-bold text-orange-500 mt-1">
                   <Price amount={trainer.profile?.hourlyRate ?? 0} /> / hr
 
                 </div>
                 <Link
                   to={`/book/${trainer._id}`}
-                  className="mt-3 inline-block px-5 py-3 bg-[#9787F3] text-white rounded-lg font-semibold hover:bg-[#9787F3]/90 transition text-base"
+                  className="mt-4 inline-block px-6 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-[#9787F3] to-[#7C6CF2] hover:opacity-90 transition shadow-md"
                 >
                   Book Session
                 </Link>
@@ -228,24 +242,24 @@ const TrainerProfile: React.FC = () => {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="p-4 bg-[var(--bg-pale-top)] rounded-lg text-center">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="p-5 rounded-xl text-center bg-gradient-to-b from-white to-[#F6F3FF] shadow-sm">
                 <div className="text-2xl font-bold text-[#9787F3]">
                   {trainer.profile?.experience ?? 0}+
                 </div>
-                <div className="text-sm text-gray-700">Years</div>
+                <div className="text-sm text-gray-600 mt-1">Years</div>
               </div>
-              <div className="p-4 bg-[var(--bg-pale-top)] rounded-lg text-center">
+              <div className="p-5 rounded-xl text-center bg-gradient-to-b from-white to-[#F6F3FF] shadow-sm">
                 <div className="text-2xl font-bold text-[#9787F3]">
                   {trainer.stats?.completedSessions ?? 0}
                 </div>
-                <div className="text-sm text-gray-700">Completed</div>
+                <div className="text-sm text-gray-600 mt-1">Completed</div>
               </div>
-              <div className="p-4 bg-[var(--bg-pale-top)] rounded-lg text-center">
+              <div className="p-5 rounded-xl text-center bg-gradient-to-b from-white to-[#F6F3FF] shadow-sm">
                 <div className="text-2xl font-bold text-[#9787F3]">
                   {trainer.profile?.totalBookings ?? 0}
                 </div>
-                <div className="text-sm text-gray-700">Students</div>
+                <div className="text-sm text-gray-600 mt-1">Students</div>
               </div>
             </div>
 
@@ -257,9 +271,9 @@ const TrainerProfile: React.FC = () => {
           </div>
 
           {/* Languages */}
-          <div className="rounded-xl p-6 shadow-lg bg-white/90 backdrop-blur-md">
-            <h3 className="text-2xl font-semibold text-[var(--text)] mb-5 flex items-center gap-3">
-              <Globe className="h-6 w-6 text-[var(--accent-orange)]" />
+          <div className="rounded-2xl p-6 bg-white/90 backdrop-blur-md shadow-[0_16px_35px_rgba(45,39,75,0.1)]">
+            <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+              <Globe className="h-5 w-5 text-orange-500" />
               Languages I Teach
             </h3>
             <div className="grid md:grid-cols-2 gap-5">
@@ -267,7 +281,8 @@ const TrainerProfile: React.FC = () => {
                 ? trainer.profile.trainerLanguages.map((lang, index) => (
                   <div
                     key={index}
-                    className="p-4 bg-[var(--bg-pale-top)] rounded-lg"
+                    className="p-5 rounded-xl bg-gradient-to-b from-white to-[#F6F3FF] shadow-sm"
+
                   >
                     <div className="flex justify-between items-center mb-2">
                       <h4 className="font-semibold text-[var(--text)] text-base">{lang.language}</h4>
@@ -296,8 +311,10 @@ const TrainerProfile: React.FC = () => {
           </div>
 
           {/* Connect Section */}
-          <div className="rounded-xl p-5 shadow-lg bg-white/90 backdrop-blur-md">
-            <h3 className="text-xl font-semibold text-[var(--text)] mb-3">Connect</h3>
+          <div className="rounded-2xl p-6 bg-white/90 backdrop-blur-md shadow-[0_16px_35px_rgba(45,39,75,0.1)]">
+            <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+              <LoaderIcon className='h-5 w-5 text-orange-500' />
+              Connect</h3>
             <div className="flex gap-4">
               {trainer.profile?.socialMedia?.instagram && (
                 <a
@@ -334,9 +351,9 @@ const TrainerProfile: React.FC = () => {
 
           {/* Demo Video */}
           {trainer.profile?.demoVideo && (
-            <div className="rounded-xl p-5 shadow-lg bg-white/90 backdrop-blur-md">
-              <h3 className="text-xl font-semibold text-[var(--text)] mb-4 flex items-center gap-2">
-                <Play className="h-5 w-5 text-[var(--accent-orange)]" />
+            <div className="rounded-2xl p-6 bg-white/90 backdrop-blur-md shadow-[0_16px_35px_rgba(45,39,75,0.1)]">
+              <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <Play className="h-5 w-5 text-orange-500" />
                 Demo Video
               </h3>
               <div className="aspect-video rounded-lg overflow-hidden">
@@ -357,9 +374,9 @@ const TrainerProfile: React.FC = () => {
         <div className="space-y-8">
           {/* Specializations */}
           {trainer.profile?.specializations && trainer.profile.specializations.length > 0 && (
-            <div className="rounded-xl p-5 shadow-lg bg-white/90 backdrop-blur-md">
-              <h3 className="text-xl font-semibold text-[var(--text)] mb-3 flex items-center gap-2">
-                <Award className="h-5 w-5 text-[var(--accent-orange)]" />
+            <div className="rounded-2xl p-6 bg-white/90 backdrop-blur-md shadow-[0_16px_35px_rgba(45,39,75,0.1)]">
+              <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <Award className="h-5 w-5 text-orange-500" />
                 Specializations
               </h3>
               <div className="flex flex-wrap gap-3">
@@ -376,9 +393,9 @@ const TrainerProfile: React.FC = () => {
           )}
 
           {/* Availability */}
-          <div className="rounded-xl p-5 shadow-lg bg-white/90 backdrop-blur-md">
-            <h3 className="text-xl font-semibold text-[var(--text)] mb-3 flex items-center gap-2">
-              <Calendar className="h-5 w-5 text-[var(--accent-orange)]" />
+          <div className="rounded-2xl p-6 bg-white/90 backdrop-blur-md shadow-[0_16px_35px_rgba(45,39,75,0.1)]">
+            <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+              <Calendar className="h-5 w-5 text-orange-500" />
               Availability
             </h3>
             <div className="space-y-2 text-sm">
@@ -399,8 +416,10 @@ const TrainerProfile: React.FC = () => {
           </div>
 
           {/* Teaching Style */}
-          <div className="rounded-xl p-5 shadow-lg bg-white/90 backdrop-blur-md">
-            <h3 className="text-xl font-semibold text-[var(--text)] mb-3">Teaching Style</h3>
+          <div className="rounded-2xl p-6 bg-white/90 backdrop-blur-md shadow-[0_16px_35px_rgba(45,39,75,0.1)]">
+            <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+              <BookOpen className="h-5 w-5 text-orange-500" />
+              Teaching Style</h3>
             <p className="text-lg text-gray-700 leading-relaxed">
               {trainer.profile?.teachingStyle || 'Structured, conversational, and outcome-focused.'}
             </p>
@@ -419,9 +438,9 @@ const TrainerProfile: React.FC = () => {
           </div>
 
           {/* Reviews */}
-          <div className="rounded-xl p-5 shadow-lg bg-white/90 backdrop-blur-md">
-            <h3 className="text-xl font-semibold text-[var(--text)] mb-3 flex items-center gap-2">
-              <MessageSquare className="h-5 w-5 text-[var(--accent-orange)]" />
+          <div className="rounded-2xl p-6 bg-white/90 backdrop-blur-md shadow-[0_16px_35px_rgba(45,39,75,0.1)]">
+            <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+              <MessageSquare className="h-5 w-5 text-orange-500" />
               Student Reviews ({reviews.length})
             </h3>
             {reviews.length > 0 ? (

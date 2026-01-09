@@ -22,6 +22,7 @@ import AboutPage from './pages/AboutPage';
 import StudentJoinSession from './components/StudentJoinSession';
 import Chatbot from './components/Chatbot/Chatbot';
 import { CurrencyProvider } from './contexts/CurrencyContext'
+import ScrollToTop from './components/ScrollToTop'
 function App() {
   return (
     <StripeProvider>
@@ -30,6 +31,8 @@ function App() {
           <Router>
 
             <Chatbot />
+
+            <ScrollToTop />
 
             <div className="min-h-screen bg-gradient-to-br from-cream-50 to-green-50">
               <Routes>

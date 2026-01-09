@@ -5,12 +5,25 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import StatPill from "./components/StarPill";
 
 
 /* ---------- Types ---------- */
 type AnyObj = Record<string, any>
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+const weeklyActivity = [
+  { day: "Mon", classes: 1 },
+  { day: "Tue", classes: 3 },
+  { day: "Wed", classes: 1 },
+  { day: "Thu", classes: 2 },
+  { day: "Fri", classes: 1 },
+  { day: "Sat", classes: 0 },
+  { day: "Sun", classes: 0 },
+]
+
 
 /* ---------------- StudentDashboard ---------------- */
 const StudentHome: React.FC = () => {
@@ -64,66 +77,111 @@ const StudentHome: React.FC = () => {
   }
 
   return (
-    <div className="space-y-8 max-w-[1200px] mx-auto p-6 rounded-2xl">
-      {/* Welcome Section ( Shiny) */}
-      <div className="rounded-2xl p-6 bg-gradient-to-r from-[#f97316] to-[#9787F3] shadow-2xl text-white">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-            <TrendingUp className="h-5 w-5 text-white" />
-          </div>
-          <h2 className="text-3xl font-bold drop-shadow-md">
-            Welcome back, {user?.name || 'student'}!
+    <div className="max-w-[1200px] mx-auto p-6 space-y-8">
+
+      {/* DASHBOARD HEADER */}
+      <div className="flex flex-col gap-4">
+        <h1 className="text-4xl font-bold text-[#2D274B]">
+          Dashboard
+        </h1>
+
+      </div>
+
+      {/* Activity Card */}
+      <div className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-md">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold text-[#2D274B]">
+            Activity
           </h2>
+          <span className="text-sm text-gray-500">
+            Classes completed this week
+          </span>
         </div>
-        <p className="text-white/90 font-medium">
-          Continue your language learning journey
-        </p>
+
+        {/* Placeholder graph */}
+        {/* <div className="h-48 rounded-xl bg-gradient-to-r from-[#9787F3]/30 to-[#f97316]/30 flex items-center justify-center text-gray-600 font-semibold">
+            Activity graph coming soon
+          </div> */}
+
+        <div className="h-[280px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={weeklyActivity}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="day" />
+              <YAxis allowDecimals={false} />
+              <Tooltip />
+              <Line
+                type="monotone"
+                dataKey="classes"
+                stroke="#9787F3"
+                strokeWidth={3}
+                dot={{ r: 4 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
       </div>
 
-      {/* Stats Grid (No Shine) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        <div className="bg-white rounded-xl p-5 text-center shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
-          <div className="w-10 h-10 bg-[#9787F3] rounded-xl flex items-center justify-center mx-auto mb-3">
-            <BookOpen className="h-5 w-5 text-white" />
-          </div>
-          <div className="text-2xl font-bold text-[#2D274B] mb-1">{stats.totalSessions}</div>
-          <div className="text-[#9787F3] text-sm font-semibold">Total Sessions</div>
-        </div>
 
-        <div className="bg-white rounded-xl p-5 text-center shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
-          <div className="w-10 h-10 bg-[#6ee7b7] rounded-xl flex items-center justify-center mx-auto mb-3">
-            <Calendar className="h-5 w-5 text-white" />
-          </div>
-          <div className="text-2xl font-bold text-[#2D274B] mb-1">{stats.upcomingSessions}</div>
-          <div className="text-[#16a34a] text-sm font-semibold">Upcoming</div>
-        </div>
+      {/* STATISTICS */}
+      <div className="bg-gradient-to-br from-[#F6EDFF] to-[#FFF1E6] rounded-[28px] p-8 shadow-md">
+        <div className="flex flex-col lg:flex-row items-center gap-10">
 
-        <div className="bg-white rounded-xl p-5 text-center shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
-          <div className="w-10 h-10 bg-[#f97316] rounded-xl flex items-center justify-center mx-auto mb-3">
-            <Star className="h-5 w-5 text-white" />
+          {/* LEFT TEXT  */}
+          <div className="w-full lg:flex-[0.35]">
+            <h2 className="text-2xl font-bold text-[#6B21A8] mb-2">
+              Statistics
+            </h2>
+            <p className="text-sm text-gray-600 leading-relaxed">
+              Your performance statistics for{" "}
+              <span className="font-semibold text-[#6B21A8]">
+                1 week
+              </span>{" "}
+              period
+            </p>
           </div>
-          <div className="text-2xl font-bold text-[#2D274B] mb-1">{stats.completedSessions}</div>
-          <div className="text-[#f97316] text-sm font-semibold">Completed</div>
-        </div>
 
-        {/* <div className="bg-white rounded-xl p-5 text-center shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
-          <div className="w-10 h-10 bg-[#9787F3] rounded-xl flex items-center justify-center mx-auto mb-3">
-            <Globe className="h-5 w-5 text-white" />
+          {/* RIGHT STATS  */}
+          <div className="flex flex-[0.65] items-center  gap-8">
+
+            <StatPill
+              icon={<BookOpen className="text-[#7C3AED] w-5 h-5" />}
+              value={stats.totalSessions}
+              label={<>Total<br />Sessions</>}
+              iconBg="bg-[#E9D8FD]"
+            />
+
+            <StatPill
+              icon={<Calendar className="text-green-600 w-5 h-5" />}
+              value={stats.upcomingSessions}
+              label={<>Upcoming<br />Sessions</>}
+              iconBg="bg-[#DCFCE7]"
+            />
+
+            <StatPill
+              icon={<Star className="text-orange-500 w-5 h-5" />}
+              value={stats.completedSessions}
+              label={<>Session<br />Completed</>}
+              iconBg="bg-[#FFEDD5]"
+            />
+
           </div>
-          <div className="text-2xl font-bold text-[#2D274B] mb-1">${stats.totalSpent}</div>
-          <div className="text-[#9787F3] text-sm font-semibold">Total Spent</div>
-        </div> */}
+        </div>
       </div>
 
-      {/* Recent Sessions (No Shine) */}
-      <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300">
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="text-2xl font-bold text-[#2D274B]">Recent Sessions</h3>
+
+      {/* RECENT SESSIONS */}
+      <div className="bg-white rounded-2xl p-6 shadow-md">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold text-[#2D274B]">
+            Recent Sessions
+          </h2>
           <Link
             to="/student/sessions"
-            className="text-[#9787F3] hover:text-[#6C5DD3] font-semibold transition-all"
+            className="text-[#6B21A8] font-semibold hover:underline"
           >
-            View All
+            View All →
           </Link>
         </div>
 
@@ -132,55 +190,38 @@ const StudentHome: React.FC = () => {
             {recentSessions.map((session: AnyObj) => (
               <div
                 key={session._id || session.id}
-                className="p-4 bg-white rounded-xl flex items-center justify-between hover:shadow-md transition-all duration-300"
+                className="flex justify-between items-center p-4 rounded-xl border hover:shadow-sm"
               >
-                <div className="flex items-center">
-                  <div className="w-10 h-10 bg-[#9787F3] rounded-xl flex items-center justify-center mr-3">
-                    <User className="h-5 w-5 text-white" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-[#2D274B]">{session.title}</div>
-                    <div className="text-gray-600 text-sm font-medium">
-                      with {session.trainer?.name}
-                    </div>
-                  </div>
+                <div>
+                  <p className="font-semibold">
+                    {session.title}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    with {session.trainer?.name}
+                  </p>
                 </div>
-                <div className="text-right">
-                  <div
-                    className={`px-3 py-1 rounded-full text-xs font-bold ${
-                      session.status === 'completed'
-                        ? 'bg-green-100 text-green-800'
-                        : session.status === 'scheduled'
-                        ? 'bg-blue-100 text-blue-800'
-                        : 'bg-gray-100 text-gray-800'
+
+                <span
+                  className={`px-3 py-1 text-xs font-semibold rounded-full ${session.status === "completed"
+                    ? "bg-green-100 text-green-700"
+                    : "bg-blue-100 text-blue-700"
                     }`}
-                  >
-                    {session.status}
-                  </div>
-                </div>
+                >
+                  {session.status}
+                </span>
               </div>
             ))}
           </div>
         ) : (
-          <div className="text-center py-10">
-            <div className="w-16 h-16 bg-[#9787F3]/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <BookOpen className="h-8 w-8 text-[#9787F3]" />
-            </div>
-            <h3 className="text-xl font-bold text-[#2D274B] mb-2">No sessions yet</h3>
-            <p className="text-gray-600 mb-4 font-medium">
-              Start your learning journey today
-            </p>
-            <Link
-              to="/main"
-              className="inline-flex items-center gap-2 px-5 py-2 bg-[#f97316] text-white rounded-lg hover:bg-[#e66a11] font-semibold shadow-md transition-all"
-            >
-              Book Your First Session
-            </Link>
-          </div>
+          <p className="text-center text-gray-500 py-10">
+            No sessions yet
+          </p>
         )}
       </div>
+
     </div>
   )
+
 }
 
 export default StudentHome;

@@ -41,7 +41,7 @@
   </script>
 
   <!-- Jitsi -->
-  <script src="https://meet.jit.si/external_api.js"></script>
+  <!-- <script src="https://meet.jit.si/external_api.js"></script> -->
 
   <!-- Google verification -->
   <!-- Keep it to Stay VERIFIED -->
@@ -53,6 +53,21 @@
 
   <body>
     <div id="root"></div>
+      <!-- ZEGO owns this completely -->
+  <div
+  id="zego-root"
+  style="
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    background: #000;
+    display: none;
+  "
+></div>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

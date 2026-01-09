@@ -191,7 +191,7 @@ router.post('/:id/zego-token', authenticate, async (req, res) => {
     console.log('[ZEGO][TOKEN] Token generated', {
       tokenPrefix: token.slice(0, 4), // should always be "04"
       tokenLength: token.length,
-      expiresInSeconds: 600 //10 min
+      expiresInSeconds: 3600 //10 min
     })
 
     console.log('[ZEGO][TOKEN] Token response sent', {

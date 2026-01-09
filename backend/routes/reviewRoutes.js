@@ -18,7 +18,7 @@ router.post('/', authenticate, async (req, res) => {
 
     // Verify session exists and is completed
     const session = await Session.findById(sessionId);
-    if (!session || session.status !== 'completed') {
+    if (!session || !['completed', 'ended'].includes(session.status)) {
       return res.status(400).json({ message: 'Session must be completed to leave a review' });
     }
 

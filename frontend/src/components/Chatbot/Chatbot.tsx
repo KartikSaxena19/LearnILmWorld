@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { createPortal } from "react-dom";
+import { useLocation } from "react-router-dom";
 import "./Chatbot.css";
 import { chatTranslations, type ChatTranslation } from "./chatTranslations";
 import iLm from '../../assets/Ask_iLM2.jpeg'
@@ -90,6 +91,24 @@ const Chatbot = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo>({ name: null, email: null });
   const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation();
+  const isSessionPage = location.pathname.startsWith("/session/");
+
+  const [disabledBySession, setDisabledBySession] = useState(false);
+
+  useEffect(() => {
+    const onJoin = () => setDisabledBySession(true);
+    const onLeave = () => setDisabledBySession(false);
+
+    window.addEventListener("SESSION_JOINED", onJoin);
+    window.addEventListener("SESSION_LEFT", onLeave);
+
+    return () => {
+      window.removeEventListener("SESSION_JOINED", onJoin);
+      window.removeEventListener("SESSION_LEFT", onLeave);
+    };
+  }, []);
+
 
   const t = chatTranslations[currentLanguage] as ChatTranslation;
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -297,6 +316,11 @@ const Chatbot = () => {
       </div>
     );
   };
+
+  if (isSessionPage && disabledBySession) {
+    return null;
+  }
+
 
   /* ================= PORTAL RENDER ================= */
   return createPortal(

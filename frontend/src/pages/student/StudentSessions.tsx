@@ -38,6 +38,15 @@ const StudentSessions: React.FC = () => {
     }
   }
 
+  const hasUserReviewedSession = (session: AnyObj) => {
+    return Boolean(
+      session.review ||
+      session.reviewId ||
+      (Array.isArray(session.reviews) && session.reviews.length > 0)
+    )
+  }
+
+
   const getTrainerIdFromSession = (session: AnyObj | null) => {
     if (!session) return null
     const trainer = session.trainer || session.trainerId || session.trainerObj
@@ -139,7 +148,7 @@ const StudentSessions: React.FC = () => {
 
                   <div className="flex flex-col items-end gap-2">
                     <div
-                      className={`text-xs font-semibold px-3 py-1 rounded-full ${session.status === 'completed'
+                      className={`text-xs font-semibold px-3 py-1 rounded-full ${['ended', 'completed'].includes(session.status)
                         ? 'bg-green-100 text-green-800'
                         : session.status === 'scheduled'
                           ? 'bg-blue-100 text-blue-800'
@@ -160,7 +169,7 @@ const StudentSessions: React.FC = () => {
                         >
                           <Video className="h-4 w-4" /> <span>Join</span>
                         </Link>
-                      ) : session.status === 'completed' ? (
+                      ) : (session.status === 'completed' || session.status === 'ended') ? (
                         <button
                           onClick={() => {
                             setSelectedSession(session)

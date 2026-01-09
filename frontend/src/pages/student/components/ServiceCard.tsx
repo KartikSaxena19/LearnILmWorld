@@ -15,22 +15,22 @@ const ServiceCard: React.FC<{
   title,
   desc,
 }) => (
-  <div className="p-6 rounded-2xl shadow-md bg-white border border-gray-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-    {/* Icon Section */}
-    <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${bg}`}>
-      {icon}
+    <div className="p-6 rounded-2xl bg-white/90 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+      {/* Icon Section */}
+      <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${bg}`}>
+        {icon}
+      </div>
+
+      {/* Title - dark and clear */}
+      <h4 className="font-semibold text-xl text-[#2D274B]">
+        {title}
+      </h4>
+
+      {/* Description */}
+      <p className="text-sm text-gray-700 mt-2 leading-relaxed">
+        {desc}
+      </p>
     </div>
-
-    {/* Title - dark and clear */}
-    <h4 className="font-semibold text-xl text-[#2D274B]">
-      {title}
-    </h4>
-
-    {/* Description */}
-    <p className="text-sm text-gray-700 mt-2 leading-relaxed">
-      {desc}
-    </p>
-  </div>
-)
+  )
 
 export default ServiceCard

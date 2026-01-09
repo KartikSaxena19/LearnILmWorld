@@ -6,7 +6,8 @@ import {
   Home, Users, Calendar, User, Star, LogOut, Menu
 } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
-import bg_img from '../../assets/purple_gradient.jpg'
+import bg_img from '../../assets/bg_dashboard.jpeg'
+import logo from '../../assets/LearnilmworldLogo.jpg'
 import TrainerHome from './TrainerHome'
 import TrainerSessions from './TrainerSessions'
 import TrainerStudents from './TrainerStudents'
@@ -26,643 +27,6 @@ import TrainerProfile from './TrainerProfile'
 // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 
-/* ---------- TrainerProfile (form) ---------- */
-// const TrainerProfile = () => {
-//   const { user, updateProfile } = useAuth()
-//   const CURRENT_YEAR = new Date().getFullYear()
-
-//   const defaultProfile = {
-//     bio: user?.profile?.bio || '',
-//     imageUrl: user?.profile?.imageUrl || '',
-//     avatar: user?.profile?.avatar || '',
-//     languages: Array.isArray(user?.profile?.languages) ? [...user.profile.languages] : [],
-//     trainerLanguages: Array.isArray(user?.profile?.trainerLanguages) ? [...user.profile.trainerLanguages] : [],
-//     experience: user?.profile?.experience ?? 0,
-//     nationalityCode: user?.profile?.nationalityCode || '',
-//     standards: Array.isArray(user?.profile?.standards) ? [...user.profile.standards] : [],
-//     hourlyRate: user?.profile?.hourlyRate ?? 25,
-//     phone: user?.profile?.phone || '',
-//     location: user?.profile?.location || '',
-//     specializations: Array.isArray(user?.profile?.specializations) ? [...user.profile.specializations] : [],
-//     certifications: Array.isArray(user?.profile?.certifications) 
-//       ? user.profile.certifications.map((cert : any) => ({
-//           name: cert.name || '',
-//           issuer: cert.issuer || '',
-//           year: cert.year || null,
-//           certificateImage: cert.certificateImage || '',
-//           certificateLink: cert.certificateLink || ''
-//         }))
-//       : [],
-//     availability: Array.isArray(user?.profile?.availability) ? [...user.profile.availability] : [],
-//     profileImages: Array.isArray(user?.profile?.profileImages) ? [...user.profile.profileImages] : [],
-//     socialMedia: {
-//       instagram: (user?.profile?.socialMedia && (user.profile.socialMedia.get ? user.profile.socialMedia.get('instagram') : user.profile.socialMedia.instagram)) || '',
-//       youtube: (user?.profile?.socialMedia && (user.profile.socialMedia.get ? user.profile.socialMedia.get('youtube') : user.profile.socialMedia.youtube)) || '',
-//       linkedin: (user?.profile?.socialMedia && (user.profile.socialMedia.get ? user.profile.socialMedia.get('linkedin') : user.profile.socialMedia.linkedin)) || ''
-//     },
-//     teachingStyle: user?.profile?.teachingStyle || 'Conversational',
-//     studentAge: Array.isArray(user?.profile?.studentAge) ? [...user.profile.studentAge] : [],
-//     demoVideo: user?.profile?.demoVideo || '',
-//     isAvailable: user?.profile?.isAvailable ?? true,
-//     totalBookings: user?.profile?.totalBookings ?? 0,
-//     averageRating: user?.profile?.averageRating ?? 5.0,
-//   }
-
-//   type ProfileType = typeof defaultProfile;
-
-//   const certFields = [
-//     { key: 'name', type: 'text', placeholder: 'Certification Name' },
-//     { key: 'issuer', type: 'text', placeholder: 'Issuer' },
-//     { key: 'year', type: 'number', placeholder: 'Year', min: 1950, max: CURRENT_YEAR },
-//     { key: 'certificateLink', type: 'url', placeholder: 'https://certificate-link.com' }
-//   ]
-
-
-//   const [formData, setFormData] = useState<{ name: string; email: string; profile: ProfileType; }>
-//   ({
-//     name: user?.name || '',
-//     email: user?.email || '',
-//     profile: defaultProfile
-//   })
-//   const [loading, setLoading] = useState(false)
-//   const [success, setSuccess] = useState('')
-//   const [error, setError] = useState('')
-//   const [newLanguage, setNewLanguage] = useState('')
-//   const [newSpecialization, setNewSpecialization] = useState('')
-//   // const [newStudentAge, setNewStudentAge] = useState('')
-//   const [newStandard, setNewStandard] = useState("")
-//   // const [newProfileImage, setNewProfileImage] = useState('')
-
-//   useEffect(() => {
-//     // ensure availability has 7 days (preserve existing)
-//     const ALL_DAYS = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
-//     const existing = (formData.profile.availability || []).reduce((acc, a) => { if (a && a.day) acc[a.day] = a; return acc }, {})
-//     const availability = ALL_DAYS.map(d => existing[d] || { day: d, startTime: null, endTime: null, available: false })
-//     if ((formData.profile.availability || []).length < 7) {
-//       setFormData(prev => ({ ...prev, profile: { ...prev.profile, availability } }))
-//     }
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, [])
-
-//   /* --- Generic handlers --- */
-//   const handleChange = (
-//   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-//   ) => {
-//     const { name, value, type } = e.target;
-
-//     // Checkbox handler
-//     if (type === "checkbox") {
-//       const isChecked = (e.target as HTMLInputElement).checked;
-//       setFormData(prev => ({ ...prev, [name]: isChecked }));
-//       return;
-//     }
-
-//     // Social media: profile.socialMedia.youtube, .linkedin, etc.
-//     if (name.startsWith("profile.socialMedia.")) {
-//       const key = name.split(".")[2];
-//       setFormData(prev => ({
-//         ...prev,
-//         profile: {
-//           ...prev.profile,
-//           socialMedia: {
-//             ...prev.profile.socialMedia,
-//             [key]: value,
-//           },
-//         },
-//       }));
-//       return;
-//     }
-
-//     // Other profile fields
-//     if (name.startsWith("profile.")) {
-//       const key = name.replace("profile.", "");
-//       const parsed =
-//         key === "experience" || key === "hourlyRate"
-//           ? parseFloat(value) || 0
-//           : value;
-
-//       setFormData(prev => ({
-//         ...prev,
-//         profile: {
-//           ...prev.profile,
-//           [key]: parsed,
-//         },
-//       }));
-//       return;
-//     }
-
-//     // Top-level fields (name, email)
-//     setFormData(prev => ({
-//       ...prev,
-//       [name]: value,
-//     }));
-//   };
-
-
-//   const addToArray = (field: keyof typeof defaultProfile, value: any) => {
-//     if (!value) return
-//     setFormData(prev => ({ ...prev, profile: { ...prev.profile, [field]: [...(prev.profile[field] || []), value] } }))
-//   }
-//   const removeFromArray = (field: keyof typeof defaultProfile, index: number) => {
-//     setFormData(prev => ({ ...prev, profile: { ...prev.profile, [field]: (prev.profile[field] || []).filter((_ : any, i: number) => i !== index) } }))
-//   }
-
-//   const updateObjectInArray = ( field: keyof typeof defaultProfile, index: number, subfield: string, value: any ) => {
-//     setFormData(prev => {
-//       const arr = Array.isArray(prev.profile[field]) ? [...prev.profile[field]] : []
-//       arr[index] = { ...arr[index], [subfield]: value }
-//       return { ...prev, profile: { ...prev.profile, [field]: arr } }
-//     })
-//   }
-
-//   const addComplexToArray = (field: keyof typeof defaultProfile, obj: any) => {
-//     setFormData(prev => ({ ...prev, profile: { ...prev.profile, [field]: [...(prev.profile[field] || []), obj] } }))
-//   }
-
-//   const updateTrainerLangLevels = (index: number, value: string) => {
-//     const levels = String(value).split(',').map(s => s.trim()).filter(Boolean)
-//     updateObjectInArray('trainerLanguages', index, 'teachingLevel', levels)
-//   }
-
-//   const updateAvailability = (index: number, subfield: string, value: any) => {
-//     setFormData(prev => {
-//       const arr = Array.isArray(prev.profile.availability) ? [...prev.profile.availability] : []
-//       arr[index] = { ...arr[index], [subfield]: value }
-//       // if available turned off, clear times
-//       if (subfield === 'available' && !value) { arr[index].startTime = null; arr[index].endTime = null }
-//       return { ...prev, profile: { ...prev.profile, availability: arr } }
-//     })
-//   }
-
-//   // const updateCertYear = (index: number, value: string) => {
-//   //   const year = value ? parseInt(value, 10) : null
-//   //   updateObjectInArray('certifications', index, 'year', year)
-//   // }
-
-//     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-//       const file = e.target.files && e.target.files[0]
-//       if (!file) return
-//       const reader = new FileReader()
-//       reader.onload = () => {
-//         const dataUrl = reader.result as string
-//         setFormData(prev => ({
-//           ...prev,
-//           profile: {
-//             ...prev.profile,
-//             imageUrl: dataUrl
-//           }
-//         }))
-//       }
-//       reader.readAsDataURL(file)
-//     }
-  
-//     const handleRemoveImage = () => {
-//       setFormData(prev => ({
-//         ...prev,
-//         profile: {
-//           ...prev.profile,
-//           imageUrl: ''
-//         }
-//       }))
-//     }
-
-//   const handleSubmit = async (e:any) => {
-//     e.preventDefault()
-//     setLoading(true); setError(''); setSuccess('')
-
-//     // local validation for cert years
-//     const badCert = (formData.profile.certifications || []).some((c: any) => c.year && (c.year < 1950 || c.year > CURRENT_YEAR))
-//     if (badCert) {
-//       setError(`Certification year must be between 1950 and ${CURRENT_YEAR}`)
-//       setLoading(false); return
-//     }
-
-//     try {
-
-//       if (!user) {
-//       setError('User not found')
-//       setLoading(false)
-//       return
-//     }
-    
-//        const updatedProfile = {
-//       ...user.profile,       // existing fields
-//       ...formData.profile    // updated fields from form
-//     }
-
-//       const result = await updateProfile({ 
-//       ...formData, 
-//       profile: updatedProfile 
-//     }) // expects updateProfile from context to return { success, error? }
-
-//       if (result?.success) setSuccess('Profile updated successfully!')
-//       else setError(result?.error || 'Failed to update profile')
-//     } catch (err) {
-//       console.error(err); setError('Failed to update profile')
-//     } finally { setLoading(false) }
-//   }
-
-//   // prefer imageUrl (primary) > avatar > first profileImages > empty
-//   // const getPrimaryImage = () => {
-//   //   return formData.profile?.imageUrl || formData.profile?.avatar || (Array.isArray(formData.profile?.profileImages) && formData.profile.profileImages[0]) || ''
-//   // }
-
-//   return (
-//     <div className="space-y-8">
-//       <div className="bg-gray-50 rounded-2xl p-8 shadow-xl">
-//         <div className="flex justify-between items-center mb-6">
-//           <h2 className="text-3xl font-bold text-gray-900">My Profile</h2>
-          
-//         </div>
-
-//          {/* Image: preview + URL + file upload */}
-//           <div>
-//             <label className="block text-sm font-bold text-gray-700 mb-2">Profile image</label>
-
-//             <div className="flex items-start gap-4">
-//               <div className="w-28 h-28 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden border">
-//                 {formData.profile.imageUrl ? (
-//                   // preview (base64 or remote url)
-//                   // eslint-disable-next-line jsx-a11y/img-redundant-alt
-//                   <img src={formData.profile.imageUrl} alt="Profile preview" className="w-full h-full object-cover" />
-//                 ) : (
-//                   <div className="text-xs text-slate-500 px-2 text-center">No image</div>
-//                 )}
-//               </div>
-
-//               <div className="flex-1 space-y-2">
-//                 <input
-//                   type="url"
-//                   id="profile.imageUrl"
-//                   name="profile.imageUrl"
-//                   value={formData.profile.imageUrl}
-//                   onChange={handleChange}
-//                   placeholder="Paste image URL (or upload below)"
-//                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0ea5a3] focus:border-[#0ea5a3] transition-all duration-300 font-medium"
-//                 />
-
-//                 <div className="flex gap-2 items-center">
-//                   <label className="cursor-pointer inline-block">
-//                     <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
-//                     <span className="px-4 py-2 rounded-lg bg-gray-100 border font-medium text-sm hover:bg-gray-200">Upload image</span>
-//                   </label>
-
-//                   {formData.profile.imageUrl && (
-//                     <button type="button" onClick={handleRemoveImage} className="px-4 py-2 rounded-lg bg-red-50 border text-red-600 text-sm hover:bg-red-100">
-//                       Remove
-//                     </button>
-//                   )}
-//                 </div>
-
-//                 <div className="text-xs text-slate-500">Tip: Paste an image URL or upload a file. Upload uses a local base64 preview — to persist, your updateProfile should accept image data or you should upload to storage and save resulting URL.</div>
-//               </div>
-//             </div>
-//           </div>
-
-//         {success && <div className="bg-green-50 border-2 border-green-200 text-green-700 px-4 py-3 rounded-xl mb-6">{success}</div>}
-//         {error && <div className="bg-red-50 border-2 border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6">{error}</div>}
-
-//         <form onSubmit={handleSubmit} className="space-y-8">
-//           {/* Basic Information */}
-//           <div>
-//             <h3 className="text-xl font-bold text-gray-900 mb-4">Basic Information</h3>
-//             <div className="grid md:grid-cols-2 gap-6">
-//               <div>
-//                 <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
-//                 <input name="name" value={formData.name} onChange={handleChange} className="input-field" required />
-//               </div>
-
-//               <div>
-//                 <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
-//                 <input name="email" type="email" value={formData.email} className="input-field bg-gray-50" disabled />
-//               </div>
-              
-//               {/* Phone Number */}
-//               <div>
-//                 <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
-//                 <input name="profile.phone" value={formData.profile.phone} onChange={handleChange} className="input-field" placeholder="+1 (555) 123-4567" />
-//               </div>
-//              {/* Nationality */}
-//               <div>
-//                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-//                   Nationality
-//                 </label>
-
-//                 <ReactFlagsSelect
-//                   selected={formData.profile.nationalityCode}
-//                   onSelect={(code) =>
-//                     setFormData((prev) => ({
-//                       ...prev,
-//                       profile: { ...prev.profile, nationalityCode: code },
-//                     }))
-//                   }
-//                   searchable
-//                   className="w-full"
-//                   selectButtonClassName="input-field flex items-center justify-between"
-//                   placeholder="Select Nationality"
-//                 />
-//               </div>
-
-//               <div>
-//                 <label className="block text-sm font-semibold text-gray-700 mb-2">Location</label>
-//                 <input name="profile.location" value={formData.profile.location} onChange={handleChange} className="input-field" placeholder="City, Country" />
-//               </div>         
-//             </div>
-
-//             <div className="mt-6">
-//               <label className="block text-sm font-semibold text-gray-700 mb-2">Bio</label>
-//               <textarea name="profile.bio" value={formData.profile.bio} onChange={handleChange} className="input-field" rows={4} placeholder="Tell students about yourself..." />
-//             </div>
-//           </div>
-
-
-//           {/* Resume Upload */}
-//           {/* <div className="mt-6">
-//             <label className="block text-sm font-semibold text-gray-700 mb-2">Upload Resume (PDF)</label>
-//             <input
-//               type="file"
-//               accept=".pdf,.doc,.docx"
-//               onChange={(e) => {
-//                 const file = e.target.files?.[0]
-//                 if (!file) return
-//                 const reader = new FileReader()
-//                 reader.onload = () => {
-//                   const dataUrl = reader.result as string
-//                   setFormData(prev => ({
-//                     ...prev,
-//                     profile: { ...prev.profile, resume: dataUrl }
-//                   }))
-//                 }
-//                 reader.readAsDataURL(file)
-//               }}
-//               className="input-field"
-//             />
-//             {formData.profile.resume && (
-//               <div className="mt-2">
-//                 <a href={formData.profile.resume} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
-//                   View Uploaded Resume
-//                 </a>
-//                 <button
-//                   type="button"
-//                   className="ml-2 text-red-600"
-//                   onClick={() => setFormData(prev => ({ ...prev, profile: { ...prev.profile, resume: '' } }))}
-//                 >
-//                   Remove
-//                 </button>
-//               </div>
-//             )}
-//           </div> */}
-
-
-//           {/* Teaching Info */}
-//           <div>
-//             <h3 className="text-xl font-bold text-gray-900 mb-4">Teaching Information</h3>
-//             <div className="grid md:grid-cols-2 gap-6">
-//               <div>
-//                 <label className="block text-sm font-semibold text-gray-700 mb-2">Years of Experience</label>
-//                 <input type="number" name="profile.experience" value={formData.profile.experience} onChange={handleChange} className="input-field" min={0} step={0.5} />
-//               </div>
-
-//               <div>
-//                 <label className="block text-sm font-semibold text-gray-700 mb-2">Hourly Rate ($)</label>
-//                 <input type="number" name="profile.hourlyRate" value={formData.profile.hourlyRate} onChange={handleChange} className="input-field" min={1} step={1} />
-//               </div>
-
-//               <div>
-//                 <label className="block text-sm font-semibold text-gray-700 mb-2">Teaching Style</label>
-//                 <select name="profile.teachingStyle" value={formData.profile.teachingStyle} onChange={handleChange} className="input-field">
-//                   <option>Conversational</option>
-//                   <option>Grammar-focused</option>
-//                   <option>Immersive</option>
-//                   <option>Business-oriented</option>
-//                   <option>Exam Preparation</option>
-//                 </select>
-//               </div>
-
-//               <div className="md:col-span-2">
-//                 <label className="block text-sm font-semibold text-gray-700 mb-2">Is Available for New Bookings</label>
-//                 <label className="flex items-center gap-2">
-//                   <input
-//                     type="checkbox"
-//                     name="profile.isAvailable"
-//                     checked={!!formData.profile.isAvailable}
-//                     onChange={(e) =>
-//                       setFormData(prev => ({
-//                         ...prev,
-//                         profile: { ...prev.profile, isAvailable: e.target.checked }
-//                       }))
-//                     }
-//                   />
-//                   <span>Yes</span>
-//                 </label>
-//               </div>
-//             </div>
-
-//             {/* Languages */}
-//             <div className="mt-6">
-//               <label className="block text-sm font-semibold text-gray-700 mb-2">Languages</label>
-//               <ul className="space-y-2 mb-4">
-//                 {(formData.profile.languages || []).map((lang, idx) => (
-//                   <li key={idx} className="flex items-center justify-between bg-gray-100 p-2 rounded">
-//                     {lang}
-//                     <button type="button" onClick={() => removeFromArray('languages', idx)} className="text-red-600">Remove</button>
-//                   </li>
-//                 ))}
-//               </ul>
-//               <div className="flex">
-//                 <input type="text" value={newLanguage} onChange={(e) => setNewLanguage(e.target.value)} className="input-field flex-1 mr-2" placeholder="Add new language" />
-//                 <button type="button" onClick={() => { addToArray('languages', newLanguage); setNewLanguage('') }} className="btn-primary">Add</button>
-//               </div>
-//             </div>
-
-//             {/* Specializations / Subjects */}
-//             <div className="mt-6">
-//               <label className="block text-sm font-semibold text-gray-700 mb-2">Specializations</label>
-//               <ul className="space-y-2 mb-4">
-//                 {(formData.profile.specializations || []).map((spec, idx) => (
-//                   <li key={idx} className="flex items-center justify-between bg-gray-100 p-2 rounded">{spec}
-//                     <button type="button" onClick={() => removeFromArray('specializations', idx)} className="text-red-600">Remove</button>
-//                   </li>
-//                 ))}
-//               </ul>
-//               <div className="flex">
-//                 <input type="text" value={newSpecialization} onChange={(e) => setNewSpecialization(e.target.value)} className="input-field flex-1 mr-2" placeholder="Add new specialization" />
-//                 <button type="button" onClick={() => { addToArray('specializations', newSpecialization); setNewSpecialization('') }} className="btn-primary">Add</button>
-//               </div>
-//             </div>
-
-//             {/* Standards */}
-//             <div className="mt-6">
-//               <label className="block text-sm font-semibold text-gray-700 mb-2">
-//                 Standards (e.g., 5-8, 5-10, etc.)
-//               </label>
-
-//               <ul className="space-y-2 mb-4">
-//                 {(formData.profile.standards || []).map((std, idx) => (
-//                   <li key={idx} className="flex items-center justify-between bg-gray-100 p-2 rounded">
-//                     {std}
-//                     <button
-//                       type="button"
-//                       onClick={() => removeFromArray('standards', idx)}
-//                       className="text-red-600"
-//                     >
-//                       Remove
-//                     </button>
-//                   </li>
-//                 ))}
-//               </ul>
-
-//               <div className="flex">
-//                 <input
-//                   type="text"
-//                   value={newStandard}
-//                   onChange={(e) => setNewStandard(e.target.value)}
-//                   className="input-field flex-1 mr-2"
-//                   placeholder="Add new standard (e.g., 5-8)"
-//                 />
-//                 <button
-//                   type="button"
-//                   onClick={() => {
-//                     addToArray('standards', newStandard)
-//                     setNewStandard('')
-//                   }}
-//                   className="btn-primary"
-//                 >
-//                   Add
-//                 </button>
-//               </div>
-//             </div>
-            
-//             {/* Trainer Languages (complex) */}
-//             <div className="mt-6">
-//               <label className="block text-sm font-semibold text-gray-700 mb-2">Trainer Languages</label>
-//               {(formData.profile.trainerLanguages || []).map((tl, idx) => (
-//                 <div key={idx} className="bg-gray-100 p-4 rounded mb-4 space-y-2">
-//                   <input type="text" value={tl.language || ''} onChange={(e) => updateObjectInArray('trainerLanguages', idx, 'language', e.target.value)} className="input-field" placeholder="Language" />
-//                   <select value={tl.proficiency || 'Fluent'} onChange={(e) => updateObjectInArray('trainerLanguages', idx, 'proficiency', e.target.value)} className="input-field">
-//                     <option value="Native">Native</option>
-//                     <option value="Fluent">Fluent</option>
-//                   </select>
-//                   <input type="text" value={(tl.teachingLevel || []).join(', ')} onChange={(e) => updateTrainerLangLevels(idx, e.target.value)} className="input-field" placeholder="Teaching Levels (comma-separated)" />
-//                   <button type="button" onClick={() => removeFromArray('trainerLanguages', idx)} className="text-red-600">Remove</button>
-//                 </div>
-//               ))}
-//               <button type="button" onClick={() => addComplexToArray('trainerLanguages', { language: '', proficiency: 'Fluent', teachingLevel: [] })} className="btn-primary">Add Trainer Language</button>
-//             </div>
-
-//             {/* Certifications */}
-//             <div className="mt-6">
-//               <label className="block text-sm font-semibold text-gray-700 mb-2">Certifications</label>
-//               {(formData.profile.certifications || []).map((cert: any, idx: number) => (
-//                 <div key={idx} className="bg-gray-100 p-4 rounded mb-4 space-y-2">
-                  
-//                   {certFields.map(f => (
-//                     <input
-//                       key={f.key}
-//                       type={f.type}
-//                       value={cert[f.key] ?? ''}
-//                       placeholder={f.placeholder}
-//                       min={f.min}
-//                       max={f.max}
-//                       onChange={(e) => {
-//                         const val = f.type === 'number' ? parseInt(e.target.value, 10) || null : e.target.value
-//                         updateObjectInArray('certifications', idx, f.key, val)
-//                       }}
-//                       className="input-field"
-//                     />
-//                   ))}
-
-//                   {/* Certificate Image */}
-//                   <div>
-//                     <label className="block text-sm font-semibold text-gray-700 mb-1">Certificate Image</label>
-//                     <input type="file" accept="image/*" onChange={(e) => {
-//                       const file = e.target.files?.[0]; if (!file) return;
-//                       const reader = new FileReader();
-//                       reader.onload = () => updateObjectInArray('certifications', idx, 'certificateImage', reader.result as string);
-//                       reader.readAsDataURL(file);
-//                     }} className="input-field" />
-//                     {cert.certificateImage && <img src={cert.certificateImage} alt="Cert" className="w-32 h-32 mt-2 object-cover rounded border" />}
-//                   </div>
-
-//                   <button type="button" onClick={() => removeFromArray('certifications', idx)} className="text-red-600">Remove</button>
-//                 </div>
-//               ))}
-
-//               <button
-//                 type="button"
-//                 onClick={() => addComplexToArray  ('certifications', {
-//                     name: '',
-//                     issuer: '',
-//                     year: null,
-//                     certificateImage: '',
-//                     certificateLink: ''
-//                   })
-//                 }
-//                 className="btn-primary"
-//               >
-//                 Add Certification
-//               </button>
-//             </div>
-
-
-//             {/* Availability */}
-//             <div className="mt-6">
-//               <label className="block text-sm font-semibold text-gray-700 mb-2">Availability</label>
-//               {(formData.profile.availability || []).map((av, idx) => (
-//                 <div key={String(av.day || idx)} className="bg-gray-100 p-4 rounded mb-4 space-y-2">
-//                   <div className="font-medium capitalize">{av.day}</div>
-//                   <label className="flex items-center"><input type="checkbox" checked={!!av.available} onChange={(e) => updateAvailability(idx, 'available', e.target.checked)} className="mr-2" /> Available</label>
-//                   {av.available && (
-//                     <div className="flex items-center space-x-2">
-//                       <input type="time" value={av.startTime || ''} onChange={(e) => updateAvailability(idx, 'startTime', e.target.value)} className="input-field" />
-//                       <span>to</span>
-//                       <input type="time" value={av.endTime || ''} onChange={(e) => updateAvailability(idx, 'endTime', e.target.value)} className="input-field" />
-//                     </div>
-//                   )}
-//                 </div>
-//               ))}
-//             </div>
-//           </div>
-
-//           {/* Media & Social */}
-//           <div>
-//             <h3 className="text-xl font-bold text-gray-900 mb-4">Media & Social Links</h3>
-//             <div className="grid md:grid-cols-2 gap-6">
-//               <div className="md:col-span-2">
-//                 <label className="block text-sm font-semibold text-gray-700 mb-2">Demo Video URL (YouTube)</label>
-//                 <input type="url" name="profile.demoVideo" value={formData.profile.demoVideo} onChange={handleChange} className="input-field" placeholder="https://www.youtube.com/watch?v=..." />
-//               </div>
-
-              
-
-//               <div>
-//                 <label className="block text-sm font-semibold text-gray-700 mb-2">Instagram URL</label>
-//                 <input type="url" name="profile.socialMedia.instagram" value={formData.profile.socialMedia.instagram} onChange={handleChange} className="input-field" placeholder="https://instagram.com/username" />
-//               </div>
-
-//               <div>
-//                 <label className="block text-sm font-semibold text-gray-700 mb-2">YouTube URL</label>
-//                 <input type="url" name="profile.socialMedia.youtube" value={formData.profile.socialMedia.youtube} onChange={handleChange} className="input-field" placeholder="https://youtube.com/channel/..." />
-//               </div>
-
-//               <div>
-//                 <label className="block text-sm font-semibold text-gray-700 mb-2">LinkedIn URL</label>
-//                 <input type="url" name="profile.socialMedia.linkedin" value={formData.profile.socialMedia.linkedin} onChange={handleChange} className="input-field" placeholder="https://linkedin.com/in/username" />
-//               </div>
-//             </div>
-//           </div>
-
-//           <div className="flex gap-3">
-//             <button type="submit" disabled={loading} className="btn-primary disabled:opacity-50">{loading ? 'Updating...' : 'Update Profile'}</button>
-//             <button type="button" onClick={() => { setFormData({ name: user?.name || '', email: user?.email || '', profile: defaultProfile }); setSuccess(''); setError('') }} className="btn-ghost">Reset</button>
-//           </div>
-//         </form>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default TrainerProfile
 
 
 /* ---------------- EducatorDashboard (root) ---------------- */
@@ -687,14 +51,14 @@ const EducatorDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-fixed" style={{
-          backgroundImage:
-            `url(${bg_img})`,
-            position: "relative",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            width: "100%",
-        }}>
+      backgroundImage:
+        `url(${bg_img})`,
+      position: "relative",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+      width: "100%",
+    }}>
       {/* Overlay for mobile when sidebar is open */}
       {sidebarOpen && (
         <div
@@ -703,96 +67,142 @@ const EducatorDashboard: React.FC = () => {
         />
       )}
 
-      {/* 🔹 Sticky Header */}
-      <header className="sticky top-0 z-40 bg-[#2D274B]/95 backdrop-blur-sm border-b border-white/30 text-[#dc8d33] shadow-lg">
-        <div className="flex items-center justify-between px-6 py-3">
-          {/* Left: Menu + Logo */}
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="lg:hidden text-[#CBE56A] hover:text-[#dc8d33] transition-colors"
-            >
-              <Menu className="h-6 w-6" />
-            </button>
+      {/* Sticky Header */}
+      <header className="sticky top-0 z-40 bg-[#FFF9F2]">
+        <div className="flex items-center justify-between px-8 py-6">
 
-            <Link to="/" className="flex items-center gap-1 group">
-              <div className="text-2xl md:text-2xl font-[Good Vibes] font-extrabold tracking-wide relative inline-flex items-center transition-transform duration-300 group-hover:scale-105">
-                <span className="text-[#e0fa84] drop-shadow-lg group-hover:text-[#CBE56A] transition-colors">
-                  LearniLM
-                </span>
-                <motion.span
-                  animate={{ rotate: 360 }}
-                  transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
-                  className="inline-block mx-1 text-xl"
-                >
-                  🌎
-                </motion.span>
-                <span className="text-[#e0fa84] drop-shadow-lg group-hover:text-[#CBE56A] transition-colors">
-                  World
-                </span>
-              </div>
-            </Link>
+          {/* Left: Title */}
+          <div>
+            <h1 className="text-3xl font-bold text-[#6B21A8]">
+              Dashboard
+            </h1>
           </div>
 
-          {/* Right: Role + Stats */}
-          <div className="flex items-center gap-6 text-sm text-[#CBE56A]">
-            <span className="text-[#dc8d33]">
-              Role: <span className="font-semibold text-[#CBE56A]">Educator</span>
-            </span>
-            <span className="text-[#dc8d33]">
-              Rating:{" "}
-              <span className="font-semibold text-[#CBE56A]">
-                {user?.stats?.rating || "5.0"}
-              </span>
-            </span>
-            <span className="text-[#dc8d33]">
-              Earnings:{" "}
-              <span className="font-semibold text-[#CBE56A]">
-                ${user?.stats?.totalEarnings || 0}
-              </span>
-            </span>
+          {/* Right: Stats */}
+          <div className="flex items-center gap-10 text-sm">
+
+            <div className="text-center">
+              <p className="text-gray-500">Students</p>
+              <p className="text-lg font-bold text-[#6B21A8]">
+                10<span className="text-red-500">+</span>
+              </p>
+            </div>
+
+            <div className="text-center">
+              <p className="text-gray-500">Ratings</p>
+              <p className="text-lg font-bold text-[#6B21A8]">
+                4.2<span className="text-yellow-400">★</span>
+              </p>
+            </div>
+
+            <div className="text-center">
+              <p className="text-gray-500">Earnings</p>
+              <p className="text-lg font-bold text-[#6B21A8]">
+                ${user?.stats?.totalEarnings || 25}
+              </p>
+            </div>
+
           </div>
         </div>
       </header>
 
+
       {/* Sidebar */}
       <div
-        className={`fixed top-16 inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-[#2D274B] via-[#3B3361] to-[#2D274B] shadow-lg border-r border-white/10 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed inset-y-0 left-0 z-40 w-64
+  bg-gradient-to-b from-[#C9A7F7] to-[#9B6EF3]
+  px-6 py-8
+  transform transition-transform duration-300
+  ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+  lg:translate-x-0`}
       >
-        <div className="p-6 mt-2 space-y-2">
-          <nav className="space-y-2">
-            {navigation.map((item) => (
+
+        {/* Logo */}
+        <Link
+          to="/"
+          className="flex items-center mb-10 hover:opacity-90 transition"
+        >
+          {/* Logo */}
+          <img
+            src={logo}
+            alt="LearniLM"
+            className="w-10 h-10 rounded-full mr-3"
+          />
+
+          {/* Wordmark */}
+          <div className="flex items-center leading-none">
+            <span className="font-bold text-gray-700 text-lg">
+              LearniLM
+            </span>
+
+            <motion.span
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
+              className="inline-block text-xl mx-[2px]"
+            >
+              🌎
+            </motion.span>
+
+            <span className="font-bold text-gray-700 text-lg">
+              World
+            </span>
+          </div>
+        </Link>
+
+
+        {/* User */}
+        <div className="flex items-center gap-3 mb-10">
+          <div className="w-10 h-10 rounded-full bg-white/30 flex items-center justify-center">
+            <User className="text-white" />
+          </div>
+          <div>
+            <p className="text-gray-700 font-semibold">
+              {user?.name || "Sarah Mitchell"}
+            </p>
+            <p className="text-gray-800/70 text-sm">
+              Trainer Dashboard
+            </p>
+          </div>
+        </div>
+
+        {/* Navigation */}
+        <nav className="space-y-3">
+          {navigation.map((item) => {
+            const active = isActive(item.href)
+            return (
               <Link
                 key={item.name}
                 to={item.href}
                 onClick={() => setSidebarOpen(false)}
-                className={`flex items-center px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
-                  isActive(item.href)
-                    ? "bg-[#CBE56A] text-[#2D274B] shadow-md"
-                    : "text-[#CBE56A] hover:bg-[#dc8d33]/20 hover:text-[#dc8d33] hover:translate-x-1"
-                }`}
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition
+            ${active
+                    ? "bg-white text-[#6B21A8] font-semibold shadow-md"
+                    : "text-gray-700 hover:bg-white/30"
+                  }`}
               >
-                <item.icon className="h-5 w-5 mr-3" /> {item.name}
+                <item.icon className="w-5 h-5" />
+                {item.name}
               </Link>
-            ))}
-          </nav>
-        </div>
+            )
+          })}
+        </nav>
 
-        {/* Logout Button */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-white/10">
+        {/* Logout */}
+        <div className="absolute bottom-6 left-6 right-6">
           <button
             onClick={logout}
-            className="flex items-center w-full px-4 py-3 bg-[#3B3361] text-[#CBE56A] hover:bg-[#CBE56A] hover:text-[#2D274B] rounded-xl shadow-md hover:shadow-xl transition-all duration-300"
+            className="w-full bg-white text-[#6B21A8]
+      py-3 rounded-full font-semibold
+      shadow-md hover:scale-[1.02] transition"
           >
-            <LogOut className="h-5 w-5 mr-3" /> Sign Out
+            Log Out →
           </button>
         </div>
       </div>
 
+
       {/* Main Content */}
-      <div className="pt-16 lg:pl-64">
+      <div className="pt-3 lg:pl-64">
         <div className="p-6">
           <Routes>
             <Route index element={<TrainerHome />} />

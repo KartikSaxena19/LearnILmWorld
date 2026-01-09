@@ -1,157 +1,176 @@
 // src/pages/StudentDashboard.tsx
-import React, { useState } from 'react'
-// useEffect, ChangeEvent, FormEvent
-import { Routes, Route, Link, useLocation } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import {
-  Home,  User, Calendar,  LogOut, Menu,
-} from 'lucide-react'
-// BookOpen, Star, Clock, Video, Globe,X, MessageSquare, TrendingUp, Users, MessageCircle removed from lucide icons
-import { useAuth } from '../../contexts/AuthContext'
-import bg_img from '../../assets/purple_gradient.jpg'
-// import axios from 'axios'
-// Component files
-import StudentHome from "./StudentHome";
-import StudentLanding from "./StudentLanding";
-import StudentSessions from "./StudentSessions";
-import StudentProfile from "./StudentProfile";
+import React, { useState } from "react"
+import { Routes, Route, Link, useLocation } from "react-router-dom"
+import { motion } from "framer-motion"
+import { Home, Calendar, User, Menu, } from "lucide-react"
+// Removed from above logout,
+import { useAuth } from "../../contexts/AuthContext"
+import bg_img from "../../assets/bg_dashboard.jpeg"
+import logo from '../../assets/LearnilmworldLogo.jpg'
 
-/* ---------------------------
-   Notes:
-   - Converted to TypeScript (tsx)
-   - UI/layout follows EducatorDashboard pattern (sidebar, top bar, content area)
-   - Kept all original logic intact (API calls, handlers, modals, validations)
-   - Preserved original color palette (primary teal: #9787F3)
-   - Minor TS typing added for clarity, without altering behavior
-   --------------------------- */
+import StudentHome from "./StudentHome"
+import StudentLanding from "./StudentLanding"
+import StudentSessions from "./StudentSessions"
+import StudentProfile from "./StudentProfile"
 
-/* ---------- Types ---------- */
 type AnyObj = Record<string, any>
 
-// const FRONTEND_URL= import.meta.env.VITE_FRONTEND_URL;
-// const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
-
-/* ---------------- StudentDashboard (root) ---------------- */
 const StudentDashboard: React.FC = () => {
-  const { logout } = useAuth() as AnyObj;
-  // removed "user" from {} above
-  const location = useLocation();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { user, logout } = useAuth() as AnyObj
+  const location = useLocation()
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const navigation = [
-    { name: "Home", href: "/student/home", icon: Home },
     { name: "Dashboard", href: "/student", icon: Home },
+    { name: "Home", href: "/student/home", icon: Home },
     { name: "My Sessions", href: "/student/sessions", icon: Calendar },
-    { name: "My Profile", href: "/student/profile", icon: User },
-  ];
+    { name: "Profile", href: "/student/profile", icon: User },
+  ]
 
   const isActive = (path: string) => {
     if (path === "/student")
-      return location.pathname === "/student" || location.pathname === "/student/";
-    return location.pathname.startsWith(path);
-  };
+      return location.pathname === "/student"
+    return location.pathname.startsWith(path)
+  }
 
   return (
-    <div className="min-h-screen bg-fixed" style={{
-          backgroundImage:
-            `url(${bg_img})`,
-            position: "relative",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            width: "100%",
-        }}>
-      {/* Overlay for mobile when sidebar is open */}
+    <div
+      className="min-h-screen bg-fixed"
+      style={{
+        backgroundImage: `url(${bg_img})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      {/* Overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
-      {/* 🔹 Sticky, scrollable header with shine and animation */}
-      <header className="sticky top-0 z-40 bg-[#2D274B]/95 backdrop-blur-sm border-b border-white/30 text-[#dc8d33] shadow-lg">
-        <div className="flex items-center justify-between px-6 py-3">
-          {/* Left: Menu + Logo */}
-          <div className="flex items-center gap-3">
-            {/* Mobile menu button */}
+      {/* ================= HEADER ================= */}
+      <header className="sticky top-0 z-40 bg-[#FFF9F2] shadow-sm">
+        <div className="flex items-center justify-between px-8 py-6">
+
+          {/* Left */}
+          <div className="flex items-center gap-4">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden text-[#CBE56A] hover:text-[#dc8d33] transition-colors"
-              aria-label="Open sidebar"
+              className="lg:hidden text-[#6B21A8]"
             >
-              <Menu className="h-6 w-6" />
+              <Menu />
             </button>
 
-            {/* Animated Logo with Link */}
-            <Link to="/" className="flex items-center gap-1 group">
-              <div className="text-2xl md:text-2xl font-[Good Vibes] font-extrabold tracking-wide relative inline-flex items-center transition-transform duration-300 group-hover:scale-105">
-                {/* LearniLM */}
-                <span className="text-[#e0fa84] drop-shadow-lg group-hover:text-[#CBE56A] transition-colors">LearniLM</span>
-
-                {/* Rotating Globe */}
-                <motion.span
-                  animate={{ rotate: 360 }}
-                  transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
-                  className="inline-block mx-1 text-xl"
-                >
-                  🌎
-                </motion.span>
-
-                {/* World */}
-                <span className="text-[#e0fa84] drop-shadow-lg group-hover:text-[#CBE56A] transition-colors">World</span>
-              </div>
-            </Link>
+            <h1 className="text-3xl font-bold text-[#6B21A8]">
+              Dashboard
+            </h1>
           </div>
 
-          {/* Right: Role */}
-          <div className="text-sm">
+          {/* Right */}
+          <div className="text-sm text-gray-600">
             Role:{" "}
-            <span className="font-semibold text-[#CBE56A]">Student</span>
+            <span className="font-semibold text-[#6B21A8]">
+              Student
+            </span>
           </div>
         </div>
       </header>
 
-
-      {/* Sidebar */}
+      {/* ================= SIDEBAR ================= */}
       <div
-        className={`fixed top-16 inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-[#2D274B] via-[#3B3361] to-[#2D274B] shadow-lg border-r border-white/10 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed inset-y-0 left-0 z-40 w-64
+        bg-gradient-to-b from-[#C9A7F7] to-[#9B6EF3]
+        px-6 py-8
+        transform transition-transform duration-300
+        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+        lg:translate-x-0`}
       >
-        <div className="p-6 mt-2 space-y-2">
-          <nav className="space-y-2">
-            {navigation.map((item) => (
+        {/* Logo */}
+        <Link
+          to="/"
+          className="flex items-center mb-10 hover:opacity-90 transition"
+        >
+          {/* Logo */}
+          <img
+            src={logo}
+            alt="LearniLM"
+            className="w-10 h-10 rounded-full mr-3"
+          />
+
+          {/* Wordmark */}
+          <div className="flex items-center leading-none">
+            <span className="font-bold text-gray-700 text-lg">
+              LearniLM
+            </span>
+
+            <motion.span
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
+              className="inline-block text-xl mx-[2px]"
+            >
+              🌎
+            </motion.span>
+
+            <span className="font-bold text-gray-700 text-lg">
+              World
+            </span>
+          </div>
+        </Link>
+
+        {/* Student Info */}
+        <div className="flex items-center gap-3 mb-10">
+          <div className="w-10 h-10 rounded-full bg-white/30 flex items-center justify-center">
+            <User className="text-white" />
+          </div>
+          <div>
+            <p className="font-semibold text-gray-700">
+              {user?.name || "Student"}
+            </p>
+            <p className="text-sm text-gray-800/70">
+              Student Dashboard
+            </p>
+          </div>
+        </div>
+
+        {/* Navigation */}
+        <nav className="space-y-3">
+          {navigation.map((item) => {
+            const active = isActive(item.href)
+            return (
               <Link
                 key={item.name}
                 to={item.href}
                 onClick={() => setSidebarOpen(false)}
-                className={`flex items-center px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
-                  isActive(item.href)
-                    ? "bg-[#CBE56A] text-[#2D274B] shadow-md"
-                    : "text-[#CBE56A] hover:bg-[#dc8d33]/20 hover:text-[#dc8d33] hover:translate-x-1"
-                }`}
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition
+                  ${active
+                    ? "bg-white text-[#6B21A8] font-semibold shadow-md"
+                    : "text-gray-700 hover:bg-white/30"
+                  }`}
               >
-                <item.icon className="h-5 w-5 mr-3" /> {item.name}
+                <item.icon className="w-5 h-5" />
+                {item.name}
               </Link>
-            ))}
-          </nav>
-        </div>
+            )
+          })}
+        </nav>
 
-        {/* Logout section */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-white/10">
+        {/* Logout */}
+        <div className="absolute bottom-6 left-6 right-6">
           <button
             onClick={logout}
-            className="flex items-center w-full px-4 py-3 bg-[#3B3361] text-[#CBE56A] hover:bg-[#CBE56A] hover:text-[#2D274B] rounded-xl shadow-md hover:shadow-xl transition-all duration-300"
+            className="w-full bg-white text-[#6B21A8]
+            py-3 rounded-full font-semibold
+            shadow-md hover:scale-[1.02] transition"
           >
-            <LogOut className="h-5 w-5 mr-3" /> Sign Out
+            Log Out →
           </button>
         </div>
       </div>
 
-
-      {/* Main Content */}
-      <div className="pt-16 lg:pl-64"> {/* padding top = header height */}
+      {/* ================= CONTENT ================= */}
+      <div className="pt-3 lg:pl-64">
         <div className="p-6">
           <Routes>
             <Route index element={<StudentHome />} />
@@ -162,7 +181,7 @@ const StudentDashboard: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default StudentDashboard;
+export default StudentDashboard

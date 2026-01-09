@@ -4,8 +4,9 @@ import { motion } from "framer-motion";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { Container, Nav, Offcanvas, Button } from "react-bootstrap";
 // import logo from '../assets/LearnilmworldLogo.jpg'
-import image1 from '../assets/become-trainer2.1.jpeg'
+import image1 from '../assets/become-trainer2.4.png'
 import image2 from '../assets/become-trainer2.2.jpeg'
+import image3 from '../assets/become-trainer2.3.jpeg'
 // import bg_img from '../assets/purple_gradient.jpg'
 import bg_img from '../assets/header_bg.jpg'
 import bg_main from '../assets/bg_trainer.jpeg'
@@ -18,7 +19,7 @@ const BecomeTrainer: React.FC = () => {
   const [showOffcanvas, setShowOffcanvas] = useState(false);
 
   return (
-    <div className="bg-fixed min-h-screen text-[#e0fa84]"
+    <div className="bg-fixed min-h-screen overflow-x-hidden text-[#e0fa84]"
       style={{
         backgroundImage:
           `url(${bg_main})`,
@@ -30,7 +31,7 @@ const BecomeTrainer: React.FC = () => {
       }}
     >
       {/* text-[#e0fa84] text-[#2D274B] */}
-      <header className="sticky top-0 z-40 bg-fixed">
+      <header className="sticky top-0 z-40 ">
         <div className="px-4 pt-4">
           <div
             className="
@@ -52,7 +53,7 @@ const BecomeTrainer: React.FC = () => {
               width: "100%",
             }}
           >
-            <Container className="py-7 px-10">
+            <Container className="px-5 sm:px-10 py-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
 
@@ -115,84 +116,169 @@ const BecomeTrainer: React.FC = () => {
           </div>
         </div>
 
-
       </header>
 
       {/* Hero Section */}
-      <section className="relative flex flex-col items-center justify-center text-center py-20 px-4">
-        <motion.h1
-          className="text-5xl md:text-6xl font-extrabold text-[#F64EBB] mb-6"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          Empower Learners, Inspire Growth 🌟
-        </motion.h1>
-        <motion.p
-          className="max-w-2xl font-bold text-xl md:text-2xl text-[#2D274B] mb-10"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          Join LearniLM🌍World as a Trainer and help students achieve their goals while
-          growing your career in a flexible, rewarding environment.
-        </motion.p>
-        <motion.button
-          onClick={() => navigate("/register?role=trainer")}
-          className="px-8 py-4 bg-[#F64EBB] text-[white] font-semibold text-lg rounded-full shadow-lg hover:bg-[#ea20a4] transition-all"
-          whileHover={{ scale: 1.05 }}
-        >
-          Join as a Trainer
-        </motion.button>
+      <section className="py-20 px-4">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+          {/* LEFT CONTENT */}
+          <div className="text-center lg:text-left">
+            <motion.h1
+              className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#F64EBB] mb-6 leading-tight"
+            >
+              Empower Learners, <br />
+              Inspire Growth 🌟
+            </motion.h1>
+
+            <motion.p
+              className="max-w-xl mx-auto lg:mx-0 font-semibold text-lg sm:text-xl text-[#2D274B] mb-10"
+            >
+              Join LearniLM🌍World as a Trainer and help students achieve their goals while
+              growing your career in a flexible, rewarding environment.
+            </motion.p>
+
+            <motion.button
+              onClick={() => navigate("/register?role=trainer")}
+              className="px-10 py-4 bg-[#F64EBB] text-white font-semibold text-lg rounded-full shadow-lg hover:bg-[#ea20a4]"
+              whileHover={{ scale: 1.05 }}
+            >
+              Become a Trainer Today
+            </motion.button>
+          </div>
+
+          {/* RIGHT IMAGE */}
+          <motion.div
+            className="flex justify-center lg:justify-end"
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+          >
+            <img
+              src={image2}
+              alt="Trainer Collaboration"
+              className="
+          w-full
+          max-w-xl
+          lg:max-w-2xl
+          rounded-3xl
+          shadow-xl
+          object-cover
+        "
+            />
+          </motion.div>
+
+        </div>
       </section>
 
-      {/* Image + Text Section 1 */}
-      <section className="py-20 px-6 md:px-16 flex flex-col-reverse md:flex-row items-center gap-10 max-w-6xl mx-auto">
+      {/*  Text Section + 1 Big Image */}
+      <section className="py-10 px-6 md:px-16 flex flex-column  md:flex-row items-center gap-10 max-w-6xl mx-auto">
+        {/* text + list ul */}
         <motion.div
           className="flex-1 space-y-6"
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-4xl md:text-4xl font-bold text-[#F64EBB]">
-            Teach, Inspire, and Make a Difference
-          </h2>
-          <p className="text-xl font-bold text-[#2D274B] leading-relaxed">
-            At LearniLM World, we believe in empowering individuals through knowledge.
-            As a trainer, you’ll help learners from diverse backgrounds gain confidence,
-            improve communication, and unlock new opportunities in their lives.
-          </p>
-          <ul className="list-disc list-outside text-lg text-[#2D274B] font-bold space-y-2">
-            <li>Flexible working hours and teaching freedom</li>
-            <li>Access to a supportive and growing learning community</li>
-            <li>Opportunity to reach learners from around the world</li>
-          </ul>
-          <button
-            onClick={() => navigate("/register?role=trainer")}
-            className="mt-6 px-8 py-3 bg-[#F64EBB] text-[white] rounded-full font-semibold hover:bg-[#f92eb2] transition-all"
-          >
-            Become a Trainer Today
-          </button>
+
+          <div>
+            <h2 className="text-5xl md:text-5xl font-bold text-[#F64EBB] mx-auto">
+              Teach, Inspire, and Make a Difference
+            </h2>
+          </div>
+
+          <div>
+
+            <p className="text-xl font-bold text-[#2D274B] leading-relaxed">
+              At LearniLM World, we believe in empowering individuals through knowledge.
+              As a trainer, you’ll help learners from diverse backgrounds gain confidence,
+              improve communication, and unlock new opportunities in their lives.
+            </p>
+            <div className="flex flex-row gap-20">
+              <div>
+                <ul className="list-disc list-outside text-xl text-[#2D274B] font-bold space-y-2">
+                  <li>Flexible working hours and teaching freedom</li>
+                  <li>Access to a supportive and growing learning community</li>
+                  <li>Opportunity to reach learners from around the world</li>
+                </ul>
+              </div>
+
+              {/* <div>
+                <button
+                  onClick={() => navigate("/register?role=trainer")}
+                  className="mt-6 px-8 py-3 bg-[#F64EBB] text-[white] rounded-full font-semibold hover:bg-[#f92eb2] transition-all"
+                >
+                  Become a Trainer Today
+                </button>
+              </div> */}
+            </div>
+
+          </div>
+
+
         </motion.div>
 
-        <motion.div
-          className="flex-1 flex justify-center"
-          initial={{ opacity: 0, x: 40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <img
-            src={image1}
-            alt="Trainer Illustration"
-            className="rounded-2xl shadow-lg max-w-l w-full object-cover"
-          />
-        </motion.div>
+        {/* stretched image */}
+        <div className="w-full px-4">
+          <div className="max-w-6xl mx-auto overflow-hidden rounded-3xl shadow-lg aspect-[7/2]">
+            <motion.div
+              className="flex-1 flex justify-center"
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <img
+                src={image3}
+                alt="Trainer Relaxing Illustration"
+                className=" w-full h-full object-cover object-center"
+              />
+            </motion.div>
+          </div>
+        </div>
+
+        {/*Text Under Images */}
+        <div>
+          <motion.div
+            className="flex-1 space-y-6"
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <ul className="gap-4 text-lg text-[#2D274B] font-bold grid grid-cols-1 md:grid-cols-2">
+              <li className="flex items-start border-gray-400 rounded-full px-8 py-4 shadow-sm text-start bg-white/80 gap-3">
+                <span className="text-[#F64EBB] text-xl">✔</span>
+                Continuous Flow of Learners —<br /> Reach motivated students from around the world.
+              </li>
+              <li className="flex items-start border-gray-400 rounded-full px-8 py-4 shadow-sm text-start bg-white/80 gap-3">
+                <span className="text-[#F64EBB] text-xl">✔</span>
+                Smart Scheduling Tools —<br /> Manage your sessions effortlessly with our intuitive calendar.
+              </li>
+              <li className="flex items-start border-gray-400 rounded-full px-8 py-4 shadow-sm text-start bg-white/80 gap-3">
+                <span className="text-[#F64EBB] text-xl">✔</span>
+                Interactive Virtual Classrooms —<br /> Engage your students with real-time learning tools.
+              </li>
+              <li className="flex items-start border-gray-400 rounded-full px-8 py-4 shadow-sm text-start bg-white/80 gap-3">
+                <span className="text-[#F64EBB] text-xl">✔</span>
+                Secure & Flexible Payments —<br /> Get paid easily, wherever you are.
+              </li>
+              <li className="flex items-start border-gray-400 rounded-full px-8 py-4 shadow-sm text-start bg-white/80 gap-3">
+                <span className="text-[#F64EBB] text-xl">✔</span>
+                Growth-Focused Training —<br /> Access exclusive webinars and teaching resources.
+              </li>
+              <li className="flex items-start border-gray-400 rounded-full px-8 py-4 shadow-sm text-start bg-white/80 gap-3">
+                <span className="text-[#F64EBB] text-xl">✔</span>
+                Thriving Educator Community — <br /> Connect, share, and collaborate with fellow mentors.
+              </li>
+            </ul>
+
+          </motion.div>
+        </div>
+
       </section>
 
       {/* Global Teaching Section */}
-      <section className="py-20 px-6 md:px-16  flex flex-col-reverse md:flex-row items-center gap-10 max-w-6xl mx-auto rounded-2xl shadow-sm">
+      {/* <section className="py-20 px-6 md:px-16  flex flex-col-reverse md:flex-row items-center gap-10 max-w-6xl mx-auto rounded-2xl shadow-sm">
 
-        {/* left Image */}
+       
         <motion.div
           className="flex-1 flex justify-center"
           initial={{ opacity: 0, x: 40 }}
@@ -206,61 +292,11 @@ const BecomeTrainer: React.FC = () => {
           />
         </motion.div>
 
-        {/* right Content */}
-        <motion.div
-          className="flex-1 space-y-6"
-          initial={{ opacity: 0, x: -40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 className="text-4xl md:text-4xl font-bold text-[#F64EBB]">
-            Empower Learners Across 150+ Countries 🌍
-          </h2>
-          <p className="text-xl text-[#2D274B] font-bold leading-relaxed">
-            Be part of LearniLM 🌎 World — where passionate educators and curious learners come together. Shape the future of learning and grow with our expanding global community. <br />
-            {/* <span className="font-semibold text-[#8CA0E5]">800,000+</span> students.  */}
-            {/* Join us and get all the tools you need to teach, inspire, and grow. */}
-          </p>
-          <ul className="space-y-3 text-lg text-[#2D274B] font-bold">
-            <li className="flex items-start gap-3">
-              <span className="text-[#F64EBB] text-xl">✔</span>
-              Continuous Flow of Learners — Reach motivated students from around the world.
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-[#F64EBB] text-xl">✔</span>
-              Smart Scheduling Tools — Manage your sessions effortlessly with our intuitive calendar.
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-[#F64EBB] text-xl">✔</span>
-              Interactive Virtual Classrooms — Engage your students with real-time learning tools.
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-[#F64EBB] text-xl">✔</span>
-              Secure & Flexible Payments — Get paid easily, wherever you are.
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-[#F64EBB] text-xl">✔</span>
-              Growth-Focused Training — Access exclusive webinars and teaching resources.
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-[#F64EBB] text-xl">✔</span>
-              Thriving Educator Community — Connect, share, and collaborate with fellow mentors.
-            </li>
-          </ul>
-          <button
-            onClick={() => navigate("/register?role=trainer")}
-            className="mt-8 px-8 py-3 bg-[#F64EBB] hover:bg-[#f825ae] text-[white] rounded-full font-bold  transition-all shadow-md"
-          >
-            Create Your Tutor Profile
-          </button>
-        </motion.div>
-
-      </section>
-
+      </section> */}
 
       {/* Benefits Section */}
       {/* e0fa84 bg-[#2D274B] */}
-      <section className=" py-16 px-6 md:px-16">
+      <section className=" pt-16 px-6 md:px-16">
         <h2 className="text-3xl md:text-4xl font-bold text-center text-[#F64EBB] mb-12">
           Why Teach with LearniLM🌍World?
         </h2>
@@ -293,11 +329,12 @@ const BecomeTrainer: React.FC = () => {
             </motion.div>
           ))}
         </div>
+
       </section>
 
       {/* Testimonials Section - trainer review */}
       {/* bg-[#2D274B]  e0fa84*/}
-      <section className=" py-20 px-6 ">
+      <section className=" py-12 px-6 ">
         <h2 className="text-5xl md:text-4xl sm:text-3xl font-bold text-center mb-12 text-[#F64EBB]">
           Straight from the Heart ❤️
         </h2>
@@ -335,11 +372,23 @@ const BecomeTrainer: React.FC = () => {
         </div>
       </section>
 
-      {/* Trainer FAQs Section */}
+      {/*Image on Top + Then Trainer FAQs Section */}
       <section
-        className="py-14 "
+        className="py-8 "
         aria-labelledby="trainer-faq"
       >
+        <motion.div
+          className="flex-1 flex justify-center md:justify-center pb-5"
+          initial={{ opacity: 0, x: 40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <img
+            src={image1}
+            alt="Global teaching"
+            className="rounded-2xl shadow-lg w-3/4 md:max-w-xl "
+          />
+        </motion.div>
         <div className="max-w-5xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-10">
             <h2

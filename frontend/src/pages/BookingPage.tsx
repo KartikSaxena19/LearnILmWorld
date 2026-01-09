@@ -30,7 +30,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const stripePromise = loadStripe(
   import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ||
-    'pk_test_51SFTuTAiYefZpFfcyRQjJAUIlyldQfTLpmtR1XvsmwPHESrdu7b5klbKyxsDF0a6YLurpdSnHEDLPFHmcyjbb6DP00KsLS35fZ'
+  'pk_test_51SFTuTAiYefZpFfcyRQjJAUIlyldQfTLpmtR1XvsmwPHESrdu7b5klbKyxsDF0a6YLurpdSnHEDLPFHmcyjbb6DP00KsLS35fZ'
 )
 
 /* ------------------ Injected CSS ------------------ */
@@ -252,44 +252,44 @@ const PaymentPanel = ({ trainer, selectedMethod, onPaymentSuccess, onPaymentErro
   // }
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  console.log("Form submitted ✅");
+    e.preventDefault();
+    console.log("Form submitted ✅");
 
-  try {
-    console.log("Trainer:", trainer);
-    console.log("Student Name:", studentName);
+    try {
+      console.log("Trainer:", trainer);
+      console.log("Student Name:", studentName);
 
-    const payload = {
-      trainerId: trainer?._id || trainer?.id,
-      studentName,
-      paymentMethod: 'fake',
-      amount: 0
-    };
+      const payload = {
+        trainerId: trainer?._id || trainer?.id,
+        studentName,
+        paymentMethod: 'fake',
+        amount: 0
+      };
 
-    console.log("Payload being sent:", payload);
+      console.log("Payload being sent:", payload);
 
-    const bookingResponse = await axios.post(`${API_BASE_URL}/api/bookings`, payload);
-    console.log("Booking created:", bookingResponse.data);
+      const bookingResponse = await axios.post(`${API_BASE_URL}/api/bookings`, payload);
+      console.log("Booking created:", bookingResponse.data);
 
-    await axios.put(`${API_BASE_URL}/api/bookings/${bookingResponse.data._id}/payment`, {
-      paymentStatus: 'completed',
-      paymentId: 'FREE-BOOKING'
-    });
+      await axios.put(`${API_BASE_URL}/api/bookings/${bookingResponse.data._id}/payment`, {
+        paymentStatus: 'completed',
+        paymentId: 'FREE-BOOKING'
+      });
 
-    onPaymentSuccess({
-      ...bookingResponse.data,
-      paymentDetails: {
-        paymentId: 'FREE-BOOKING',
-        amount: 0,
-        currency: 'usd',
-        status: 'succeeded'
-      }
-    });
-  } catch (err) {
-    console.error('Booking error:', err.response?.data || err.message);
-    onPaymentError('Failed to complete free booking');
-  }
-};
+      onPaymentSuccess({
+        ...bookingResponse.data,
+        paymentDetails: {
+          paymentId: 'FREE-BOOKING',
+          amount: 0,
+          currency: 'usd',
+          status: 'succeeded'
+        }
+      });
+    } catch (err) {
+      console.error('Booking error:', err.response?.data || err.message);
+      onPaymentError('Failed to complete free booking');
+    }
+  };
 
 
 
@@ -466,190 +466,209 @@ const BookingPage = () => {
 
   if (success) {
     return (
-  <div className="container py-5">
-    <div
-      className="card text-center shadow-lg border-0"
-      style={{ maxWidth: 560, margin: "0 auto", borderRadius: 20 }}
-    >
-      {/* Success Icon */}
-      <div
-        className="d-flex align-items-center justify-content-center bg-light rounded-circle shadow-sm"
-        style={{ width: 96, height: 96, margin: "24px auto" }}
-      >
-        <CheckCircle size={48} strokeWidth={2.5} color="var(--brand-#9787F3)" />
-      </div>
-
-      {/* Title & Subtitle */}
-      <h3 className="fw-bold mb-2">Payment Successful</h3>
-      <p className="text-muted mb-4">
-        Your session with{" "}
-        <strong style={{ color: "var(--brand-#9787F3)" }}>{trainer.name}</strong>{" "}
-        has been booked successfully.
-      </p>
-
-      {/* Booking Summary Card */}
-      <div
-        className="card border-0 shadow-sm"
-        style={{ margin: "0 24px", borderRadius: 16 }}
-      >
-        <div className="card-body" style={{ padding: "20px" }}>
-          <div className="d-flex justify-content-between mb-2">
-            <span className="text-muted">Trainer</span>
-            <strong>{trainer.name}</strong>
+      <div className="container py-5">
+        <div
+          className="card text-center shadow-lg border-0"
+          style={{ maxWidth: 560, margin: "0 auto", borderRadius: 20 }}
+        >
+          {/* Success Icon */}
+          <div
+            className="d-flex align-items-center justify-content-center bg-light rounded-circle shadow-sm"
+            style={{ width: 96, height: 96, margin: "24px auto" }}
+          >
+            <CheckCircle size={48} strokeWidth={2.5} color="var(--brand-#9787F3)" />
           </div>
-          <div className="d-flex justify-content-between mb-2">
-            <span className="text-muted">Amount</span>
-            <strong style={{ color: "var(--brand-#9787F3)" }}>
-              ${booking?.amount}
-            </strong>
+
+          {/* Title & Subtitle */}
+          <h3 className="fw-bold mb-2">Payment Successful</h3>
+          <p className="text-muted mb-4">
+            Your session with{" "}
+            <strong style={{ color: "var(--brand-#9787F3)" }}>{trainer.name}</strong>{" "}
+            has been booked successfully.
+          </p>
+
+          {/* Booking Summary Card */}
+          <div
+            className="card border-0 shadow-sm"
+            style={{ margin: "0 24px", borderRadius: 16 }}
+          >
+            <div className="card-body" style={{ padding: "20px" }}>
+              <div className="d-flex justify-content-between mb-2">
+                <span className="text-muted">Trainer</span>
+                <strong>{trainer.name}</strong>
+              </div>
+              <div className="d-flex justify-content-between mb-2">
+                <span className="text-muted">Amount</span>
+                <strong style={{ color: "var(--brand-#9787F3)" }}>
+                  ${booking?.amount}
+                </strong>
+              </div>
+              <div className="d-flex justify-content-between">
+                <span className="text-muted">Method</span>
+                <strong className="text-secondary">{booking?.paymentMethod}</strong>
+              </div>
+            </div>
           </div>
-          <div className="d-flex justify-content-between">
-            <span className="text-muted">Method</span>
-            <strong className="text-secondary">{booking?.paymentMethod}</strong>
+
+          {/* Action Buttons */}
+          <div className="d-flex justify-content-center gap-3 my-4">
+            <Link to="/student/sessions" className="btn btn-primary px-4 py-2">
+              View My Sessions
+            </Link>
+            <Link
+              to="/main"
+              className="btn px-4 py-2"
+              style={{
+                background: "var(--brand-#9787F3)",
+                color: "white",
+              }}
+            >
+              Book Another
+            </Link>
           </div>
         </div>
       </div>
-
-      {/* Action Buttons */}
-      <div className="d-flex justify-content-center gap-3 my-4">
-        <Link to="/student/sessions" className="btn btn-primary px-4 py-2">
-          View My Sessions
-        </Link>
-        <Link
-          to="/main"
-          className="btn px-4 py-2"
-          style={{
-            background: "var(--brand-#9787F3)",
-            color: "white",
-          }}
-        >
-          Book Another
-        </Link>
-      </div>
-    </div>
-  </div>
 
     )
   }
 
   return (
-    <div className="container">
-      <div className="header-row">
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          
-          <div>
+    <div className="bg-[url('/src/assets/bg_main.jpeg')] min-h-screen font-inter text-[#2D274B] transition-colors duration-500 bg-[#FFFAF1] bg-fixed"
+      style={{
+
+        position: "relative",
+        backgroundSize: "cover",
+        backgroundPosition: "right bottom",
+        backgroundRepeat: "no-repeat",
+        width: "100%",
+      }}
+    >
+      <div className="max-w-6xl mx-auto px-4 py-10 font-sans">
+        <div className="container">
+          <div className="header-row">
+            <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+
+              <div>
                 <div className="text-lg font-semibold">LearniLM🌎World</div>
                 <div className="text-xs text-[#2D274B]500 -mt-1">Live lessons · Micro-courses</div>
               </div>
-        </div>
-        <button onClick={() => navigate(-1)} style={{ background: 'transparent', border: 'none', color: 'var(--muted)', cursor: 'pointer' }}>
-          <ArrowLeft /> Back
-        </button>
-      </div>
-
-      <div className="grid-2">
-        {/* LEFT: trainer + select payment type */}
-        <div>
-          <div className="card">
-            <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 12 }}>
-              <div className="avatar"><User /></div>
-              <div>
-                <h3 style={{ margin: 0, fontSize: 22 }}>{trainer.name}</h3>
-                <div style={{ marginTop: 6 }} className="stat-row">
-                  <Star style={{ color: '#fbbf24' }} />
-                  <strong>{trainer.stats?.rating || 5.0}</strong>
-                  <div className="small-muted">({Math.floor(Math.random() * 200) + 50} reviews)</div>
-                </div>
-              </div>
             </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
-              <div>
-                <div className="small-muted" style={{ fontWeight: 700 }}>Languages</div>
-                <div className="small-muted">
-                  {trainer.profile?.trainerLanguages?.length > 0
-                    ? trainer.profile.trainerLanguages.map((l) => l.language).join(', ')
-                    : trainer.profile?.languages?.join(', ') || 'English'}
-                </div>
-              </div>
-              <div>
-                <div className="small-muted" style={{ fontWeight: 700 }}>Experience</div>
-                <div className="small-muted">{trainer.profile?.experience || 5}+ years</div>
-              </div>
-            </div>
-
-            <p className="small-muted">{trainer.profile?.bio || 'Experienced language trainer helping students achieve fluency.'}</p>
-
-            <div className="card" style={{ marginTop: 12 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ fontWeight: 700 }}>Session Rate</div>
-                <div style={{ fontSize: 20, fontWeight: 800, color: 'var(--accent-orange)' }}>${trainer.profile?.hourlyRate || 25}/hour</div>
-              </div>
-            </div>
+            <button onClick={() => navigate(-1)} style={{ background: 'transparent', border: 'none', color: 'var(--muted)', cursor: 'pointer' }}>
+              <ArrowLeft /> Back
+            </button>
           </div>
 
-          {/* separate Select Payment Type card (left) */}
-          <div className="card" style={{ marginTop: 14 }}>
-            <h4 className="section-title">Select payment type</h4>
-            <div className="method-group">
-              <div className={`method-item ${selectedMethod === 'card' ? 'active' : ''}`} onClick={() => setSelectedMethod('card')}>
-                <div className="method-icon"><CreditCard /></div>
-                <div style={{ flex: 1 }}>
-                  <div className="method-label">Credit / Debit Card</div>
-                  <div className="method-sub">Pay securely with any major card</div>
+          <div className="grid-2">
+            {/* LEFT: trainer + select payment type */}
+            <div>
+              <div className="card bg-white rounded-3xl shadow-xl p-8 mb-8">
+                <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 12 }}>
+                  <div className="avatar w-20 h-20 rounded-2xl bg-gradient-to-br from-pink-200 to-purple-200 flex items-center justify-center text-2xl font-bold text-white">{trainer.profile?.imageUrl ? (
+                    <img src={trainer.profile?.imageUrl} alt="trainer-profile" />
+                  )
+                    :
+                    (
+                      <User />
+                    )}</div>
+                  <div className='flex-1'>
+                    <h2 className='text-2xl font-bold text-gray-900' style={{ margin: 0, fontSize: 22 }}>{trainer.name}</h2>
+                    <div style={{ marginTop: 6 }} className="stat-row">
+                      <Star className='text-yellow-400 text-lg' />
+                      <strong className='font-semibold text-gray-800'>{trainer.stats?.rating || 5.0}</strong>
+                      <div className="text-sm text-gray-500">({Math.floor(Math.random() * 200) + 50} reviews)</div>
+                    </div>
+                  </div>
                 </div>
-                <div className="card-logos">
-                  <img src="https://js.stripe.com/v3/fingerprinted/img/visa-729c05c240c4bdb47b03ac81d9945bfe.svg" alt="visa" style={{ height: 20 }} />
-                  <img src="https://js.stripe.com/v3/fingerprinted/img/mastercard-4d8844094130711885b5e41b28c9848f.svg" alt="mc" style={{ height: 20 }} />
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+                  <div>
+                    <div className="font-semibold text-gray-700" style={{ fontWeight: 700 }}>Languages</div>
+                    <div className="text-gray-600">
+                      {trainer.profile?.trainerLanguages?.length > 0
+                        ? trainer.profile.trainerLanguages.map((l) => l.language).join(', ')
+                        : trainer.profile?.languages?.join(', ') || 'English'}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-gray-700" style={{ fontWeight: 700 }}>Experience</div>
+                    <div className="text-gray-600">{trainer.profile?.experience || 5}+ years</div>
+                  </div>
+                </div>
+
+                <p className="mt-5 text-gray-600 leading-relaxed">{trainer.profile?.bio || 'Experienced language trainer helping students achieve fluency.'}</p>
+
+                <div className="card " style={{ marginTop: 12 }}>
+                  <div className='mt-6 bg-gradient-to-r from-orange-50 to-pink-50 rounded-2xl px-6 py-4 flex justify-between items-center' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div className='font-semibold text-gray-800' >Session Rate</div>
+                    <div className='text-xl font-bold text-orange-500'>${trainer.profile?.hourlyRate || 25}/hour</div>
+                  </div>
                 </div>
               </div>
 
-              <div className={`method-item ${selectedMethod === 'demo' ? 'active' : ''}`} onClick={() => setSelectedMethod('demo')}>
-                <div className="method-icon"><DollarSign /></div>
-                <div style={{ flex: 1 }}>
-                  <div className="method-label">Demo Payment</div>
-                  <div className="method-sub">Testing flow — no real charge</div>
+              {/* separate Select Payment Type card (left) */}
+              <div className="card bg-white rounded-3xl shadow-lg p-8" style={{ marginTop: 14 }}>
+                <h4 className="section-title text-xl font-bold text-gray-900 mb-6">Select payment type</h4>
+                <div className="method-group border-2 border-pink-500 bg-pink-50 rounded-2xl p-5 flex items-center gap-4 cursor-pointer transition hover:shadow-md">
+                  <div className={`method-item ${selectedMethod === 'card' ? 'active' : ''}`} onClick={() => setSelectedMethod('card')}>
+                    <div className="method-icon w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow"><CreditCard /></div>
+                    <div style={{ flex: 1 }}>
+                      <div className="method-label font-semibold text-gray-900">Credit / Debit Card</div>
+                      <div className="method-sub text-sm text-gray-500">Pay securely with any major card</div>
+                    </div>
+                    <div className="card-logos">
+                      <img src="https://js.stripe.com/v3/fingerprinted/img/visa-729c05c240c4bdb47b03ac81d9945bfe.svg" alt="visa" style={{ height: 20 }} />
+                      <img src="https://js.stripe.com/v3/fingerprinted/img/mastercard-4d8844094130711885b5e41b28c9848f.svg" alt="mc" style={{ height: 20 }} />
+                    </div>
+                  </div>
+
+                  <div className={` method-item ${selectedMethod === 'demo' ? 'active' : ''}`} onClick={() => setSelectedMethod('demo')}>
+                    <div className="method-icon"><DollarSign /></div>
+                    <div style={{ flex: 1 }}>
+                      <div className="method-label font-semibold text-gray-900">Demo Payment</div>
+                      <div className="method-sub text-sm text-gray-500">Testing flow — no real charge</div>
+                    </div>
+                  </div>
                 </div>
+              </div>
+
+              {/* what's included */}
+              <div className="card" style={{ marginTop: 14 }}>
+                <h4 className="section-title">What's Included</h4>
+                <ul className="info-list">
+                  {[
+                    'One-on-one personalized session',
+                    'HD video call via Jitsi Meet',
+                    'Customized materials',
+                    'Real-time feedback',
+                    'Session recording (if requested)',
+                  ].map((i, idx) => (
+                    <li key={idx}><CheckCircle /> <span style={{ marginLeft: 8 }}>{i}</span></li>
+                  ))}
+                </ul>
               </div>
             </div>
-          </div>
 
-          {/* what's included */}
-          <div className="card" style={{ marginTop: 14 }}>
-            <h4 className="section-title">What's Included</h4>
-            <ul className="info-list">
-              {[
-                'One-on-one personalized session',
-                'HD video call via Jitsi Meet',
-                'Customized materials',
-                'Real-time feedback',
-                'Session recording (if requested)',
-              ].map((i, idx) => (
-                <li key={idx}><CheckCircle /> <span style={{ marginLeft: 8 }}>{i}</span></li>
-              ))}
-            </ul>
-          </div>
-        </div>
+            {/* RIGHT: payment panel */}
+            <div>
+              <div className="card">
+                <h3 className="section-title">Payment</h3>
+                {error && (
+                  <div className="alert" style={{ marginBottom: 12 }}>
+                    <span>⚠️</span>
+                    <div style={{ marginLeft: 8 }}>{error}</div>
+                  </div>
+                )}
 
-        {/* RIGHT: payment panel */}
-        <div>
-          <div className="card">
-            <h3 className="section-title">Payment</h3>
-            {error && (
-              <div className="alert" style={{ marginBottom: 12 }}>
-                <span>⚠️</span>
-                <div style={{ marginLeft: 8 }}>{error}</div>
+                <Elements stripe={stripePromise}>
+                  <PaymentPanel
+                    trainer={trainer}
+                    selectedMethod={selectedMethod}
+                    onPaymentSuccess={handlePaymentSuccess}
+                    onPaymentError={handlePaymentError}
+                  />
+                </Elements>
               </div>
-            )}
-
-            <Elements stripe={stripePromise}>
-              <PaymentPanel
-                trainer={trainer}
-                selectedMethod={selectedMethod}
-                onPaymentSuccess={handlePaymentSuccess}
-                onPaymentError={handlePaymentError}
-              />
-            </Elements>
+            </div>
           </div>
         </div>
       </div>

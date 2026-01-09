@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { createPortal } from 'react-dom'
 // import { Video } from 'lucide-react'
 import axios from 'axios'
 import bg_main from '../assets/bg_main.jpeg'
@@ -29,6 +30,17 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string
 // const ZEGO_DEMO_SECRET = import.meta.env.VITE_ZEGO_DEMO_SECRET
 // const ZEGO_APP_ID = Number(import.meta.env.VITE_ZEGO_APP_ID)
 
+function JoiningOverlay({ visible }: { visible: boolean }) {
+  if (!visible) return null
+
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 text-white text-sm">
+      Joining session…
+    </div>,
+    document.body
+  )
+}
+
 // COMPONENT
 const SessionRoom: React.FC = () => {
   const { sessionId } = useParams<{ sessionId: string }>()
@@ -40,9 +52,17 @@ const SessionRoom: React.FC = () => {
   const [error, setError] = useState<string>('')
   const [sessionStarted, setSessionStarted] = useState<boolean>(false)
 
-  const hasJoinedRef = useRef(false)
+  // const [hasJoined, setHasJoined] = useState(false)
+  const [joinPhase, setJoinPhase] = useState<'idle' | 'joining' | 'joined' | 'left'>('idle')
 
-  const containerRef = useRef<HTMLDivElement | null>(null)
+
+
+  const joinLockRef = useRef(false)
+  const hasAutoJoinedRef = useRef(false)
+
+
+
+  // const containerRef = useRef<HTMLDivElement | null>(null)
   const zpRef = useRef<any>(null)
 
   // -------FETCH SESSION
@@ -50,6 +70,17 @@ const SessionRoom: React.FC = () => {
     if (!sessionId) return
     fetchSession()
   }, [sessionId])
+
+  function showZegoRoot() {
+    const el = document.getElementById('zego-root')
+    if (el) el.style.display = 'block'
+  }
+
+  function hideZegoRoot() {
+    const el = document.getElementById('zego-root')
+    if (el) el.style.display = 'none'
+  }
+
 
   const fetchSession = async () => {
     try {
@@ -71,22 +102,22 @@ const SessionRoom: React.FC = () => {
   }
 
   // START SESSION (TRAINER)
-  const startSession = async () => {
+  // const startSession = async () => {
 
-    if (!session || user?.role !== 'trainer') return
+  //   if (!session || user?.role !== 'trainer') return
 
-    try {
-      await axios.put(
-        `${API_BASE_URL}/api/sessions/${session._id}/status`,
-        { status: 'active' }
-      )
-      // console.log('[ZEGO] Starting session', { sessionId: session._id });
-      setSessionStarted(true)
-      setSession({ ...session, status: 'active' })
-    } catch (err) {
-      console.error('Failed to start session', err)
-    }
-  }
+  //   try {
+  //     await axios.put(
+  //       `${API_BASE_URL}/api/sessions/${session._id}/status`,
+  //       { status: 'active' }
+  //     )
+  //     // console.log('[ZEGO] Starting session', { sessionId: session._id });
+  //     setSessionStarted(true)
+  //     setSession({ ...session, status: 'active' })
+  //   } catch (err) {
+  //     console.error('Failed to start session', err)
+  //   }
+  // }
 
   //Forcely ends session for everyone (by TRAINER)  
   const endSession = async () => {
@@ -98,7 +129,8 @@ const SessionRoom: React.FC = () => {
         `${API_BASE_URL}/api/sessions/${session._id}/end`
       )
 
-      // console.log('[ZEGO] Ending session', { sessionId: session._id })
+      window.dispatchEvent(new Event('SESSION_ENDED'))
+      console.log('[ZEGO] Ending session', { sessionId: session._id })
 
       leaveRoom()
 
@@ -113,18 +145,14 @@ const SessionRoom: React.FC = () => {
   }
 
   const joinRoomWithToken = async () => {
-    if (!session || !containerRef.current) return
+    if (!session || joinPhase === 'joined' || joinLockRef.current) return
 
-    // HARD GUARD — prevents double join
-    if (hasJoinedRef.current) {
-      console.warn('[ZEGO][FRONTEND] joinRoom blocked (already joined)')
-      return
-    }
-
-    hasJoinedRef.current = true
+    joinLockRef.current = true
+    setJoinPhase('joining')
 
     try {
-      console.log('[ZEGO][FRONTEND] Requesting token from backend')
+
+      console.log('[ZEGO][FRONTEND] Requesting token from backend ', joinPhase, "... ")
 
       const res = await axios.post(
         `${API_BASE_URL}/api/sessions/${session._id}/zego-token`
@@ -147,7 +175,7 @@ const SessionRoom: React.FC = () => {
 
       const kitToken = ZegoUIKitPrebuilt.generateKitTokenForProduction(
         Number(appID),
-        token,        // Express token from backend
+        token,
         roomID,
         userID,
         userName
@@ -155,20 +183,29 @@ const SessionRoom: React.FC = () => {
 
       const zp = ZegoUIKitPrebuilt.create(kitToken)
       zpRef.current = zp
+      showZegoRoot()
 
       zp.joinRoom({
-        container: containerRef.current,
+        container: document.getElementById('zego-root')!,
 
         scenario: {
           mode: ZegoUIKitPrebuilt.VideoConference
         },
 
+        showPreJoinView: false,   // IMPORTANT
+        showRoomDetailsButton: false,
+
         onJoinRoom: () => {
           console.log('[ZEGO][UIKIT] Joined room successfully')
+          // setHasJoined(true)
+          setJoinPhase('joined')
+          window.dispatchEvent(new Event("SESSION_JOINED"));
         },
 
+
         onLeaveRoom: () => {
-          console.log('[ZEGO][UIKIT] Left room')
+          console.log('[ZEGO][UIKIT] Left room (UIKit)')
+          cleanupAfterLeave()
         },
 
         onUserJoin: (users: any[]) => {
@@ -194,31 +231,53 @@ const SessionRoom: React.FC = () => {
     } catch (err) {
       console.error('[ZEGO][FRONTEND] Join failed', err)
       setError('Failed to join meeting')
-      hasJoinedRef.current = false
+      joinLockRef.current = false
     }
   }
 
-
-
   const leaveRoom = () => {
-    hasJoinedRef.current = false
+    if (!zpRef.current) return
+    console.log('[SESSION] Manual leave triggered')
+    cleanupAfterLeave()
+  }
+
+
+  function cleanupAfterLeave() {
+    console.log('[SESSION] Cleanup after leave')
+
+    setJoinPhase('left')
+    joinLockRef.current = false
+
     if (zpRef.current) {
-      zpRef.current.destroy()   // 👈 THIS IS THE LEAVE
+      zpRef.current.destroy()
       zpRef.current = null
     }
 
-    if (containerRef.current) {
-      containerRef.current.innerHTML = ''
-    }
+    hideZegoRoot();
+    window.dispatchEvent(new Event("SESSION_LEFT"));
   }
-
 
   useEffect(() => {
     if (!sessionStarted) return
-    if (user?.role === 'trainer') {
-      joinRoomWithToken()
+    if (user?.role !== 'trainer') return
+    if (hasAutoJoinedRef.current) return
+
+    hasAutoJoinedRef.current = true
+    joinRoomWithToken()
+  }, [sessionStarted, user?.role])
+
+  // ending session for all
+  useEffect(() => {
+    const handleSessionEnded = () => {
+      console.log('[SESSION] Session ended globally')
+      cleanupAfterLeave()
+      navigate('/student/sessions')
     }
-  }, [sessionStarted])
+
+    window.addEventListener('SESSION_ENDED', handleSessionEnded)
+    return () =>
+      window.removeEventListener('SESSION_ENDED', handleSessionEnded)
+  }, [])
 
 
   // UI STATES  
@@ -249,132 +308,163 @@ const SessionRoom: React.FC = () => {
 
   // Rendering  
   return (
-    <div className="min-h-screen bg-fixed"
-      style={{
-        backgroundImage:
-          `url(${bg_main})`,
-        position: "relative",
-        backgroundSize: "cover",
-        backgroundPosition: "right bottom",
-        backgroundRepeat: "no-repeat",
-        width: "100%",
-      }}>
-      {/* HEADER */}
-      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-          <div>
-            <div className="text-lg font-bold">LearniLM🌎World</div>
-            <div className="text-xs text-gray-500">
-              {session.title} • {session.trainer.name}
-            </div>
-          </div>
+    <>
+      <div className="min-h-screen bg-fixed"
+        style={{
+          backgroundImage:
+            `url(${bg_main})`,
+          position: "relative",
+          backgroundSize: "cover",
+          backgroundPosition: "right bottom",
+          backgroundRepeat: "no-repeat",
+          width: "100%",
+        }}>
+        {/* HEADER */}
+        <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b">
+          <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
 
-          <button
-            onClick={() => navigate(-1)}
-            className="text-sm text-gray-600 hover:text-gray-900"
-          >
-            Back
-          </button>
-        </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto px-4 py-6 space-y-6">
-        {/* SESSION INFO CARD */}
-        <div className="bg-white rounded-2xl shadow p-6">
-          <div className="flex flex-wrap justify-between items-start gap-4">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                {session.title}
-              </h1>
-              <p className="text-sm text-gray-600 mt-1">
-                with {session.trainer.name}
-              </p>
-            </div>
-
-            {/* STATUS BADGE */}
-            <div
-              className={`text-xs font-semibold px-3 py-1 rounded-full
-              ${session.status === 'scheduled'
-                  ? 'bg-yellow-100 text-yellow-700'
-                  : session.status === 'active'
-                    ? 'bg-green-100 text-green-700'
-                    : session.status === 'ended'
-                      ? 'bg-gray-200 text-gray-600'
-                      : 'bg-red-100 text-red-700'
-                }`}
-            >
-              {session.status.toUpperCase()}
-            </div>
-          </div>
-
-          {session.description && (
-            <p className="mt-4 text-gray-700">
-              {session.description}
-            </p>
-          )}
-
-          {/* ACTIONS */}
-          <div className="mt-6 flex flex-wrap items-center gap-4">
-            {/* TRAINER: START */}
-            {session.status === 'scheduled' && user?.role === 'trainer' && (
+            {/* LEFT */}
+            <div className="flex items-center gap-4">
               <button
-                onClick={startSession}
-                className="px-5 py-2 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition"
+                onClick={() => navigate('/')}
+                disabled={joinPhase === 'joined'}
+                className={`font-bold text-lg ${joinPhase === 'joined'
+                  ? 'text-gray-400 cursor-not-allowed'
+                  : 'text-indigo-700 hover:opacity-80'
+                  }`}
               >
-                Start Session
+                LearniLM🌎World
               </button>
-            )}
 
-            {/* STUDENT WAITING */}
-            {session.status === 'scheduled' && user?.role === 'student' && (
-              <div className="px-4 py-2 rounded-lg bg-blue-50 text-blue-700 text-sm">
-                Waiting for trainer to start the session…
-              </div>
-            )}
+              <span className="text-sm text-gray-500">
+                {session.title} • {session.trainer.name}
+              </span>
+            </div>
 
-            {/* LIVE SESSION */}
-            {sessionStarted && (
-              <>
-                {user?.role === 'student' && (
+            {/* RIGHT */}
+            <div className="flex items-center gap-3">
+
+              {/* STUDENT: FIRST JOIN */}
+              {joinPhase === 'idle' &&
+                sessionStarted &&
+                user?.role === 'student' && (
                   <button
                     onClick={joinRoomWithToken}
-                    className="px-5 py-2 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition"
+                    className="px-4 py-1.5 rounded-md bg-indigo-600 text-white text-sm hover:bg-indigo-700"
                   >
-                    Join Session
+                    Join Now
                   </button>
                 )}
 
-                {user?.role === 'trainer' && (
+              {/* STUDENT: REJOIN */}
+              {joinPhase === 'left' &&
+                sessionStarted &&
+                user?.role === 'student' && (
                   <button
-                    onClick={endSession}
-                    className="px-5 py-2 rounded-lg bg-red-500 text-white font-medium hover:bg-red-600 transition"
+                    onClick={joinRoomWithToken}
+                    className="px-4 py-1.5 rounded-md bg-indigo-600 text-white text-sm hover:bg-indigo-700"
                   >
-                    End Session
+                    Rejoin
                   </button>
                 )}
-              </>
-            )}
+
+
+              {/* LEAVE */}
+              {joinPhase === 'joined' && (
+                <button
+                  onClick={leaveRoom}
+                  className="px-4 py-1.5 rounded-md bg-red-500 text-white text-sm hover:bg-red-600"
+                >
+                  Leave
+                </button>
+              )}
+
+              {/* TRAINER: END SESSION */}
+              {user?.role === 'trainer' && joinPhase !== 'idle' && (
+                <button
+                  onClick={endSession}
+                  className="px-4 py-1.5 rounded-md bg-red-600 text-white text-sm hover:bg-red-700"
+                >
+                  End Session
+                </button>
+              )}
+
+              {/* BACK */}
+              <button
+                disabled={joinPhase === 'joined'}
+                onClick={() => navigate(-1)}
+                className={`text-sm ${joinPhase === 'joined'
+                  ? 'text-gray-400 cursor-not-allowed'
+                  : 'text-gray-600 hover:text-gray-900'
+                  }`}
+              >
+                Back
+              </button>
+            </div>
           </div>
-        </div>
+        </header>
 
-        {/* VIDEO STAGE */}
-        <div className="bg-black rounded-2xl shadow-2xl overflow-hidden">
-          <div className="h-[70vh] min-h-[520px] relative">
-            <div
-              ref={containerRef}
-              className="w-full h-full zego-uikit-prebuilt"
-            />
 
-            {/* JOINING OVERLAY */}
-            {sessionStarted && !zpRef.current && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/40 text-white text-sm">
-                Joining session…
+        <main className="max-w-7xl mx-auto px-4 py-6 space-y-6">
+          {/* for studnets arrival */}
+          {joinPhase === 'idle' && sessionStarted && user?.role === 'student' && (
+            <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
+              <h2 className="text-2xl font-semibold text-gray-800">
+                Session is live
+              </h2>
+
+              <p className="mt-2 text-gray-600 max-w-md">
+                Your trainer has started the session.
+                Click below to join the live class.
+              </p>
+
+              <button
+                onClick={joinRoomWithToken}
+                className="mt-6 px-6 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700"
+              >
+                Join Session
+              </button>
+            </div>
+          )}
+
+          {/* after leaving */}
+          {joinPhase === 'left' && (
+            <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
+              <h2 className="text-2xl font-semibold text-gray-800">
+                You’ve left the session
+              </h2>
+
+              <p className="mt-2 text-gray-600 max-w-md">
+                {user?.role === 'trainer'
+                  ? 'You can rejoin the session or officially end it if the timing is over.'
+                  : 'You may rejoin if the session is still ongoing. Once the session ends, you’ll be able to leave a review.'}
+              </p>
+
+              <div className="mt-6 flex gap-4">
+                <button
+                  onClick={joinRoomWithToken}
+                  className="px-6 py-2 rounded-md bg-[#F64EBB] text-white hover:bg-[#6B48AF]"
+                >
+                  Rejoin Session
+                </button>
+
+                <button
+                  onClick={() => navigate(-1)}
+                  className="px-6 py-2 rounded-md border border-gray-300 bg-[#6B48AF] text-white hover:bg-[#F64EBB]"
+                >
+                  Go Back
+                </button>
               </div>
-            )}
-          </div>
-        </div>
-      </main>
-    </div>
+            </div>
+          )}
+
+          {/* JOINING OVERLAY (React-only layer) */}
+          <JoiningOverlay visible={sessionStarted && joinPhase === 'joining'} />
+
+        </main>
+      </div>
+    </>
+
   )
 
 }

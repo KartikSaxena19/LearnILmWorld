@@ -583,7 +583,7 @@ export default function LandingPageAlt() {
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link to="/main" className="inline-flex items-center gap-3 px-6 py-3 bg-[#F64EBB] text-white hover:bg-[#6B48AF]  text-lg rounded-lg shadow hover:scale-105 transition" aria-label="Start learning">
                   <Play />
-                  Start Learning
+                  Browse Courses
                 </Link>
                 {/* CBE56A hover:text-[#4B437C]*/}
                 <Link to="/become-trainer" className="inline-flex items-center gap-3 px-6 py-3 border border-[#9787F3] bg-[#F64EBB] text-blue-50 text-lg rounded-lg  hover:bg-[#6B48AF] transition" aria-label="Become a trainer">
@@ -695,7 +695,7 @@ export default function LandingPageAlt() {
           </div>
 
           {/* Responsive Grid with Flags */}
-          <div className="mt-16 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="mt-16 grid gap-6  justify-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {languages.map((lang, idx) => (
               <LanguageCard
                 key={idx}
@@ -806,7 +806,7 @@ export default function LandingPageAlt() {
         className="relative py-24 "
         aria-labelledby="sdil-subjects"
       >
-        <div className="max-w-6xl mx-auto px-6 lg:px-8 text-center">
+        <div className="max-w-6xl  mx-auto px-6 lg:px-8 text-center">
           {/* Heading */}
           <motion.h2
             id="sdil-subjects"
@@ -831,96 +831,100 @@ export default function LandingPageAlt() {
           </motion.p>
 
           {/* Grid Subjects */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: {
-                  staggerChildren: 0.3,
-                  delayChildren: 0.3,   // slight initial delay for smoother entrance
+          <div className='flex justify-center'>
+
+
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.3,
+                    delayChildren: 0.3,   // slight initial delay for smoother entrance
+                  },
                 },
-              },
-            }}
-            className="mt-16 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 box "
-          >
-            {[
-              {
-                name: "Maths",
-                img: math,
-              },
-              {
-                name: "Physics",
-                img: phy,
-              },
-              {
-                name: "Chemistry",
-                img: chem,
-              },
-              {
-                name: "Biology",
-                img: bio,
-              },
-              {
-                name: "History",
-                img: hist,
-              },
-              {
-                name: "Geography",
-                img: geo,
-              },
-              {
-                name: "Computer Science",
-                img: cs,
-              },
-              {
-                name: "More",
-                img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=100",
-                isMore: true,
-              },
-            ].map((subject, idx) => (
-              <motion.div
-                key={idx}
-                variants={{
-                  hidden: { opacity: 0, y: 40 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-                }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className="group relative h-60 w-60 rounded-[24px] bg-white shadow-[0_20px_30px_5px_rgba(0,0,0,0.3)] transition-all duration-500 ease-out hover:-translate-y-4 hover:shadow-[0_40px_50px_10px_rgba(0,0,0,0.4)] cursor-pointer"
-                style={{
-                  backgroundImage: `url(${subject.img})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
+              }}
+              className="mt-16 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 box "
+            >
+              {[
+                {
+                  name: "Maths",
+                  img: math,
+                },
+                {
+                  name: "Physics",
+                  img: phy,
+                },
+                {
+                  name: "Chemistry",
+                  img: chem,
+                },
+                {
+                  name: "Biology",
+                  img: bio,
+                },
+                {
+                  name: "History",
+                  img: hist,
+                },
+                {
+                  name: "Geography",
+                  img: geo,
+                },
+                {
+                  name: "Computer Science",
+                  img: cs,
+                },
+                {
+                  name: "More",
+                  img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=100",
+                  isMore: true,
+                },
+              ].map((subject, idx) => (
+                <motion.div
+                  key={idx}
+                  variants={{
+                    hidden: { opacity: 0, y: 40 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="group relative h-60 w-60 rounded-[24px] bg-white shadow-[0_20px_30px_5px_rgba(0,0,0,0.3)] transition-all duration-500 ease-out hover:-translate-y-4 hover:shadow-[0_40px_50px_10px_rgba(0,0,0,0.4)] cursor-pointer"
+                  style={{
+                    backgroundImage: `url(${subject.img})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
 
-                }}
-                onClick={() => handleSubjectClick(subject)}
-              >
-                {/* Overlay */}
-                <div className=" rounded-[24px] absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all duration-300"></div>
-
-                {/* Subject Name */}
-                <div
-                  className={`absolute top-3 left-3 ${subject.isMore
-                    ? "bg-[#F64EBB] text-[white]"
-                    : "bg-white/90 text-[#2D274B]"
-                    } px-3 py-1 rounded-md font-bold text-lg shadow`}
+                  }}
+                  onClick={() => handleSubjectClick(subject)}
                 >
-                  {subject.name}
-                </div>
+                  {/* Overlay */}
+                  <div className=" rounded-[24px] absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all duration-300"></div>
 
-                {/* “More” Hover Text */}
-                {/* {subject.isMore && (
+                  {/* Subject Name */}
+                  <div
+                    className={`absolute top-3 left-3 ${subject.isMore
+                      ? "bg-[#F64EBB] text-[white]"
+                      : "bg-white/90 text-[#2D274B]"
+                      } px-3 py-1 rounded-md font-bold text-lg shadow`}
+                  >
+                    {subject.name}
+                  </div>
+
+                  {/* “More” Hover Text */}
+                  {/* {subject.isMore && (
                   <div className="absolute inset-0 flex items-center justify-center text-white font-bold text-xl bg-black/40 opacity-0 group-hover:opacity-100 transition">
                     Explore More →
                   </div>
                 )} */}
-              </motion.div>
-            ))}
-          </motion.div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
         </div>
 
         {/* Modal for More Subjects */}
@@ -1329,9 +1333,9 @@ export default function LandingPageAlt() {
       {/* bg-[#2D274B] */}
       <section className="py-16 ">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-8 items-start">
+          <div className="gap-8 items-start">
             {/* LEFT – Heading only */}
-            <div>
+            <div className='flex justify-center items-center text-center'>
               <h3 className="text-4xl font-semibold font-serif text-[#F64EBB]">
                 Why learners love <br /> LearniLM🌍World
               </h3>
@@ -1341,7 +1345,7 @@ export default function LandingPageAlt() {
             <div />
 
             {/* PARAGRAPH – spans both columns */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 flex justify-center items-center text-center">
               <p className="mt-4 text-lg font-bold max-w-4xl text-[#2D274B]">
                 Short lessons, lots of speaking time and tutors focused on practical
                 outcomes. Learn phrases you’ll use the very next day.
@@ -1402,7 +1406,7 @@ export default function LandingPageAlt() {
       </section>
 
       {/* Reviews */}
-      <section className="py-16" aria-labelledby="reviews">
+      {/* <section className="py-16" aria-labelledby="reviews">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-8">
             <h3 id="reviews" className="text-4xl font-serif font-bold text-[#F64EBB]">What learners say</h3>
@@ -1416,17 +1420,17 @@ export default function LandingPageAlt() {
                   <div className="w-12 h-12 rounded-full bg-[#fde68a] flex items-center justify-center font-semibold">{r.name.split(' ')[0][0]}</div>
                   <div>
                     <div className="font-semibold">{r.name}</div>
-                    {/* <div className="text-xs text-[#4B437C]">{r.role}</div> */}
+                    
                   </div>
                 </div>
                 <p className="text-[#4B437C]">“{r.text}”</p>
-                {/* removed idx from map((_, idx) => '★') */}
+                
                 <div className="mt-4 text-sm text-[#4B437C]">{Array.from({ length: r.rating }).map((_) => '★').join('')}</div>
               </article>
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
 
       {/* FAQ */}
@@ -1458,8 +1462,8 @@ export default function LandingPageAlt() {
       <section className="py-12 ">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h4 className="text-4xl font-extrabold text-[#F64EBB] ">Master Your Skills, Confidently</h4>
-          <p className="text-[#2D274B] text-xl font-bold mt-2">Sign up to Claim Your Free Trial Session. Get a Personalized 7-Day Learning Path After Your First Session.</p>
-          {/* 2D274B */}
+          {/* <p className="text-[#2D274B] text-xl font-bold mt-2">Sign up to Claim Your Free Trial Session. Get a Personalized 7-Day Learning Path After Your First Session.</p>
+          2D274B */}
           <div className="mt-6 flex justify-center gap-4">
             <Link to="/main" className="inline-flex items-center gap-3 px-6 py-3 rounded-lg bg-[#F64EBB] text-[white] hover:bg-[#fe1fb0]">Browse trainers <ChevronRight /></Link>
             <Link to="/become-trainer" className="inline-flex items-center gap-3 px-6 py-3 rounded-lg border bg-[#F64EBB] border-[#CBE56A] text-[white] hover:bg-[#fe1fb0]">Become a trainer</Link>

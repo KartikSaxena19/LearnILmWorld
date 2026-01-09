@@ -23,7 +23,9 @@ export default function TopTrainers(): JSX.Element {
   const [pickRoleMap, setPickRoleMap] = useState<Record<string, PickRole>>({});
 
   const [activeTrainer, setActiveTrainer] = useState<Trainer | null>(null);
-  const [isFlipped, setIsFlipped] = useState(false);
+
+  //Card flipping control
+  const [hoveredTrainerId, setHoveredTrainerId] = useState<string | null>(null);
 
 
   useEffect(() => {
@@ -161,25 +163,19 @@ export default function TopTrainers(): JSX.Element {
               <div
                 key={id ?? idx}
                 className="group [perspective:1000px]"
-                onMouseEnter={() => {
-                  setIsFlipped(true);
-
-                  const t = setTimeout(() => {
-                    setActiveTrainer(trainer);
-                  }, 300);
-
-                  return () => clearTimeout(t);
+                onMouseEnter={() => setHoveredTrainerId(id)}
+                onMouseLeave={() => setHoveredTrainerId(null)}
+                onClick={() => {
+                  setActiveTrainer(trainer);
                 }}
-
-
               >
                 <div
                   className={`
                     relative h-[320px] w-[270px]
                     transition-transform duration-700
                     [transform-style:preserve-3d]
-                    ${isFlipped ? "[transform:rotateY(180deg)]" : ""}
-                  `}
+                    ${hoveredTrainerId === id ? "[transform:rotateY(180deg)]" : ""}
+  `}
                 >
 
                   <div
@@ -298,7 +294,7 @@ export default function TopTrainers(): JSX.Element {
           className=" fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md"
           onClick={() => {
             setActiveTrainer(null);
-            setIsFlipped(false);
+            // setIsFlipped(false);
           }}
         >
           <div onClick={(e) => e.stopPropagation()}>

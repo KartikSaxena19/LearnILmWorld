@@ -9,7 +9,8 @@ const Footer = () => (
     <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-8">
       <div>
         <div className="font-semibold text-lg">LearniLM🌎World</div>
-        <div className="text-sm text-slate-300 mt-2">© {new Date().getFullYear()} LearniLM🌎World — All rights reserved</div>
+        {/* {new Date().getFullYear()} */}
+        <div className="text-sm text-slate-300 mt-2">© 2025 LearniLM🌎World — All rights reserved</div>
         <div className="mt-4 text-sm text-slate-300">Email: support@learnilmworld.com</div>
         <div className="text-sm text-slate-300">Phone: +91 81002 61773</div>
       </div>
