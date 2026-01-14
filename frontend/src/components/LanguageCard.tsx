@@ -89,11 +89,11 @@ export function LanguageCard({ data, onConfirm }: LanguageCardProps) {
                                             </h2>
                                         </div>
 
-                                        {data.pattern && (
+                                        {/* {data.pattern && (
                                             <span className="px-4 py-1.5 rounded-full bg-[#9787F3] text-white text-sm font-semibold">
                                                 {data.pattern}
                                             </span>
-                                        )}
+                                        )} */}
                                     </div>
 
                                     {/* Middle content */}

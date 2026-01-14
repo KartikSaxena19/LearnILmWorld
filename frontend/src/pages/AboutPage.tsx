@@ -14,6 +14,7 @@ import { Nav, Container, Offcanvas, Button } from "react-bootstrap"
 //  Navbar,  removed from above react-bootstrap
 import Footer from "../components/Footer";
 import CareerApplicationForm from "../components/CareerApplicationForm"
+import Navbar from "../components/Navbar";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -86,8 +87,9 @@ export default function AboutPage() {
         backgroundRepeat: "no-repeat",
         width: "100%",
       }}>
+
       {/* HEADER */}
-      <header className="sticky top-0 z-50">
+      {/* <header className="sticky top-0 z-50">
         <div className="mx-auto max-w-7xl px-4 pt-3 pb-1">
           <div className="flex items-center justify-between rounded-full backdrop-blur-md shadow-xl px-6 py-3"
             style={{
@@ -100,11 +102,8 @@ export default function AboutPage() {
               width: "100%",
             }}>
 
-            {/* Logo */}
             <Link to="/" className="flex items-center gap-1">
-              {/* <div className='Logo rounded-full'>
-                <img className={'rounded-full'} src={logo} width={'50px'} />
-              </div> */}
+
               <span className="text-2xl font-[Good Vibes] font-bold text-[#e0fa84]">
                 LearniLM
               </span>
@@ -120,7 +119,6 @@ export default function AboutPage() {
               </span>
             </Link>
 
-            {/* Desktop Nav F64EBB*/}
             <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-white">
               <Link to="/about" className="hover:text-[#CBE56A]">About</Link>
               <Link to="/main" className="hover:text-[#CBE56A]">Mentors</Link>
@@ -128,7 +126,6 @@ export default function AboutPage() {
               <Link to="/contact" className="hover:text-[#CBE56A]">Contact</Link>
             </nav>
 
-            {/* CTA */}
             <Link
               to="/register"
               className="hidden md:inline-flex items-center px-5 py-2 rounded-full bg-[#F64EBB] text-white font-semibold text-sm shadow hover:scale-105 transition"
@@ -136,7 +133,6 @@ export default function AboutPage() {
               Get Started
             </Link>
 
-            {/* Mobile Menu */}
             <button
               className="md:hidden text-white text-xl"
               onClick={() => setShowOffcanvas(true)}
@@ -145,7 +141,9 @@ export default function AboutPage() {
             </button>
           </div>
         </div>
-      </header>
+      </header> */}
+
+      <Navbar />
 
       {/* ABOUT SECTION */}
       {/* bg-[#dc8d33] */}

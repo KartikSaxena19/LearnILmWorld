@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 //  Facebook,Twitter,Instagram,Linkedin,Mail, Globe,
 import { Nav, Container, Offcanvas, Button } from 'react-bootstrap'
 import { useAuth } from "../contexts/AuthContext";
-import { BookOpen, ArrowRight, Play, Mic, Headphones, Calendar,Users,  Award, Clock, Star, MessageSquare, ChevronDown, ChevronRight, } from 'lucide-react';
+import { BookOpen, ArrowRight, Play, Mic, Headphones, Calendar, Users, Award, Clock, Star, MessageSquare, ChevronDown, ChevronRight, } from 'lucide-react';
 // Navbar,from above
 // import logo from "../assets/LearnilmworldLogo.jpg";
 // import russian_student from '../assets/russian_student.png'
@@ -482,7 +482,7 @@ export default function LandingPageAlt() {
 
       {/* 2D274B  text- #dc8d33*/}
       {/* bg-[#6B48AF]/95 backdrop-blur-sm border-b border-white/30 text-white */}
-      <Navbar/>
+      <Navbar />
 
       <main className="pt-12 pb-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -504,61 +504,61 @@ export default function LandingPageAlt() {
               </h1>
 
               <p className="mt-6 text-2xl md:text-3xl text-[#2D274B] font-bold max-w-xl">
-          Clarity comes with the <span className="text-[#F64EBB]">Right Mentors</span>
-        </p>
-        <p className='mt-2 text-xl font-bold md:text-2xl text-[#F64EBB]'>Learn from natives. Speak like natives</p>
+                Clarity comes with the <span className="text-[#F64EBB]">Right Mentors</span>
+              </p>
+              <p className='mt-2 text-xl font-bold md:text-2xl text-[#F64EBB]'>Learn from natives. Speak like natives</p>
 
-          <div className="mt-10">
-  <div className="flex flex-wrap gap-4 mb-10">
-    <Link 
-      to="/student/courses" 
-      className="inline-flex items-center gap-2 px-6 py-3.5 bg-gradient-to-r from-[#F53886] to-[#A644FF] text-white text-lg font-bold rounded-xl shadow-lg hover:scale-105 transition-transform" 
-    >
-      <BookOpen className="w-5 h-5" />
-      <span>Browse Courses</span>
-      <ArrowRight className="w-5 h-5 ml-1" />
-    </Link>
-    <Link 
-      to="/demo" 
-      className="inline-flex items-center gap-2 px-6 py-3.5 bg-white border border-gray-200 text-gray-900 text-lg font-bold rounded-xl shadow-sm hover:bg-gray-50 transition-colors" 
-    >
-      <Play className="w-5 h-5 text-[#F64EBB] fill-current" />
-      <span>Book a FREE Demo</span>
-    </Link>
-  </div>
+              <div className="mt-10">
+                <div className="flex flex-wrap gap-4 mb-10">
+                  <Link
+                    to="/student/courses"
+                    className="inline-flex items-center gap-2 px-6 py-3.5 bg-gradient-to-r from-[#F53886] to-[#A644FF] text-white text-lg font-bold rounded-xl shadow-lg hover:scale-105 transition-transform"
+                  >
+                    <BookOpen className="w-5 h-5" />
+                    <span>Browse Courses</span>
+                    <ArrowRight className="w-5 h-5 ml-1" />
+                  </Link>
+                  <Link
+                    to="/demo"
+                    className="inline-flex items-center gap-2 px-6 py-3.5 bg-white border border-gray-200 text-gray-900 text-lg font-bold rounded-xl shadow-sm hover:bg-gray-50 transition-colors"
+                  >
+                    <Play className="w-5 h-5 text-[#F64EBB] fill-current" />
+                    <span>Book a FREE Demo</span>
+                  </Link>
+                </div>
 
-  <div className="flex flex-wrap items-center gap-x-6 gap-y-4 lg:gap-x-8">
-    <div className="flex items-center gap-2">
-      <div className="p-2 bg-teal-50 rounded-full text-[#F64EBB] shrink-0">
-        <Mic className="w-5 h-5" />
-      </div>
-      <div className="flex flex-col whitespace-nowrap">
-        <span className="font-bold text-gray-900 text-base leading-none">Native</span>
-        <span className="text-gray-500 text-xs mt-1">mentors + real accent</span>
-      </div>
-    </div>
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-4 lg:gap-x-8">
+                  <div className="flex items-center gap-2">
+                    <div className="p-2 bg-teal-50 rounded-full text-[#F64EBB] shrink-0">
+                      <Mic className="w-5 h-5" />
+                    </div>
+                    <div className="flex flex-col whitespace-nowrap">
+                      <span className="font-bold text-gray-900 text-base leading-none">Native</span>
+                      <span className="text-gray-500 text-xs mt-1">mentors + real accent</span>
+                    </div>
+                  </div>
 
-    <div className="flex items-center gap-2">
-      <div className="p-2 bg-teal-50 rounded-full text-[#F64EBB] shrink-0">
-        <Headphones className="w-5 h-5" />
-      </div>
-      <div className="flex flex-col whitespace-nowrap">
-        <span className="font-bold text-gray-900 text-base leading-none">Speaking-</span>
-        <span className="text-gray-500 text-xs mt-1">focused practice</span>
-      </div>
-    </div>
+                  <div className="flex items-center gap-2">
+                    <div className="p-2 bg-teal-50 rounded-full text-[#F64EBB] shrink-0">
+                      <Headphones className="w-5 h-5" />
+                    </div>
+                    <div className="flex flex-col whitespace-nowrap">
+                      <span className="font-bold text-gray-900 text-base leading-none">Speaking</span>
+                      <span className="text-gray-500 text-xs mt-1">focused practice</span>
+                    </div>
+                  </div>
 
-    <div className="flex items-center gap-2">
-      <div className="p-2 bg-teal-50 rounded-full text-[#F64EBB] shrink-0">
-        <Calendar className="w-5 h-5" />
-      </div>
-      <div className="flex flex-col whitespace-nowrap">
-        <span className="font-bold text-gray-900 text-base leading-none">Flexible</span>
-        <span className="text-gray-500 text-xs mt-1">weekday/weekend batches</span>
-      </div>
-    </div>
-  </div>
-</div>
+                  <div className="flex items-center gap-2">
+                    <div className="p-2 bg-teal-50 rounded-full text-[#F64EBB] shrink-0">
+                      <Calendar className="w-5 h-5" />
+                    </div>
+                    <div className="flex flex-col whitespace-nowrap">
+                      <span className="font-bold text-gray-900 text-base leading-none">Flexible</span>
+                      <span className="text-gray-500 text-xs mt-1">weekday/weekend batches</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
 
               {/* chaned color to wite from [#7fe808],[#ef4444] and [#9787F3] */}
@@ -613,7 +613,7 @@ export default function LandingPageAlt() {
           </div>
         </div>
       </main>
-{/* Why learners love us section */}
+      {/* Why learners love us section */}
       {/* bg-[#2D274B] */}
       <section className="py-16 ">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -1366,7 +1366,7 @@ export default function LandingPageAlt() {
         </div>
       </section>
 
-      
+
 
       {/* Reviews */}
       {/* <section className="py-16" aria-labelledby="reviews">

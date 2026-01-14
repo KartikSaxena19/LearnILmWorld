@@ -106,7 +106,7 @@ const MainPage: React.FC = () => {
                 width: "100%",
               }}
             >
-              <div className="px-6 sm:px-10 py-3">
+              <div className="px-6 sm:px-10 py-7">
                 <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-0">
 
                   {/* LOGO */}
