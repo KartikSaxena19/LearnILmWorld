@@ -23,8 +23,8 @@ router.post("/", async (req, res) => {
       title: req.body.title,
       description: req.body.description,
       thumbnail: req.body.thumbnail,
-      contentUrl: req.body.contentUrl,
-      contentType: req.body.contentType,
+      videoUrl: req.body.videoUrl,
+      pdfUrl: req.body.pdfUrl,
       createdBy: req.user ? req.user._id : DEFAULT_USER_ID
     });
 

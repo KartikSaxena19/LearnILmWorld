@@ -382,7 +382,7 @@ const Courses = () => {
             <h2 className="text-2xl md:text-4xl font-serif font-bold mb-6 text-white leading-tight">Ready to Transform Your Career?</h2>
             <p className="text-gray-300 text-base mb-10 max-w-2xl mx-auto">Join thousands of professionals who have mastered the art of ethical office politics. Start your journey to career success today.</p>
             <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
-              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-4 py-4 bg-[#f74dc2] text-[#0F172A] rounded-lg font-bold hover:bg-[#f74dc2] transition flex items-center justify-center shadow-lg">
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-4 py-4 bg-[#f74dc2] text-white rounded-lg font-bold hover:bg-[#f74dc2] transition flex items-center justify-center shadow-lg">
                 Get Started Now <span className="ml-2">→</span>
               </motion.button>
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-4 py-4 bg-transparent border border-gray-600 text-white rounded-lg font-bold hover:bg-gray-800 transition shadow-lg">
