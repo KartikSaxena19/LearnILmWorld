@@ -15,6 +15,18 @@ const bookingSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  studentEmail:{
+    type: String, 
+    required: false, 
+    trim: true, 
+    lowercase: true
+  },
+  bookingType: {
+    type: String,
+    enum: ['paid', 'free_demo'],
+    default: 'paid', 
+    required: true
+  },
   status: {
     type: String,
     enum: ['pending', 'confirmed', 'completed', 'cancelled'],
@@ -22,17 +34,17 @@ const bookingSchema = new mongoose.Schema({
   },
   paymentStatus: {
     type: String,
-    enum: ['pending', 'completed', 'failed'],
+    enum: ['pending', 'completed', 'failed', 'na'],//na for free demo
     default: 'pending'
   },
   paymentMethod: {
     type: String,
-    enum: ['stripe', 'fake'],
+    enum: ['stripe', 'fake', 'none'], //none for free demo
     required: true
   },
   amount: {
     type: Number,
-    required: true
+    required: function(){this.bookingType==='paid'}
   },
   paymentId: String,
   paymentDetails: {
@@ -52,4 +64,5 @@ const bookingSchema = new mongoose.Schema({
   timestamps: true
 });
 
+bookingSchema.index({ studentEmail: 1, bookingType: 1 });
 export default mongoose.model('Booking', bookingSchema);

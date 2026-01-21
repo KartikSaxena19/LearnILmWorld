@@ -1,7 +1,11 @@
 // src/components/Footer.jsx
 import { Link } from 'react-router-dom'
 import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
+<<<<<<< HEAD
 import logo from '../assets/header_logo.jpeg'
+=======
+import logo from '../assets/logo.jpeg'
+>>>>>>> 993e6407d8f32345cadcd9c6f6087d826f6c8311
 
 const Footer = () => (
   //   {/* Footer - expanded */}
@@ -36,12 +40,21 @@ const Footer = () => (
       <div>
         <div className="font-semibold">Stay in touch</div>
         <div className="mt-4 flex items-center gap-3 text-slate-300 text-xl">
+<<<<<<< HEAD
 
           <a href="https://facebook.com/profile.php?id=61583579968490" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><Facebook className='size-8' /></a>
 
           <a href="https://x.com/LearniLMWorld" aria-label="Twitter" target="_blank" rel="noopener noreferrer"><Twitter className='size-8' /></a>
           <a href="https://www.instagram.com/learnilmworld?igsh=MXczNnFrdHJ5Nm1vZg%3D%3D&utm_source=qr" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><Instagram className='size-8' /></a>
           <a href="https://www.linkedin.com/company/learn-ilm-world/?viewAsMember=true" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Linkedin className='size-8' /></a>
+=======
+          
+            <a  href="https://facebook.com/profile.php?id=61583579968490" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><Facebook className='size-8' /></a>
+            
+          <a href="https://x.com/LearniLMWorld" aria-label="Twitter" target="_blank" rel="noopener noreferrer"><Twitter className='size-8' /></a>
+          <a href="https://www.instagram.com/learnilmworld?igsh=MXczNnFrdHJ5Nm1vZg%3D%3D&utm_source=qr" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><Instagram className='size-8' /></a>
+          <a href="https://www.linkedin.com/company/learn-ilm-world/?viewAsMember=true" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Linkedin className='size-8'/></a>
+>>>>>>> 993e6407d8f32345cadcd9c6f6087d826f6c8311
         </div>
         <div className='Logo py-3 mt-5'>
           <img src={logo} width={'350px'} />
@@ -50,7 +63,11 @@ const Footer = () => (
       </div>
     </div>
 
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 993e6407d8f32345cadcd9c6f6087d826f6c8311
   </footer>
 )
 

@@ -17,11 +17,10 @@ import Navbar from "../components/Navbar";
 const BecomeTrainer: React.FC = () => {
   const navigate = useNavigate();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [showOffcanvas, setShowOffcanvas] = useState(false);
+  // const [showOffcanvas, setShowOffcanvas] = useState(false);
 
   return (
     <div className="bg-fixed min-h-screen overflow-x-hidden text-[#e0fa84] bg-[#fef5e4]"
-
     >
       {/* text-[#e0fa84] text-[#2D274B] */}
       <Navbar />

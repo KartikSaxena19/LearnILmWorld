@@ -457,7 +457,6 @@ const AdminUsers: React.FC = () => {
         {/* === Users List === */}
         <h3 className="text-xl font-semibold text-gray-900 mb-3">All Users</h3>
         <div className="flex flex-col sm:flex-row flex-wrap gap-3 mb-4">
-
           <button
             onClick={handleDownloadAll}
             className="bg-[#0ea5a3] text-white px-4 py-2 rounded-xl shadow hover:bg-[#0d8b8a] text-sm w-full sm:w-auto"
@@ -570,10 +569,10 @@ const AdminTrainers: React.FC = () => {
                     <td className="py-3 px-4 text-center whitespace-nowrap">
                       <span
                         className={`px-2 py-1 rounded-md text-sm font-medium ${t.dashboardStats?.averageRating >= 4
-                            ? 'bg-green-100 text-green-700'
-                            : t.dashboardStats?.averageRating >= 3
-                              ? 'bg-yellow-100 text-yellow-700'
-                              : 'bg-red-100 text-red-700'
+                          ? 'bg-green-100 text-green-700'
+                          : t.dashboardStats?.averageRating >= 3
+                            ? 'bg-yellow-100 text-yellow-700'
+                            : 'bg-red-100 text-red-700'
                           }`}
                       >
                         {t.dashboardStats?.averageRating
@@ -584,10 +583,10 @@ const AdminTrainers: React.FC = () => {
                     <td className="py-3 px-4 text-center whitespace-nowrap">
                       <span
                         className={`px-2 py-1 rounded-md text-sm capitalize ${t.profile?.verificationStatus === 'verified'
-                            ? 'bg-green-100 text-green-700'
-                            : t.profile?.verificationStatus === 'rejected'
-                              ? 'bg-red-100 text-red-700'
-                              : 'bg-yellow-100 text-yellow-700'
+                          ? 'bg-green-100 text-green-700'
+                          : t.profile?.verificationStatus === 'rejected'
+                            ? 'bg-red-100 text-red-700'
+                            : 'bg-yellow-100 text-yellow-700'
                           }`}
                       >
                         {t.profile?.verificationStatus || 'pending'}

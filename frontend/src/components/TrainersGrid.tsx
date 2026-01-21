@@ -139,6 +139,7 @@ const TrainersGrid: React.FC<Props> = ({ searchTerm, filters, learningType, setN
 
     if (loading && page === 1) {
         return (
+<<<<<<< HEAD
             <div className="py-24 flex flex-col items-center justify-center text-center">
                 <div className="flex items-center gap-3 text-[#5186cd] text-xl font-bold mb-4">
                     <span className="animate-pulse">Loading verified trainers</span>
@@ -150,6 +151,12 @@ const TrainersGrid: React.FC<Props> = ({ searchTerm, filters, learningType, setN
                     <span className="w-3 h-3 bg-[#5186cd] rounded-full animate-bounce [animation-delay:150ms]" />
                     <span className="w-3 h-3 bg-[#5186cd] rounded-full animate-bounce [animation-delay:300ms]" />
                 </div>
+=======
+            <div className="py-20 text-center">
+                <p className="text-xl font-bold text-[#5186cd] animate-pulse">
+                    Loading verified trainers...
+                </p>
+>>>>>>> 993e6407d8f32345cadcd9c6f6087d826f6c8311
             </div>
         )
     }

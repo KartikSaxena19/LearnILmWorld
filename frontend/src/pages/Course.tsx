@@ -31,9 +31,9 @@ const SkeletonCard = () => (
 
 
 const Courses = () => {
-  const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [showOffcanvas, setShowOffcanvas] = useState(false);
+  //   const navigate = useNavigate();
+  // const [user, setUser] = useState(null);
+  // const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState([]);
   const [showAll, setShowAll] = useState(false);
