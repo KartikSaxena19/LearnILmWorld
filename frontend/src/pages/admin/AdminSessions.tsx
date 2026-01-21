@@ -182,10 +182,10 @@ const AdminSessions: React.FC = () => {
   }
 
   return (
-    <div className="space-y-10 max-w-[1200px] mx-auto">
+    <div className="space-y-6 sm:space-y-10 max-w-[1200px] mx-auto w-full">
       {/* CREATE FORM (Always visible) */}
-      <div className="glass-effect rounded-2xl p-8 shadow-xl">
-        <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+      <div className="glass-effect rounded-2xl p-4 sm:p-8 shadow-xl">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 flex items-center gap-2">
           <Plus className="h-6 w-6 text-[#0ea5a3]" /> Create New Session
         </h2>
 
@@ -206,11 +206,12 @@ const AdminSessions: React.FC = () => {
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           />
 
-          <div className="flex gap-4">
+          {/* for mobile view */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <input
               type="number"
               placeholder="Duration (min)"
-              className="border p-2 rounded w-1/2"
+              className="border p-2 rounded w-full"
               value={formData.duration}
               onChange={(e) => setFormData({ ...formData, duration: +e.target.value })}
               required
@@ -218,23 +219,23 @@ const AdminSessions: React.FC = () => {
             <input
               type="number"
               placeholder="Max Students"
-              className="border p-2 rounded w-1/2"
+              className="border p-2 rounded w-full"
               value={formData.maxStudents}
               onChange={(e) => setFormData({ ...formData, maxStudents: +e.target.value })}
               required
             />
           </div>
 
-          <div className="flex gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <input
               type="text"
               placeholder="Language"
-              className="border p-2 rounded w-1/2"
+              className="border p-2 rounded w-full"
               value={formData.language}
               onChange={(e) => setFormData({ ...formData, language: e.target.value })}
             />
             <select
-              className="border p-2 rounded w-1/2"
+              className="border p-2 rounded w-full"
               value={formData.level}
               onChange={(e) => setFormData({ ...formData, level: e.target.value })}
               required
@@ -274,9 +275,9 @@ const AdminSessions: React.FC = () => {
               <label className="block mb-1 text-sm font-medium text-gray-700">
                 Select Students (Completed Payments Only)
               </label>
-              <div className="max-h-40 overflow-y-auto border p-2 rounded flex flex-col gap-2">
+              <div className="max-h-40 overflow-y-auto border p-2 rounded flex flex-col gap-2 bg-white">
                 {bookings.map((b) => (
-                  <label key={b._id} className="flex items-center gap-2">
+                  <label key={b._id} className="flex items-center gap-2 px-2 py-1 hover:bg-gray-50">
                     <input
                       type="checkbox"
                       checked={formData.bookingIds.includes(b._id)}
@@ -287,7 +288,7 @@ const AdminSessions: React.FC = () => {
                         setFormData({ ...formData, bookingIds: updated })
                       }}
                     />
-                    <span>{b.student?.name} ({b.student?.email})</span>
+                    <span className='text-sm'>{b.student?.name} ({b.student?.email})</span>
                   </label>
                 ))}
               </div>
@@ -296,7 +297,7 @@ const AdminSessions: React.FC = () => {
 
           <button
             type="submit"
-            className="px-6 py-2 rounded-md bg-[#0ea5a3] text-white hover:bg-[#0d8b89] mt-4 self-end"
+            className="w-full sm:w-auto px-6 py-2 rounded-md bg-[#0ea5a3] text-white hover:bg-[#0d8b89] mt-4 sm:self-end font-medium"
           >
             Create Session
           </button>
@@ -304,8 +305,8 @@ const AdminSessions: React.FC = () => {
       </div>
 
       {/* ALL SESSIONS */}
-      <div className="glass-effect rounded-2xl p-8 shadow-xl">
-        <h2 className="text-3xl font-bold text-gray-900 mb-6">All Sessions</h2>
+      <div className="glass-effect rounded-2xl p-4 sm:p-8 shadow-xl">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">All Sessions</h2>
 
         {sessions.length === 0 ? (
           <div className="text-center py-12">
@@ -316,19 +317,19 @@ const AdminSessions: React.FC = () => {
         ) : (
           <div className="space-y-6">
             {sessions.map((session) => (
-              <div key={session._id} className="p-6 bg-white/50 rounded-xl shadow">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900">{session.title}</h3>
+              <div key={session._id} className="p-4 sm:p-6 bg-white/50 rounded-xl shadow border border-gray-100">
+                <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-3">
+                  <div className="w-full">
+                    <h3 className="text-xl font-bold text-gray-900 break-words">{session.title}</h3>
                     <p className="text-gray-600 text-sm mb-1">
-                      Trainer: {session.trainer?.name || 'N/A'} • {session.students?.length || 0} student(s)
+                      Trainer: <span className="font-medium">{session.trainer?.name || 'N/A'}</span> • {session.students?.length || 0} student(s)
                     </p>
-                    <p className="text-gray-500 text-sm">
+                    <p className="text-gray-500 text-xs sm:text-sm">
                       {new Date(session.scheduledDate).toLocaleString()}
                     </p>
                   </div>
 
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 w-full sm:w-auto justify-start sm:justify-end">
                     <button
                       onClick={() => {
                         setEditingSession(session)
@@ -345,7 +346,7 @@ const AdminSessions: React.FC = () => {
                         })
                         setShowEditModal(true)
                       }}
-                      className="p-2 bg-yellow-100 text-yellow-700 rounded-md hover:bg-yellow-200"
+                      className="flex-1 sm:flex-none p-2 bg-yellow-100 text-yellow-700 rounded-md hover:bg-yellow-200 flex justify-center items-center"
                     >
                       <Edit3 className="h-4 w-4" />
                     </button>
@@ -355,7 +356,7 @@ const AdminSessions: React.FC = () => {
                         href={session.jitsiLink}
                         target="_blank"
                         rel="noreferrer"
-                        className="p-2 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 flex items-center"
+                        className="flex-1 sm:flex-none p-2 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 flex items-center justify-center"
                       >
                         <Video className="h-4 w-4" />
                       </a>
@@ -363,7 +364,7 @@ const AdminSessions: React.FC = () => {
 
                     <button
                       onClick={() => handleDelete(session._id)}
-                      className="p-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200"
+                      className="flex-1 sm:flex-none p-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200 flex justify-center items-center"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -371,19 +372,18 @@ const AdminSessions: React.FC = () => {
                 </div>
 
                 {session.description && (
-                  <p className="text-gray-700 mb-3">{session.description}</p>
+                  <p className="text-gray-700 mb-3 text-sm">{session.description}</p>
                 )}
 
-                <div className="flex items-center justify-between text-sm text-gray-500">
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4" /> Duration: {session.duration} min
-                    {session.language && <>• {session.language}</>}
-                    {session.level && <>• {session.level}</>}
-                    {session.maxStudents && <>• Max: {session.maxStudents}</>}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between text-sm text-gray-500 gap-2 border-t pt-3">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Clock className="h-4 w-4" /> <span>{session.duration} min</span>
+                    {session.language && <span>• {session.language}</span>}
+                    {session.level && <span>• {session.level}</span>}
+                    {session.maxStudents && <span>• Max: {session.maxStudents}</span>}
                   </div>
-                  <div>
-                    Jitsi Room:{' '}
-                    {session.jitsiLink ? session.jitsiLink.split('/').pop() : 'N/A'}
+                  <div className="truncate">
+                    Jitsi Room: <span className="font-mono bg-gray-100 px-1 rounded">{session.jitsiLink ? session.jitsiLink.split('/').pop() : 'N/A'}</span>
                   </div>
                 </div>
               </div>

@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { Container, Nav, Offcanvas, Button } from "react-bootstrap";
+// import { Container, Nav, Offcanvas, Button } from "react-bootstrap";
 // import logo from '../assets/LearnilmworldLogo.jpg'
 import image1 from '../assets/become-trainer2.4.png'
 import image2 from '../assets/become-trainer2.2.jpeg'
 import image3 from '../assets/become-trainer2.3.jpeg'
 // import bg_img from '../assets/purple_gradient.jpg'
-import bg_img from '../assets/header_bg.jpg'
-import bg_main from '../assets/bg_trainer.jpeg'
+// import bg_img from '../assets/header_bg.jpg'
+// import bg_main from '../assets/bg_trainer.jpeg'
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 
@@ -17,19 +17,11 @@ import Navbar from "../components/Navbar";
 const BecomeTrainer: React.FC = () => {
   const navigate = useNavigate();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [showOffcanvas, setShowOffcanvas] = useState(false);
+  // const [showOffcanvas, setShowOffcanvas] = useState(false);
 
   return (
-    <div className="bg-fixed min-h-screen overflow-x-hidden text-[#e0fa84]"
-      style={{
-        backgroundImage:
-          `url(${bg_main})`,
-        position: "relative",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        width: "100%",
-      }}
+    <div className="bg-fixed min-h-screen overflow-x-hidden text-[#e0fa84] bg-[#fef5e4]"
+      
     >
       {/* text-[#e0fa84] text-[#2D274B] */}
       <Navbar/>
@@ -41,7 +33,7 @@ const BecomeTrainer: React.FC = () => {
           {/* LEFT CONTENT */}
           <div className="text-center lg:text-left">
             <motion.h1
-              className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#F64EBB] mb-6 leading-tight"
+              className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#5186cd] mb-6 leading-tight"
             >
               Empower Learners, <br />
               Inspire Growth 🌟
@@ -56,7 +48,7 @@ const BecomeTrainer: React.FC = () => {
 
             <motion.button
               onClick={() => navigate("/register?role=trainer")}
-              className="px-10 py-4 bg-[#F64EBB] text-white font-semibold text-lg rounded-full shadow-lg hover:bg-[#ea20a4]"
+              className="px-10 py-4 bg-[#276dc9] text-white font-semibold text-lg rounded-full shadow-lg hover:bg-[#205eb0]"
               whileHover={{ scale: 1.05 }}
             >
               Become a Trainer Today
@@ -97,7 +89,7 @@ const BecomeTrainer: React.FC = () => {
         >
 
           <div>
-            <h2 className="text-5xl md:text-5xl font-bold text-[#F64EBB] mx-auto">
+            <h2 className="text-5xl md:text-5xl font-bold text-[#5186cd] mx-auto">
               Teach, Inspire, and Make a Difference
             </h2>
           </div>
@@ -161,27 +153,27 @@ const BecomeTrainer: React.FC = () => {
           >
             <ul className="gap-4 text-lg text-[#2D274B] font-bold grid grid-cols-1 md:grid-cols-2">
               <li className="flex items-start border-gray-400 rounded-full px-8 py-4 shadow-sm text-start bg-white/80 gap-3">
-                <span className="text-[#F64EBB] text-xl">✔</span>
+                <span className="text-[#5186cd] text-xl">✔</span>
                 Continuous Flow of Learners —<br /> Reach motivated students from around the world.
               </li>
               <li className="flex items-start border-gray-400 rounded-full px-8 py-4 shadow-sm text-start bg-white/80 gap-3">
-                <span className="text-[#F64EBB] text-xl">✔</span>
+                <span className="text-[#5186cd] text-xl">✔</span>
                 Smart Scheduling Tools —<br /> Manage your sessions effortlessly with our intuitive calendar.
               </li>
               <li className="flex items-start border-gray-400 rounded-full px-8 py-4 shadow-sm text-start bg-white/80 gap-3">
-                <span className="text-[#F64EBB] text-xl">✔</span>
+                <span className="text-[#5186cd] text-xl">✔</span>
                 Interactive Virtual Classrooms —<br /> Engage your students with real-time learning tools.
               </li>
               <li className="flex items-start border-gray-400 rounded-full px-8 py-4 shadow-sm text-start bg-white/80 gap-3">
-                <span className="text-[#F64EBB] text-xl">✔</span>
+                <span className="text-[#5186cd] text-xl">✔</span>
                 Secure & Flexible Payments —<br /> Get paid easily, wherever you are.
               </li>
               <li className="flex items-start border-gray-400 rounded-full px-8 py-4 shadow-sm text-start bg-white/80 gap-3">
-                <span className="text-[#F64EBB] text-xl">✔</span>
+                <span className="text-[#5186cd] text-xl">✔</span>
                 Growth-Focused Training —<br /> Access exclusive webinars and teaching resources.
               </li>
               <li className="flex items-start border-gray-400 rounded-full px-8 py-4 shadow-sm text-start bg-white/80 gap-3">
-                <span className="text-[#F64EBB] text-xl">✔</span>
+                <span className="text-[#5186cd] text-xl">✔</span>
                 Thriving Educator Community — <br /> Connect, share, and collaborate with fellow mentors.
               </li>
             </ul>
@@ -213,7 +205,7 @@ const BecomeTrainer: React.FC = () => {
       {/* Benefits Section */}
       {/* e0fa84 bg-[#2D274B] */}
       <section className=" pt-16 px-6 md:px-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#F64EBB] mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#5186cd] mb-12">
           Why Teach with LearniLM🌍World?
         </h2>
         <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto ">
@@ -251,7 +243,7 @@ const BecomeTrainer: React.FC = () => {
       {/* Testimonials Section - trainer review */}
       {/* bg-[#2D274B]  e0fa84*/}
       <section className=" py-12 px-6 ">
-        <h2 className="text-5xl md:text-4xl sm:text-3xl font-bold text-center mb-12 text-[#F64EBB]">
+        <h2 className="text-5xl md:text-4xl sm:text-3xl font-bold text-center mb-12 text-[#5186cd]">
           Straight from the Heart ❤️
         </h2>
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 ">
@@ -312,7 +304,7 @@ const BecomeTrainer: React.FC = () => {
           <div className="text-center mb-10">
             <h2
               id="trainer-faq"
-              className="text-4xl md:text-4xl font-extrabold text-[#F64EBB]"
+              className="text-4xl md:text-4xl font-extrabold text-[#5186cd]"
             >
               Frequently Asked Questions
             </h2>
@@ -402,7 +394,7 @@ const BecomeTrainer: React.FC = () => {
         </motion.h2>
         <motion.button
           onClick={() => navigate("/register?role=trainer")}
-          className="px-10 py-4  bg-[#F64EBB] hover:bg-[#eb24a5] text-[white] font-semibold text-lg rounded-full shadow-lg transition-all"
+          className="px-10 py-4  bg-white  text-[#276dc9] font-semibold text-lg rounded-full shadow-lg transition-all"
           whileHover={{ scale: 1.05 }}
         >
           Get Started Now

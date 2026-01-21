@@ -27,7 +27,7 @@ interface Trainer {
     experience: number
     hourlyRate: number
     avatar?: string
-    imageUrl?: string         // <-- preferred uploaded image URL
+    imageUrl?: string         
     phone?: string
     location?: string
     specializations: string[]

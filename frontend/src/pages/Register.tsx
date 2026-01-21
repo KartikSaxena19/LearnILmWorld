@@ -13,6 +13,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import type { RegisterFormData } from './register/types'
 import StepTrainerTeach from './register/Steps/StepTrainerTeach'
 import StepTrainerDocuments from './register/Steps/StepTrainerDocuments'
+import { Home } from 'lucide-react'
 
 const initialData: RegisterFormData = {
   name: '',
@@ -236,15 +237,24 @@ const Register: React.FC = () => {
   return (
     <div
       className={`min-h-screen w-full flex items-center justify-center px-4 py-10 relative overflow-hidden transition-all duration-700
-      ${formData.role === 'trainer' ? 'bg-[#2D274B]' : 'bg-[#dc8d33]'}
+      ${formData.role === 'trainer' ? 'bg-[#426fab]' : 'bg-[#CBE56A]'}
     `}
     >
+      {/* Home Icon Button */}
+      <Link
+        to="/"
+        className="absolute top-6 right-6 p-2 rounded-lg bg-[#4f4382] backdrop-blur-md hover:bg-[#dc8d33]/30 transition flex items-center justify-center"
+        aria-label="Go to Home"
+      >
+        <Home className="h-6 w-6 text-white hover:text-[#dc8d33] transition-colors duration-300" />
+      </Link>
+
       {/* Decorative orbs (same as before) */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-20 left-10 w-32 h-32 rounded-full" style={{ background: '#fff7e1', opacity: 0.16, animation: 'floaty 6s ease-in-out infinite' }} />
-        <div className="absolute top-44 right-20 w-24 h-24 rounded-full" style={{ background: '#fff7e1', opacity: 0.26, animation: 'floaty 6s ease-in-out infinite', animationDelay: '1.8s' }} />
-        <div className="absolute bottom-24 left-1/4 w-40 h-40 rounded-full" style={{ background: '#fff7e1', opacity: 0.14, animation: 'floaty 6s ease-in-out infinite', animationDelay: '3.2s' }} />
-        <div className="absolute bottom-44 right-44 w-40 h-40 rounded-full" style={{ background: '#fff7e1', opacity: 0.14, animation: 'floaty 6s ease-in-out infinite', animationDelay: '1.8s' }} />
+        <div className="absolute top-20 left-10 w-32 h-32 rounded-full" style={{ background: '#fff7e1', opacity: 0.32, animation: 'floaty 6s ease-in-out infinite' }} />
+        <div className="absolute top-44 right-20 w-24 h-24 rounded-full" style={{ background: '#fff7e1', opacity: 0.36, animation: 'floaty 6s ease-in-out infinite', animationDelay: '1.8s' }} />
+        <div className="absolute bottom-24 left-1/4 w-40 h-40 rounded-full" style={{ background: '#fff7e1', opacity: 0.44, animation: 'floaty 6s ease-in-out infinite', animationDelay: '3.2s' }} />
+        <div className="absolute bottom-44 right-44 w-40 h-40 rounded-full" style={{ background: '#fff7e1', opacity: 0.44, animation: 'floaty 6s ease-in-out infinite', animationDelay: '1.8s' }} />
       </div>
 
 
@@ -252,13 +262,13 @@ const Register: React.FC = () => {
       <div className="w-full max-w-3xl mx-auto relative z-10">
         {/* Heading */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-extrabold text-gray-50 drop-shadow-lg tracking-wide flex justify-center items-center gap-2 font-[Good Vibes]">
+          <h1 className={`text-4xl font-extrabold drop-shadow-lg tracking-wide flex justify-center items-center gap-2 font-[Good Vibes] ${formData.role === 'trainer' ? 'text-gray-50' : 'text-black'}`}>
 
             {/* Static "Join" part */}
             <span>Join</span>
 
             {/* Clickable "LearniLM 🌎 World" */}
-            <Link to="/" className="flex items-center gap-2 text-gray-50 hover:text-[#e0fa84]">
+            <Link to="/" className={`flex items-center gap-2 ${formData.role === 'trainer' ? 'hover:text-[#e0fa84]' : 'hover:text-[#5186cd]'}`}>
               {/* LearniLM */}
               <span>LearniLM</span>
 
@@ -277,9 +287,20 @@ const Register: React.FC = () => {
           </h1>
 
           {/* Subtitle */}
-          <p className="text-white/80 mt-2 text-lg font-medium text-center">
+          <p className={`mt-1 text-xl font-bold text-center ${formData.role === 'trainer' ? 'text-gray-50' : 'text-black'}`}>
             Start your Learning Journey Today
           </p>
+
+          <p className={`mt-2 text-lg font-bold ${formData.role === 'trainer' ? 'text-gray-200' : 'text-gray-700'}`}>
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className={`font-bold underline ${formData.role === 'trainer' ? 'hover:text-[#e0fa84]' : 'hover:text-[#5186cd]'}  transition`}
+            >
+              Sign in
+            </Link>
+          </p>
+
         </div>
 
         {/* Glass Card */}

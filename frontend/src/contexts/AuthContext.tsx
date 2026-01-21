@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 import axios from 'axios'
 
 
-type Role = 'student' | 'trainer'
+type Role = 'student' | 'trainer' | 'admin'
 
 export interface User {
   id: string
@@ -69,14 +69,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   const forgotPassword = async (email: string) => {
-  try {
-    await axios.post(`${API_BASE_URL}/api/auth/forgot-password`, { email })
-  } catch (error: any) {
-    await new Promise(r => setTimeout(r, 1500));
-    await axios.post(`${API_BASE_URL}/api/auth/forgot-password`, { email })
-    // throw new Error(error.response?.data?.message || 'Failed to send reset link')
+    try {
+      await axios.post(`${API_BASE_URL}/api/auth/forgot-password`, { email })
+    } catch (error: any) {
+      await new Promise(r => setTimeout(r, 1500));
+      await axios.post(`${API_BASE_URL}/api/auth/forgot-password`, { email })
+      // throw new Error(error.response?.data?.message || 'Failed to send reset link')
+    }
   }
-}
 
   const resetPassword = async (token: string, newPassword: string) => {
     try {

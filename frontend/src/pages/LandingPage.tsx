@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 //  Facebook,Twitter,Instagram,Linkedin,Mail, Globe,
-import { Nav, Container, Offcanvas, Button } from 'react-bootstrap'
+// import { Nav, Container, Offcanvas, Button } from 'react-bootstrap'
 import { useAuth } from "../contexts/AuthContext";
 import { BookOpen, ArrowRight, Play, Mic, Headphones, Calendar, Users, Award, Clock, Star, MessageSquare, ChevronDown, ChevronRight, } from 'lucide-react';
 // Navbar,from above
@@ -11,8 +11,8 @@ import { BookOpen, ArrowRight, Play, Mic, Headphones, Calendar, Users, Award, Cl
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 // import bg_img from '../assets/purple_gradient.jpg'
-import bg_main from '../assets/bg_main.jpeg'
-import bg_img from '../assets/header_bg.jpg'
+// import bg_main from '../assets/bg_main.jpeg'
+// import bg_img from '../assets/header_bg.jpg'
 
 import french_st from '../assets/French_student1.jpeg';
 import german_st from '../assets/German_student1.jpeg';
@@ -33,7 +33,7 @@ import arab_flag from '../assets/arab_flag.jpeg'
 
 // import heroImage1 from '../assets/Hero_image1.png'
 // import heroImage2 from '../assets/Hero_image2.jpg'
-import heroImage3 from '../assets/Hero_image3.png'
+// import heroImage3 from '../assets/Hero_image3.png'
 
 import math from '../assets/Math.jpeg'
 import hist from '../assets/history.png'
@@ -58,7 +58,7 @@ import Navbar from '../components/Navbar';
 export default function LandingPageAlt() {
   const [mounted, setMounted] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
-  const [showOffcanvas, setShowOffcanvas] = useState(false)
+  // const [showOffcanvas, setShowOffcanvas] = useState(false)
   const [showMore, setShowMore] = useState(false);
   const [showMoreLanguages, setShowMoreLanguages] = useState(false);
   const [showMoreHobbies, setShowMoreHobbies] = useState(false);
@@ -377,8 +377,6 @@ export default function LandingPageAlt() {
     },
   ];
 
-
-
   const steps = [
     {
       icon: Users,
@@ -468,51 +466,44 @@ export default function LandingPageAlt() {
 
 
   return (
-    <div className="min-h-screen font-inter text-[#2D274B] transition-colors duration-500 bg-[#FFFAF1] bg-fixed"
-      style={{
-        backgroundImage:
-          `url(${bg_main})`,
-        position: "relative",
-        backgroundSize: "cover",
-        backgroundPosition: "right bottom",
-        backgroundRepeat: "no-repeat",
-        width: "100%",
-      }}
+    <div className="min-h-screen font-inter text-[#2D274B] transition-colors duration-500 bg-[#fef5e4] bg-fixed"
+
     >
 
       {/* 2D274B  text- #dc8d33*/}
       {/* bg-[#6B48AF]/95 backdrop-blur-sm border-b border-white/30 text-white */}
       <Navbar />
 
-      <main className="pt-12 pb-20">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <main className="pt-12 pb-14 items-center text-center justify-center">
+        <div className="w-full mx-auto px-6 lg:px-8">
+          <div className="items-center text-center justify-center">
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               animate={mounted ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7 }}
-              className="text-left"
             >
-              <h1 className="text-5xl md:text-5xl font-serif leading-tight font-extrabold text-[#2D274B]">
+              <h1 className="text-5xl md:text-5xl font-serif leading-tight font-extrabold text-[#2D274B] text-center">
                 Helping learners grow,
-                <br />
+                {/* <br /> */}
                 {/* e0fa84 */}
-                <span className="text-[#F64EBB]"> emotionally </span>
-                <span className="text-[#2D274B]">and</span>
-                <br />
-                <span className="text-[#F64EBB]">intellenctually</span>
+                <span className="text-[#5186cd]"> emotionally </span>
+                <span className="text-[#2D274B]">and </span>
+                {/* <br /> */}
+                <span className="text-[#5186cd]">intellectually</span>
               </h1>
+              <div className='flex text-center justify-center items-center'>
 
-              <p className="mt-6 text-2xl md:text-3xl text-[#2D274B] font-bold max-w-xl">
-                Clarity comes with the <span className="text-[#F64EBB]">Right Mentors</span>
-              </p>
-              <p className='mt-2 text-xl font-bold md:text-2xl text-[#F64EBB]'>Learn from natives. Speak like natives</p>
+                <p className="mt-6 text-3xl md:text-4xl text-[#2D274B] font-bold max-w-3xl">
+                  Clarity comes with the <span className="text-[#5186cd] ">Right Mentors</span>
+                </p>
+              </div>
+              <p className='mt-4 text-xl font-bold md:text-3xl text-[#5186cd]'>Learn from natives. Speak like natives</p>
 
               <div className="mt-10">
-                <div className="flex flex-wrap gap-4 mb-10">
+                <div className="flex flex-wrap justify-center items-center gap-4 mb-10">
                   <Link
-                    to="/student/courses"
-                    className="inline-flex items-center gap-2 px-6 py-3.5 bg-gradient-to-r from-[#F53886] to-[#A644FF] text-white text-lg font-bold rounded-xl shadow-lg hover:scale-105 transition-transform"
+                    to="/courses"
+                    className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#276dc9] text-white text-lg font-bold rounded-xl shadow-lg hover:scale-105 transition-transform"
                   >
                     <BookOpen className="w-5 h-5" />
                     <span>Browse Courses</span>
@@ -522,38 +513,38 @@ export default function LandingPageAlt() {
                     to="/demo"
                     className="inline-flex items-center gap-2 px-6 py-3.5 bg-white border border-gray-200 text-gray-900 text-lg font-bold rounded-xl shadow-sm hover:bg-gray-50 transition-colors"
                   >
-                    <Play className="w-5 h-5 text-[#F64EBB] fill-current" />
+                    <Play className="w-5 h-5 text-[#5186cd] fill-current" />
                     <span>Book a FREE Demo</span>
                   </Link>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-x-6 gap-y-4 lg:gap-x-8">
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-4 lg:gap-x-8 justify-center ">
                   <div className="flex items-center gap-2">
-                    <div className="p-2 bg-teal-50 rounded-full text-[#F64EBB] shrink-0">
+                    <div className="p-2 bg-teal-50 rounded-full text-[#4f88f2] shrink-0">
                       <Mic className="w-5 h-5" />
                     </div>
                     <div className="flex flex-col whitespace-nowrap">
-                      <span className="font-bold text-gray-900 text-base leading-none">Native</span>
+                      <span className="font-bold text-gray-900 text-xl leading-none">Native</span>
                       <span className="text-gray-500 text-xs mt-1">mentors + real accent</span>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <div className="p-2 bg-teal-50 rounded-full text-[#F64EBB] shrink-0">
+                    <div className="p-2 bg-teal-50 rounded-full text-[#4f88f2] shrink-0">
                       <Headphones className="w-5 h-5" />
                     </div>
                     <div className="flex flex-col whitespace-nowrap">
-                      <span className="font-bold text-gray-900 text-base leading-none">Speaking</span>
+                      <span className="font-bold text-gray-900 text-xl leading-none">Speaking</span>
                       <span className="text-gray-500 text-xs mt-1">focused practice</span>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <div className="p-2 bg-teal-50 rounded-full text-[#F64EBB] shrink-0">
+                    <div className="p-2 bg-teal-50 rounded-full text-[#4f88f2] shrink-0">
                       <Calendar className="w-5 h-5" />
                     </div>
                     <div className="flex flex-col whitespace-nowrap">
-                      <span className="font-bold text-gray-900 text-base leading-none">Flexible</span>
+                      <span className="font-bold text-gray-900 text-xl leading-none">Flexible</span>
                       <span className="text-gray-500 text-xs mt-1">weekday/weekend batches</span>
                     </div>
                   </div>
@@ -579,11 +570,12 @@ export default function LandingPageAlt() {
               </div> */}
             </motion.div>
 
-            <motion.div initial={{ opacity: 0 }} animate={mounted ? { opacity: 1 } : {}} transition={{ delay: 0.2 }} className="relative w-full max-w-2xl mx-auto rounded-2xl overflow-hidden  -translate-y-6 md:-translate-y-12">
-              <img loading="lazy" src={heroImage3} alt="students practicing a language together" className="w-full h-[420px] md:h-96 lg:h-[520px] object-contain" />
+            {/* <motion.div initial={{ opacity: 0 }} animate={mounted ? { opacity: 1 } : {}} transition={{ delay: 0.2 }} className="relative w-full max-w-2xl mx-auto rounded-2xl overflow-hidden  -translate-y-6 md:-translate-y-12">
+              <img loading="lazy" src={heroImage3} alt="students practicing a language together" className="w-full h-[420px] md:h-96 lg:h-[520px] object-contain" /> */}
 
-              {/* Left card - moved up */}
-              {/* <div className="absolute left-6 bottom-24 w-52 rounded-xl overflow-hidden shadow-lg border-2 border-white bg-white">
+
+            {/* Left card - moved up */}
+            {/* <div className="absolute left-6 bottom-24 w-52 rounded-xl overflow-hidden shadow-lg border-2 border-white bg-white">
                 <img loading="lazy" src={cardImage1} alt="culture and conversation" className="w-full h-32 object-cover" />
                 <div className="p-3">
                   <div className="text-sm font-semibold">Cultural conversations</div>
@@ -591,8 +583,8 @@ export default function LandingPageAlt() {
                 </div>
               </div> */}
 
-              {/* Right top card - nudged slightly higher */}
-              {/* <div className="absolute right-6 top-2 w-44 rounded-xl overflow-hidden shadow-lg border-2 border-white bg-white">
+            {/* Right top card - nudged slightly higher */}
+            {/* <div className="absolute right-6 top-2 w-44 rounded-xl overflow-hidden shadow-lg border-2 border-white bg-white">
                 <img loading="lazy" src={cardImage2} alt="tutor profile" className="w-full h-40 object-cover" />
                 <div className="p-3">
                   <div className="text-sm font-semibold">Meet tutors</div>
@@ -600,8 +592,8 @@ export default function LandingPageAlt() {
                 </div>
               </div> */}
 
-              {/* Lower-right card - lifted up and pulled inwards */}
-              {/* <div className="absolute -right-6 bottom-36 w-64 rounded-xl overflow-hidden shadow-lg border-2 border-white bg-white">
+            {/* Lower-right card - lifted up and pulled inwards */}
+            {/* <div className="absolute -right-6 bottom-36 w-64 rounded-xl overflow-hidden shadow-lg border-2 border-white bg-white">
                 <div className="p-4">
                   <div className="text-lg font-bold">Practice </div>
                   <div className="text-xs text-slate-500 mt-2">Short tasks to try between lessons</div>
@@ -609,19 +601,19 @@ export default function LandingPageAlt() {
                 <img loading="lazy" src={cardImage3} alt="mini lesson" className="w-full h-20 object-cover" />
               </div> */}
 
-            </motion.div>
+            {/* </motion.div> */}
           </div>
         </div>
       </main>
       {/* Why learners love us section */}
       {/* bg-[#2D274B] */}
-      <section className="py-16 ">
+      <section className="py-8 ">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="gap-8 items-start">
             {/* LEFT – Heading only */}
             <div className='flex justify-center items-center text-center'>
-              <h3 className="text-4xl font-semibold font-serif text-[#F64EBB]">
-                Why learners love <br /> LearniLM🌍World
+              <h3 className="text-4xl font-bold font-serif text-[#5186cd]">
+                Why learners love LearniLM🌍World
               </h3>
             </div>
 
@@ -642,10 +634,10 @@ export default function LandingPageAlt() {
                 {features.map((f, idx) => (
                   <div
                     key={idx}
-                    className="p-4 bg-blue-50 rounded-xl shadow hover:bg-[#F64EBB] hover:text-gray-200 hover:scale-[1.02] transition"
+                    className="p-4 bg-blue-50 rounded-xl shadow hover:bg-[#5186cd] hover:text-gray-200 hover:scale-[1.02] transition"
                     role="group"
                   >
-                    <f.icon className="w-9 h-9 text-[#9787F3]" aria-hidden />
+                    <f.icon className="w-9 h-9 text-[#276dc9]" aria-hidden />
                     <div className="font-bold mt-3">{f.title}</div>
                     <div className="text-base font-semibold text-[#4B437C] hover:text-gray-50 mt-1">
                       {f.text}
@@ -676,10 +668,10 @@ export default function LandingPageAlt() {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-blue-50 p-4 rounded-xl shadow font-extrabold hover:bg-[#F64EBB] hover:text-white">
+                <div className="bg-blue-50 p-4 rounded-xl shadow font-extrabold hover:bg-[#5186cd] hover:text-white">
                   Quick lessons
                 </div>
-                <div className="bg-blue-50 p-4 rounded-xl shadow font-extrabold hover:text-white hover:bg-[#F64EBB]">
+                <div className="bg-blue-50 p-4 rounded-xl shadow font-extrabold hover:text-white hover:bg-[#5186cd]">
                   Excellent Material
                 </div>
               </div>
@@ -704,10 +696,10 @@ export default function LandingPageAlt() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-5xl md:text-5xl font-extrabold font-serif text-[#F64EBB] tracking-tight"
+            className="text-5xl md:text-5xl font-extrabold font-serif text-[#5186cd] tracking-tight"
           >
             Languages That Open Doors
-            <span className="block text-[#F64EBB] mt-1">
+            <span className="block text-[#5186cd] mt-1">
               Speak to the World with Confidence
             </span>
           </motion.h2>
@@ -757,7 +749,7 @@ export default function LandingPageAlt() {
             >
               <div
                 className=" 
-                w-40 h-40 rounded-full bg-[#F64EBB] text-white font-bold flex flex-col items-center justify-center shadow-[0_20px_30px_5px_rgba(0,0,0,0.3)] transition-all duration-500 ease-out group-hover:shadow-[0_40px_50px_10px_rgba(0,0,0,0.4)]"
+                w-40 h-40 rounded-full bg-[#276dc9] text-white font-bold flex flex-col items-center justify-center shadow-[0_20px_30px_5px_rgba(0,0,0,0.3)] transition-all duration-500 ease-out group-hover:shadow-[0_40px_50px_10px_rgba(0,0,0,0.4)]"
               >
                 <span className="text-3xl leading-none">+</span>
                 <span className="text-sm mt-1">More</span>
@@ -851,7 +843,7 @@ export default function LandingPageAlt() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
             viewport={{ once: true }}
-            className="text-5xl md:text-5xl font-serif tracking-tight font-extrabold text-[#F64EBB]"
+            className="text-5xl md:text-5xl font-serif tracking-tight font-extrabold text-[#5186cd]"
           >
             Subjects You Can Explore
           </motion.h2>
@@ -945,7 +937,7 @@ export default function LandingPageAlt() {
                   {/* Subject Name */}
                   <div
                     className={`absolute top-3 left-3 ${subject.isMore
-                      ? "bg-[#F64EBB] text-[white]"
+                      ? "bg-[#5186cd] text-[white]"
                       : "bg-white/90 text-[#2D274B]"
                       } px-3 py-1 rounded-md font-bold text-lg shadow`}
                   >
@@ -1056,7 +1048,7 @@ export default function LandingPageAlt() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
             viewport={{ once: true }}
-            className="text-5xl md:text-5xl font-serif tracking-tight font-extrabold text-[#F64EBB]"
+            className="text-5xl md:text-5xl font-serif tracking-tight font-extrabold text-[#5186cd]"
           >
             Beyond Academics, Your Passion Awaits
           </motion.h2>
@@ -1143,7 +1135,7 @@ export default function LandingPageAlt() {
                 {/* Hobby Name */}
                 <div
                   className={`absolute top-3 left-3 ${hobby.isMore
-                    ? "bg-[#CBE56A] text-[#2D274B]"
+                    ? "bg-[#5186cd] text-white"
                     : "bg-white/90 text-[#2D274B]"
                     } px-3 py-1 rounded-md font-bold text-lg shadow`}
                 >
@@ -1251,7 +1243,7 @@ export default function LandingPageAlt() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-serif text-[#F64EBB] tracking-tight text-center"
+            className="text-4xl md:text-5xl font-serif text-[#5186cd] tracking-tight text-center"
           >
             Highlights of LearniLM 🌎 World
           </motion.h2>
@@ -1317,7 +1309,7 @@ export default function LandingPageAlt() {
                 <motion.div
                   key={idx}
                   whileHover={{ scale: 1.05 }}
-                  className="p-6 bg-[#6B48AF] rounded-2xl border border-white/20 hover:border-[#dc8d33] transition"
+                  className="p-6 bg-[#5186cd] rounded-2xl border border-white/20 hover:border-[#dc8d33] transition"
                 >
                   <div className="text-5xl mb-3">{feature.icon}</div>
                   <h4 className="text-lg font-semibold text-[#e0fa84]">
@@ -1348,7 +1340,7 @@ export default function LandingPageAlt() {
       <section className="py-16" aria-labelledby="how-it-works">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 id="how-it-works" className="text-4xl font-bold md:text-4xl font-serif text-[#F64EBB]">How it works — in 4 simple steps</h2>
+            <h2 id="how-it-works" className="text-4xl font-bold md:text-4xl font-serif text-[#5186cd]">How it works — in 4 simple steps</h2>
             <p className="mt-3 text-[#2D274B] text-lg font-bold max-w-2xl mx-auto">Designed to get you speaking fast: pick, book, practice and track.</p>
           </div>
 
@@ -1356,7 +1348,7 @@ export default function LandingPageAlt() {
             {steps.map((s, i) => (
               <motion.div key={i} whileHover={{ y: -6 }} className="bg-gradient-to-b from-[#f0fdf4] to-white rounded-2xl p-6 shadow hover:shadow-xl transition" role="article">
                 <div className="w-14 h-14 rounded-lg bg-white shadow flex items-center justify-center mb-4">
-                  <s.icon className="text-[#9787F3]" aria-hidden />
+                  <s.icon className="text-[#5186cd]" aria-hidden />
                 </div>
                 <h3 className="font-semibold text-lg">{s.title}</h3>
                 <p className="text-sm text-[#4B437C] mt-2">{s.desc}</p>
@@ -1365,7 +1357,6 @@ export default function LandingPageAlt() {
           </div>
         </div>
       </section>
-
 
 
       {/* Reviews */}
@@ -1424,12 +1415,12 @@ export default function LandingPageAlt() {
       {/* CTA  bg-gradient-to-r from-[#9787F3]/10 to-[#f97316]/8*/}
       <section className="py-12 ">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h4 className="text-4xl font-extrabold text-[#F64EBB] ">Master Your Skills, Confidently</h4>
+          <h4 className="text-4xl font-extrabold text-[#5186cd] ">Master Your Skills, Confidently</h4>
           {/* <p className="text-[#2D274B] text-xl font-bold mt-2">Sign up to Claim Your Free Trial Session. Get a Personalized 7-Day Learning Path After Your First Session.</p>
           2D274B */}
           <div className="mt-6 flex justify-center gap-4">
-            <Link to="/main" className="inline-flex items-center gap-3 px-6 py-3 rounded-lg bg-[#F64EBB] text-[white] hover:bg-[#fe1fb0]">Browse trainers <ChevronRight /></Link>
-            <Link to="/become-trainer" className="inline-flex items-center gap-3 px-6 py-3 rounded-lg border bg-[#F64EBB] border-[#CBE56A] text-[white] hover:bg-[#fe1fb0]">Become a trainer</Link>
+            <Link to="/main" className="inline-flex items-center gap-3 px-6 py-3 rounded-lg bg-[#276dc9] text-[white] hover:bg-[#205eb0]">Browse trainers <ChevronRight /></Link>
+            <Link to="/become-trainer" className="inline-flex items-center gap-3 px-6 py-3 rounded-lg border bg-[#276dc9] border-[#CBE56A] text-[white] hover:bg-[#205eb0]">Become a trainer</Link>
           </div>
         </div>
       </section>
@@ -1439,40 +1430,3 @@ export default function LandingPageAlt() {
     </div>
   )
 }
-
-
-// {[
-//               {
-//                 name: "Maths",
-//                 img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUfVuI-52gMsBUjICo8U71bZzPh_Sl60a0rw&s",
-//               },
-//               {
-//                 name: "Geography",
-//                 img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStimZbjbIU3wmA6leFoxxaiMHEV44X5zg6Eg&s",
-//               },
-//               {
-//                 name: "Physics",
-//                 img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaokOEDxUXqruUqK6jfotlGNnh_cqkv_7YKQ&s",
-//               },
-//               {
-//                 name: "Chemistry",
-//                 img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYYeicpqHLfxEoRF1mR5aUn8bda5xZKp_50w&s",
-//               },
-//               {
-//                 name: "Mathematics",
-//                 img: {math},
-//               },
-//               {
-//                 name: "Biology",
-//                 img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwCZsh8ORVYuaRBk5UVIjupZH-uJdpqSrNNA&s",
-//               },
-//               {
-//                 name: "Computer Science",
-//                 img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGt5xq-25cqfQWyM8Z0Yu706O8s_aCraXM9A&s",
-//               },
-//               {
-//                 name: "More",
-//                 img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=100",
-//                 isMore: true,
-//               },
-//             ]

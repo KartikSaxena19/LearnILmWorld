@@ -23,8 +23,10 @@ import StudentJoinSession from './components/StudentJoinSession';
 import Chatbot from './components/Chatbot/Chatbot';
 import { CurrencyProvider } from './contexts/CurrencyContext'
 import ScrollToTop from './components/ScrollToTop'
-import Courses from './pages/student/Course'
+import Courses from './pages/Course'
 import CoursePlayer from './components/CoursePlayer'
+import FeaturedTrainersPage from './pages/FeaturedTrainersPage'
+import TrainerProfilePageDemo from './pages/TrainerProfilePageDemo'
 
 function App() {
   return (
@@ -49,8 +51,10 @@ function App() {
                 <Route path="/forget-password" element={<ForgotPassword />} />
                 <Route path="/trainer-profile/:trainerId" element={<TrainerProfile />} />
                 <Route path="/book/:trainerId" element={<BookingPage />} />
-                <Route path="/student/courses" element={<Courses />} />
-                <Route path="student/courses/:id" element={<CoursePlayer />} />
+                <Route path="/courses" element={<Courses />} />
+                <Route path="/courses/:id" element={<CoursePlayer />} />
+                <Route path="/demo" element={<FeaturedTrainersPage />} />
+                
 
                 <Route path="/student/*" element={
                   <PrivateRoute allowedRoles={['student']}>
@@ -64,12 +68,17 @@ function App() {
                   </PrivateRoute>
                 } />
 
-                <Route path="/trainers" element={<Trainers />} />
-                <Route path="/trainer/*" element={
-                  <PrivateRoute allowedRoles={['trainer']}>
-                    <EducatorDashboard />
-                  </PrivateRoute>
-                } />
+                <Route path="/trainer/profile/:id" element={<TrainerProfilePageDemo />} />
+
+
+                <Route
+                  path="/trainer/*"
+                  element={
+                    <PrivateRoute allowedRoles={['trainer']}>
+                      <EducatorDashboard />
+                    </PrivateRoute>
+                  }
+                />
 
                 <Route path="/student/session/:id" element={<StudentJoinSession />} />
 

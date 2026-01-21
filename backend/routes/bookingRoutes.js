@@ -2,6 +2,7 @@ import express from 'express';
 import Booking from '../models/Booking.js';
 import User from '../models/User.js';
 import { authenticate } from '../middleware/auth.js';
+import { accessFreeDemo } from '../controllers/bookingController.js';
 
 const router = express.Router();
 
@@ -143,5 +144,7 @@ router.delete('/:id', authenticate, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+router.post('/free-demo-access', authenticate, accessFreeDemo);
 
 export default router;

@@ -12,47 +12,47 @@ const LANGUAGES = [
     { code: 'jp', name: 'Japanese', flag: '🇯🇵' }
 ]
 
-const COUNTRIES = [
-    { code: 'US', name: 'United States' },
-    { code: 'GB', name: 'United Kingdom' },
-    { code: 'CA', name: 'Canada' },
-    { code: 'AU', name: 'Australia' },
-    { code: 'IN', name: 'India' },
-    { code: 'DE', name: 'Germany' },
-    { code: 'FR', name: 'France' },
-    { code: 'ES', name: 'Spain' },
-    { code: 'IT', name: 'Italy' },
-    { code: 'JP', name: 'Japan' },
-    { code: 'CN', name: 'China' },
-    { code: 'BR', name: 'Brazil' },
-    { code: 'MX', name: 'Mexico' },
-    { code: 'RU', name: 'Russia' },
-    { code: 'KR', name: 'South Korea' },
-    { code: 'NL', name: 'Netherlands' },
-    { code: 'SE', name: 'Sweden' },
-    { code: 'NO', name: 'Norway' },
-    { code: 'DK', name: 'Denmark' },
-    { code: 'FI', name: 'Finland' },
-    { code: 'PL', name: 'Poland' },
-    { code: 'PT', name: 'Portugal' },
-    { code: 'GR', name: 'Greece' },
-    { code: 'TR', name: 'Turkey' },
-    { code: 'EG', name: 'Egypt' },
-    { code: 'ZA', name: 'South Africa' },
-    { code: 'NG', name: 'Nigeria' },
-    { code: 'KE', name: 'Kenya' },
-    { code: 'AR', name: 'Argentina' },
-    { code: 'CL', name: 'Chile' },
-    { code: 'CO', name: 'Colombia' },
-    { code: 'PE', name: 'Peru' },
-    { code: 'TH', name: 'Thailand' },
-    { code: 'VN', name: 'Vietnam' },
-    { code: 'PH', name: 'Philippines' },
-    { code: 'ID', name: 'Indonesia' },
-    { code: 'MY', name: 'Malaysia' },
-    { code: 'SG', name: 'Singapore' },
-    { code: 'NZ', name: 'New Zealand' }
-]
+// const COUNTRIES = [
+//     { code: 'US', name: 'United States' },
+//     { code: 'GB', name: 'United Kingdom' },
+//     { code: 'CA', name: 'Canada' },
+//     { code: 'AU', name: 'Australia' },
+//     { code: 'IN', name: 'India' },
+//     { code: 'DE', name: 'Germany' },
+//     { code: 'FR', name: 'France' },
+//     { code: 'ES', name: 'Spain' },
+//     { code: 'IT', name: 'Italy' },
+//     { code: 'JP', name: 'Japan' },
+//     { code: 'CN', name: 'China' },
+//     { code: 'BR', name: 'Brazil' },
+//     { code: 'MX', name: 'Mexico' },
+//     { code: 'RU', name: 'Russia' },
+//     { code: 'KR', name: 'South Korea' },
+//     { code: 'NL', name: 'Netherlands' },
+//     { code: 'SE', name: 'Sweden' },
+//     { code: 'NO', name: 'Norway' },
+//     { code: 'DK', name: 'Denmark' },
+//     { code: 'FI', name: 'Finland' },
+//     { code: 'PL', name: 'Poland' },
+//     { code: 'PT', name: 'Portugal' },
+//     { code: 'GR', name: 'Greece' },
+//     { code: 'TR', name: 'Turkey' },
+//     { code: 'EG', name: 'Egypt' },
+//     { code: 'ZA', name: 'South Africa' },
+//     { code: 'NG', name: 'Nigeria' },
+//     { code: 'KE', name: 'Kenya' },
+//     { code: 'AR', name: 'Argentina' },
+//     { code: 'CL', name: 'Chile' },
+//     { code: 'CO', name: 'Colombia' },
+//     { code: 'PE', name: 'Peru' },
+//     { code: 'TH', name: 'Thailand' },
+//     { code: 'VN', name: 'Vietnam' },
+//     { code: 'PH', name: 'Philippines' },
+//     { code: 'ID', name: 'Indonesia' },
+//     { code: 'MY', name: 'Malaysia' },
+//     { code: 'SG', name: 'Singapore' },
+//     { code: 'NZ', name: 'New Zealand' }
+// ]
 
 
 const SUBJECTS = [
@@ -82,32 +82,36 @@ const FiltersPanel: React.FC<Props> = ({ learningType, filters, setFilters, nati
 
 
     return (
-        <div className='bg-[#FFE4E6]/55 rounded-2xl p-3'>
+        <div className="bg-[#e9f1fb] rounded-[36px] p-6 border border-[#5186cd]/20 shadow-sm">
 
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between items-center justify-between px-4 py-3">
+            {/* quick filter and clear button */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between items-center justify-between px-4 py-3 mb-4">
+
                 {/* Quick Filters */}
                 <div className="flex items-center gap-2">
-                    <SlidersHorizontal size={18} className="text-slate-700" />
-                    <span className="font-bold text-slate-700">Quick Filters</span>
+                    <SlidersHorizontal size={18} className="text-[#5186cd]" />
+                    <span className="font-bold text-[#5186cd] text-lg">Quick Filters</span>
                 </div>
 
                 {/* Clear All */}
-                <button onClick={clearFilters}
-                    className="px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300 text-[#2D274B] text-sm font-bold transition"
+                <button
+                    onClick={clearFilters}
+                    className="px-5 py-2 bg-white rounded-full hover:bg-[#fef5e4] text-[#5186cd] text-sm font-bold transition border border-[#5186cd]/20 shadow-sm"
                 >
                     Clear All
                 </button>
+
             </div>
 
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mx-3 sm:mx-6 gap-4 sm:gap-6 lg:gap-10">
-
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
                 {/*changed CBE56A */}
                 {learningType === 'language' && (
-                    <div className="relative py-3 px-6 rounded-xl shadow-sm bg-[#FFE4E6] text-slate-700">
-                        <label className="text-base font-bold ">All Languages</label>
-                        <button onClick={() => setFilters((p: any) => ({ ...p, _toggleLanguageDropdown: !p._toggleLanguageDropdown }))} className="w-full mt-1 px-3 py-2  border-gray-800 border-2 rounded-full bg-[#fdd8da] text-sm font-semibold flex justify-between items-center">
+                    <div className="relative p-4 rounded-2xl bg-white border border-[#5186cd]/20 shadow-sm">
+                        <label className="text-sm font-bold text-[#5186cd]">All Languages</label>
+                        <button onClick={() => setFilters((p: any) => ({ ...p, _toggleLanguageDropdown: !p._toggleLanguageDropdown }))} className="w-full mt-2 px-4 py-2 border-2 border-black rounded-full bg-white text-sm font-bold flex justify-between items-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+                        >
                             <span>{filters.language || 'Language'}</span>
                             <ChevronDown className={`h-4 w-4`} />
                         </button>
@@ -115,30 +119,52 @@ const FiltersPanel: React.FC<Props> = ({ learningType, filters, setFilters, nati
 
                         {/* Dropdown local UI (simple: toggling stored on filters._toggleLanguageDropdown) */}
                         {filters._toggleLanguageDropdown && (
-                            <div className="absolute bg-[#fdd8da] shadow-xl rounded-xl p-3 mt-2 w-40 z-30 max-h-48 overflow-y-auto">
+                            <div className="absolute bg-white border border-[#5186cd]/20 shadow-xl rounded-2xl p-3 mt-3 w-44 z-30 max-h-52 overflow-y-auto">
                                 <input type="text" placeholder="Search..." value={filters.language} onChange={(e) => setFilters((p: any) => ({ ...p, language: e.target.value }))} className="w-full px-2 py-1 border border-gray-300 rounded mb-2 text-sm" />
                                 {LANGUAGES.filter(l => l.name.toLowerCase().includes((filters.language || '').toLowerCase())).map(lang => (
-                                    <div key={lang.code} onClick={() => setFilters((p: any) => ({ ...p, language: lang.name, _toggleLanguageDropdown: false }))} className="cursor-pointer flex items-center gap-2 px-2 py-1 hover:bg-gray-100 rounded text-sm">{lang.flag}<span>{lang.name}</span></div>
+                                    <div key={lang.code} onClick={() => setFilters((p: any) => ({ ...p, language: lang.name, _toggleLanguageDropdown: false }))} className="cursor-pointer px-3 py-2 hover:bg-[#e9f1fb] rounded-lg text-sm font-medium"
+                                    >{lang.flag}<span>{lang.name}</span></div>
                                 ))}
                             </div>
                         )}
                     </div>
                 )}
 
-
                 {learningType === 'subject' && (
-                    <div className="relative p-3 rounded-xl shadow-sm bg-[#FFE4E6]">
-                        <label className="text-base font-bold ">All Subjects</label>
-                        <button onClick={() => setFilters((p: any) => ({ ...p, _toggleSubjectDropdown: !p._toggleSubjectDropdown }))} className="w-full mt-1 px-3 py-2 border-2 border-gray-800 rounded-full bg-[#fdd8da] text-sm font-semibold flex justify-between items-center">
+                    <div className="relative p-4 rounded-2xl bg-white border border-[#5186cd]/20 shadow-sm">
+                        <label className="text-sm font-bold text-[#5186cd]">All Subjects</label>
+
+                        <button
+                            onClick={() =>
+                                setFilters((p: any) => ({
+                                    ...p,
+                                    _toggleSubjectDropdown: !p._toggleSubjectDropdown
+                                }))
+                            }
+                            className="w-full mt-2 px-4 py-2 border-2 border-black rounded-full bg-white text-sm font-bold flex justify-between items-center
+      shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]
+      active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+                        >
                             <span>{filters.specialization || 'Subject'}</span>
-                            <ChevronDown className={`h-4 w-4`} />
+                            <ChevronDown className="h-4 w-4" />
                         </button>
 
-
                         {filters._toggleSubjectDropdown && (
-                            <div className="absolute bg-[#fdd8da] shadow-xl rounded-xl p-3 mt-2 w-48 z-30 max-h-48 overflow-y-auto text-base">
+                            <div className="absolute bg-white border border-[#5186cd]/20 shadow-xl rounded-2xl p-3 mt-3 w-48 z-30 max-h-52 overflow-y-auto">
                                 {SUBJECTS.map(subj => (
-                                    <div key={subj} onClick={() => setFilters((p: any) => ({ ...p, specialization: subj, _toggleSubjectDropdown: false }))} className="cursor-pointer px-2 py-1 hover:bg-gray-100 rounded">{subj}</div>
+                                    <div
+                                        key={subj}
+                                        onClick={() =>
+                                            setFilters((p: any) => ({
+                                                ...p,
+                                                specialization: subj,
+                                                _toggleSubjectDropdown: false
+                                            }))
+                                        }
+                                        className="cursor-pointer px-3 py-2 hover:bg-[#e9f1fb] rounded-lg text-sm font-medium"
+                                    >
+                                        {subj}
+                                    </div>
                                 ))}
                             </div>
                         )}
@@ -146,31 +172,35 @@ const FiltersPanel: React.FC<Props> = ({ learningType, filters, setFilters, nati
                 )}
 
                 {learningType === 'hobby' && (
-                    <div className="relative p-3 rounded-xl shadow-sm bg-[#FFE4E6]">
-                        <label className="text-base font-bold ">All Hobbies</label>
-                        {/* Choose a hobby */}
+                    <div className="relative p-4 rounded-2xl bg-white border border-[#5186cd]/20 shadow-sm">
+                        <label className="text-sm font-bold text-[#5186cd]">All Hobbies</label>
+
                         <button
-                            onClick={() => setFilters((p: any) => ({
-                                ...p,
-                                _toggleHobbyDropdown: !p._toggleHobbyDropdown
-                            }))}
-                            className="w-full mt-1 px-3 py-2 border-2 border-gray-800 rounded-full bg-[#fdd8da] text-sm font-semibold flex justify-between items-center"
+                            onClick={() =>
+                                setFilters((p: any) => ({
+                                    ...p,
+                                    _toggleHobbyDropdown: !p._toggleHobbyDropdown
+                                }))
+                            }
+                            className="w-full mt-2 px-4 py-2 border-2 border-black rounded-full bg-white text-sm font-bold flex justify-between items-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
                         >
                             <span>{filters.hobby || 'Hobby'}</span>
                             <ChevronDown className="h-4 w-4" />
                         </button>
 
                         {filters._toggleHobbyDropdown && (
-                            <div className="absolute bg-[#fdd8da] shadow-xl rounded-xl p-3 mt-2 w-48 z-30 max-h-48 overflow-y-auto">
+                            <div className="absolute bg-white border border-[#5186cd]/20 shadow-xl rounded-2xl p-3 mt-3 w-48 z-30 max-h-52 overflow-y-auto">
                                 {HOBBIES.map(h => (
                                     <div
                                         key={h}
-                                        onClick={() => setFilters((p: any) => ({
-                                            ...p,
-                                            hobby: h,
-                                            _toggleHobbyDropdown: false
-                                        }))}
-                                        className="cursor-pointer px-2 py-1 hover:bg-gray-100 rounded text-sm"
+                                        onClick={() =>
+                                            setFilters((p: any) => ({
+                                                ...p,
+                                                hobby: h,
+                                                _toggleHobbyDropdown: false
+                                            }))
+                                        }
+                                        className="cursor-pointer px-3 py-2 hover:bg-[#e9f1fb] rounded-lg text-sm font-medium"
                                     >
                                         {h}
                                     </div>
@@ -180,18 +210,16 @@ const FiltersPanel: React.FC<Props> = ({ learningType, filters, setFilters, nati
                     </div>
                 )}
 
-
                 {/* Experience */}
-                <div className="p-3 rounded-xl shadow-sm bg-[#FEEAE8] ">
+                <div className="p-4 rounded-2xl bg-white border border-[#5186cd]/20 shadow-sm">
                     <label className="text-base font-semibold text-slate-700">Experience (yrs)</label>
-                    <select value={filters.experience} onChange={e => setFilters((p: any) => ({ ...p, experience: e.target.value }))} className="w-full mt-1 px-2 py-2 border-2 border-gray-800 bg-[#fdd8da] rounded-full text-base font-semibold ">
+                    <select value={filters.experience} onChange={e => setFilters((p: any) => ({ ...p, experience: e.target.value }))} className="w-full mt-2 px-4 py-2 border-2 border-black rounded-full bg-white text-sm font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
                         <option value="0">0</option>
                         <option value="2">2</option>
                         <option value="5">5+</option>
                         <option value="10">10+</option>
                     </select>
                 </div>
-
 
                 {/* Rating */}
                 {/* <div className="p-3 rounded-xl shadow-sm bg-[#6b48af] ">
@@ -204,11 +232,10 @@ const FiltersPanel: React.FC<Props> = ({ learningType, filters, setFilters, nati
                 </select>
             </div> */}
 
-
                 {/* Sort By */}
-                <div className="p-3 rounded-xl shadow-sm bg-[##FEEAE8]">
+                <div className="p-4 rounded-2xl bg-white border border-[#5186cd]/20 shadow-sm">
                     <label className="text-base font-bold text-slate-700">Sort By</label>
-                    <select value={filters.sortBy} onChange={e => setFilters((p: any) => ({ ...p, sortBy: e.target.value }))} className="w-full mt-1 px-2 py-2 border-2 border-gray-800 bg-[#fdd8da] rounded-full text-sm font-semibold">
+                    <select value={filters.sortBy} onChange={e => setFilters((p: any) => ({ ...p, sortBy: e.target.value }))} className="w-full mt-2 px-4 py-2 border-2 border-black rounded-full bg-white text-sm font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
                         <option value="rating">Highest Rated</option>
                         <option value="price_low">Price: Low → High</option>
                         <option value="price_high">Price: High → Low</option>
@@ -216,17 +243,15 @@ const FiltersPanel: React.FC<Props> = ({ learningType, filters, setFilters, nati
                     </select>
                 </div>
 
-
                 {/* Removed min, only Max Price */}
-                <div className="py-3 px-2 rounded-xl shadow-sm bg-[#FEEAE8] ">
+                <div className="p-4 rounded-2xl bg-white border border-[#5186cd]/20 shadow-sm">
                     <label className="text-base font-bold text-slate-700">Sort Price ($/hr)</label>
                     <div className="flex items-center gap-2 mt-1 ">
                         {/* <input type="number" value={filters.minRate} onChange={e => setFilters((p: any) => ({ ...p, minRate: e.target.value }))} className="w-1/2 px-2 py-2 border border-gray-300 bg-[#CBE56A] rounded-lg text-sm text-[#2D274B] font-semibold" placeholder="Min" /> */}
                         {/* removed 2D274B */}
-                        <input type="number" value={filters.maxRate} onChange={e => setFilters((p: any) => ({ ...p, maxRate: e.target.value }))} className=" w-full px-2 py-2 border-2 border-gray-800 bg-[#fdd8da] rounded-full text-sm text-slate-700 font-bold" placeholder="Max" />
+                        <input type="number" value={filters.maxRate} onChange={e => setFilters((p: any) => ({ ...p, maxRate: e.target.value }))} className="w-full mt-2 px-4 py-2 border-2 border-black rounded-full bg-white text-sm font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]" placeholder="Max" />
                     </div>
                 </div>
-
 
                 {/* Nationality */}
                 {/* <div className="relative p-3 rounded-xl shadow-sm bg-[#6b48af]">

@@ -4,9 +4,10 @@ import { ChevronDown } from 'lucide-react'
 
 type Props = {
     variant?: 'default' | 'header'
+    onSelect?: () => void
 }
 
-const CurrencySelector = ({ variant = 'default' }: Props) => {
+const CurrencySelector = ({ variant = 'default', onSelect }: Props) => {
     const isHeader = variant === 'header'
     const { currency, setCurrency, currencies } = useCurrency()
     const [open, setOpen] = useState(false)
@@ -22,12 +23,12 @@ const CurrencySelector = ({ variant = 'default' }: Props) => {
     }, [query, currencies])
 
     return (
-        <div className={`relative w-64 ${isHeader ? 'text-white w-[200px]' : ''}`}>
+        <div className={`relative w-64 ${isHeader ? 'text-white bg-[#5186cd] w-[200px] rounded-md' : ''}`}>
             <button
                 onClick={() => setOpen(!open)}
                 className={`w-full flex justify-between items-center px-3 py-2 border rounded-lg transition
                 ${isHeader
-                        ? 'bg-transparent border-white/40 text-white hover:bg-white/10'
+                        ? 'bg-[#5186cd] border-white/40 text-white hover:bg-white/10'
                         : 'bg-white border-gray-300 text-gray-900'
                     }`}
             >
@@ -57,6 +58,7 @@ const CurrencySelector = ({ variant = 'default' }: Props) => {
                                     setCurrency(c.code)
                                     setOpen(false)
                                     setQuery('')
+                                    onSelect?.()
                                 }}
                                 className="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm"
                             >

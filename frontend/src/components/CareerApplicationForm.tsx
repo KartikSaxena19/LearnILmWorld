@@ -75,17 +75,17 @@ export default function CareerApplicationForm({ onClose }: Props) {
             <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="bg-gray-100 rounded-3xl p-8 w-[90%] max-w-xl text-gray-800 relative"
+                className="bg-[#fef5e4] rounded-3xl p-8 w-[90%] max-w-xl text-gray-800 relative shadow-xl"
             >
                 {/* Close */}
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 text-3xl font-bold text-red-400 hover:text-red-600"
+                    className="absolute top-4 right-4 text-3xl font-bold text-[#5186cd] hover:text-[#3f6fb0]"
                 >
                     ×
                 </button>
 
-                <h2 className="text-3xl font-bold text-[#2D274B] mb-6 text-center">
+                <h2 className="text-3xl font-extrabold text-[#5186cd] mb-6 text-center">
                     Apply to Join LearniLM🌎World
                 </h2>
 
@@ -95,8 +95,7 @@ export default function CareerApplicationForm({ onClose }: Props) {
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Full Name"
                         required
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6b48af]"
-
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#5186cd]/30 focus:outline-none focus:ring-2 focus:ring-[#5186cd]"
                     />
 
                     <input
@@ -104,22 +103,20 @@ export default function CareerApplicationForm({ onClose }: Props) {
                         onChange={(e) => setEducation(e.target.value)}
                         placeholder="Education (e.g. B.Tech, MBA)"
                         required
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6b48af]"
-
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#5186cd]/30 focus:outline-none focus:ring-2 focus:ring-[#5186cd]"
                     />
 
                     <select
                         value={role}
                         onChange={(e) => setRole(e.target.value)}
                         required
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6b48af]"
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#5186cd]/30 focus:outline-none focus:ring-2 focus:ring-[#5186cd]"
                     >
                         <option value="">Select Role</option>
-                        {/* India */}
                         <option value="Sales Intern - India">Sales Intern – India</option>
                         <option value="Digital Marketing Intern - India">Digital Marketing Intern – India</option>
                         <option value="UX/UI Designer Intern - India">UX/UI Designer Intern – India</option>
-                        <option value="Q/A Intern - India"> Q/A – India</option>
+                        <option value="Q/A Intern - India">Q/A – India</option>
                         <option value="HR Intern - India">HR Intern – India</option>
                         <option value="Sales Intern - Bahrain">Sales Intern – Bahrain</option>
                         <option value="Sales Intern - Kuwait">Sales Intern – Kuwait</option>
@@ -127,7 +124,6 @@ export default function CareerApplicationForm({ onClose }: Props) {
                         <option value="Sales Intern - Jordan">Sales Intern – Jordan</option>
                         <option value="Sales Intern - Azerbaijan">Sales Intern – Azerbaijan</option>
                         <option value="Sales Intern - Belarus">Sales Intern – Belarus</option>
-
                     </select>
 
                     <input
@@ -136,8 +132,7 @@ export default function CareerApplicationForm({ onClose }: Props) {
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Email Address"
                         required
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6b48af]"
-
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#5186cd]/30 focus:outline-none focus:ring-2 focus:ring-[#5186cd]"
                     />
 
                     <input
@@ -146,8 +141,7 @@ export default function CareerApplicationForm({ onClose }: Props) {
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="Phone Number"
                         required
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6b48af]"
-
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#5186cd]/30 focus:outline-none focus:ring-2 focus:ring-[#5186cd]"
                     />
 
                     <input
@@ -155,24 +149,25 @@ export default function CareerApplicationForm({ onClose }: Props) {
                         accept=".pdf,.doc,.docx"
                         onChange={(e) => setResumeFile(e.target.files?.[0] || null)}
                         required
+                        className="text-[#5186cd] font-medium"
                     />
 
                     <button
                         disabled={loading}
-                        className="w-full bg-[#CBE56A] text-[#2D274B] font-bold py-3 rounded-xl hover:scale-105 transition"
+                        className="w-full bg-[#5186cd] hover:bg-[#3f6fb0] text-white font-bold py-3 rounded-xl hover:scale-105 transition"
                     >
                         {loading ? "Submitting..." : "Submit Application"}
                     </button>
                 </form>
 
                 {status === "success" && (
-                    <p className="text-green-300 mt-4 text-center font-semibold">
+                    <p className="text-[#5186cd] mt-4 text-center font-semibold">
                         ✅ Application submitted successfully!
                     </p>
                 )}
 
                 {status === "error" && (
-                    <p className="text-red-400 mt-4 text-center font-semibold">
+                    <p className="text-red-500 mt-4 text-center font-semibold">
                         ❌ Submission failed. Try again.
                     </p>
                 )}

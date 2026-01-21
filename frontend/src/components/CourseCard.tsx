@@ -57,10 +57,10 @@ const CourseCard = ({ course }: { course: CourseProps }) => {
 
         <div className="mt-6 pt-4 border-t border-gray-100">
           <Link
-            to={`/student/courses/${course._id}`}
-            className="inline-flex items-center font-semibold text-sm text-gray-900 hover:text-pink-600 transition-colors"
+            to={`/courses/${course._id}`}
+            className="inline-flex items-center font-semibold text-sm text-gray-900 hover:text-[#276dc9] transition-colors"
           >
-            Call to action 
+            View Details 
             <span className="ml-2 text-lg">→</span>
           </Link>
         </div>

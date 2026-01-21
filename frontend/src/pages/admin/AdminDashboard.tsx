@@ -1,7 +1,7 @@
 // src/pages/AdminDashboard.tsx
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react'
 import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom'
-import { Home, UserPlus, Users, Calendar, FilePlus, Trash2, LogOut, X, Edit3,  TrendingUp, User, BookOpen } from 'lucide-react'
+import { Home, UserPlus, Users, Calendar, FilePlus, Trash2, LogOut, X, Edit3,  TrendingUp, User, BookOpen, Menu } from 'lucide-react'
 // Eye, Menu, removed from lucide icons
 import { useAuth } from '../../contexts/AuthContext'
 import axios from 'axios'
@@ -97,20 +97,20 @@ const AdminHome: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6 max-w-[1200px] mx-auto">
+    <div className="space-y-6 max-w-[1200px] mx-auto w-full">
       {/* Welcome Section */}
       <div className="glass-effect rounded-2xl p-6 shadow-xl">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 bg-[#0ea5a3] rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-[#0ea5a3] rounded-lg flex items-center justify-center flex-shrink-0">
             <TrendingUp className="h-5 w-5 text-white" />
           </div>
-          <h2 className="text-3xl font-bold text-gray-900">Welcome, Admin!</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 break-words">Welcome, Admin!</h2>
         </div>
-        <p className="text-gray-600 font-medium">Monitor users, trainers, sessions, and reviews</p>
+        <p className="text-gray-600 font-medium text-sm sm:text-base">Monitor users, trainers, sessions, and reviews</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Link to="/admin/users" className="glass-effect rounded-xl p-4 shadow-xl text-center hover:shadow-lg transition">
           <div className="w-10 h-10 bg-[#0ea5a3] rounded-xl flex items-center justify-center mx-auto mb-3">
             <Users className="h-5 w-5 text-white" />
@@ -145,26 +145,26 @@ const AdminHome: React.FC = () => {
       </div>
 
       {/* Recent Sessions */}
-      <div className="glass-effect rounded-2xl p-6 shadow-xl">
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="text-2xl font-bold text-gray-900">Recent Sessions</h3>
-          <Link to="/admin/sessions" className="text-accent hover:text-accent-dark font-medium">View All</Link>
+      <div className="glass-effect rounded-2xl p-6 shadow-xl overflow-hidden">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2">
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-900">Recent Sessions</h3>
+          <Link to="/admin/sessions" className="text-accent hover:text-accent-dark font-medium text-sm">View All</Link>
         </div>
 
         {recentSessions.length > 0 ? (
           <div className="space-y-3">
             {recentSessions.map((session) => (
-              <div key={session._id} className="p-4 bg-white bg-opacity-50 rounded-xl flex items-center justify-between">
-                <div className="flex items-center">
-                  <div className="w-10 h-10 bg-[#0ea5a3] rounded-xl flex items-center justify-center mr-3">
+              <div key={session._id} className="p-4 bg-white bg-opacity-50 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="flex items-center w-full sm:w-auto">
+                  <div className="w-10 h-10 bg-[#0ea5a3] rounded-xl flex items-center justify-center mr-3 flex-shrink-0">
                     <User className="h-5 w-5 text-white" />
                   </div>
-                  <div>
-                    <div className="font-bold text-gray-900">{session.title}</div>
-                    <div className="text-gray-600 text-sm font-medium">Trainer: {session.trainer?.name || 'N/A'}</div>
+                  <div className="min-w-0">
+                    <div className="font-bold text-gray-900 truncate">{session.title}</div>
+                    <div className="text-gray-600 text-sm font-medium truncate">Trainer: {session.trainer?.name || 'N/A'}</div>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-left sm:text-right w-full sm:w-auto pl-[52px] sm:pl-0">
                   <div className="text-xs text-gray-500">{new Date(session.createdAt || '').toLocaleDateString()}</div>
                 </div>
               </div>
@@ -389,33 +389,33 @@ const handleDownloadTrainers = () =>
   if (loading) return <div className="flex justify-center items-center h-64">Loading...</div>
 
   return (
-    <div className="space-y-6 max-w-[1200px] mx-auto">
-      <div className="glass-effect rounded-2xl p-6 shadow-xl">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">{editingUserId ? 'Edit User / Trainer' : 'Create User / Trainer'}</h2>
+    <div className="space-y-6 max-w-[1200px] mx-auto w-full">
+      <div className="glass-effect rounded-2xl p-4 sm:p-6 shadow-xl">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">{editingUserId ? 'Edit User / Trainer' : 'Create User / Trainer'}</h2>
 
-        {error && <div className="text-red-700 mb-3">{error}</div>}
-        {success && <div className="text-green-700 mb-3">{success}</div>}
+        {error && <div className="text-red-700 mb-3 bg-red-50 p-2 rounded">{error}</div>}
+        {success && <div className="text-green-700 mb-3 bg-green-50 p-2 rounded">{success}</div>}
 
         {/* === Role Selection === */}
-        <div className="flex gap-6 mb-4">
-          <label className="flex items-center gap-2">
-            <input type="radio" name="role" value="student" checked={formData.role === 'student'} onChange={handleChange} />
+        <div className="flex flex-wrap gap-6 mb-4">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="role" value="student" checked={formData.role === 'student'} onChange={handleChange} className="w-4 h-4 text-[#0ea5a3]" />
             Student
           </label>
-          <label className="flex items-center gap-2">
-            <input type="radio" name="role" value="trainer" checked={formData.role === 'trainer'} onChange={handleChange} />
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="role" value="trainer" checked={formData.role === 'trainer'} onChange={handleChange} className="w-4 h-4 text-[#0ea5a3]" />
             Trainer
           </label>
         </div>
 
-        <form onSubmit={handleCreateOrUpdate} className="grid md:grid-cols-4 gap-4 mb-6">
-          <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} className="p-3 border rounded-md" required />
-          <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} className="p-3 border rounded-md" required />
-          <input type="password" name="password" placeholder={editingUserId ? 'New Password (optional)' : 'Password'} value={formData.password} onChange={handleChange} className="p-3 border rounded-md" />
+        <form onSubmit={handleCreateOrUpdate} className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} className="p-3 border rounded-md w-full" required />
+          <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} className="p-3 border rounded-md w-full" required />
+          <input type="password" name="password" placeholder={editingUserId ? 'New Password (optional)' : 'Password'} value={formData.password} onChange={handleChange} className="p-3 border rounded-md w-full" />
 
           {/* Verification Status (always visible for trainer) */}
           {formData.role === 'trainer' && (
-            <select name="profile.verificationStatus" value={formData.profile.verificationStatus || 'pending'} onChange={handleChange} className="p-3 border rounded-md">
+            <select name="profile.verificationStatus" value={formData.profile.verificationStatus || 'pending'} onChange={handleChange} className="p-3 border rounded-md w-full">
               <option value="pending">Pending</option>
               <option value="verified">Verified</option>
               <option value="rejected">Rejected</option>
@@ -429,25 +429,25 @@ const handleDownloadTrainers = () =>
 
 
               {/* Certifications Section */}
-              <div className="col-span-4 mt-2">
+              <div className="col-span-1 md:col-span-4 mt-2">
                 <h4 className="font-semibold mb-2">Certifications</h4>
                 {(formData.profile.certifications || []).map((cert, index) => (
-                  <div key={index} className="grid md:grid-cols-4 gap-3 mb-2 p-3 border rounded-md">
-                    <input type="text" placeholder="Certificate Name" value={cert.name} onChange={(e) => handleCertChange(index, 'name', e.target.value)} className="p-2 border rounded-md" />
-                    <input type="text" placeholder="Certificate Image URL" value={cert.certificateImage} onChange={(e) => handleCertChange(index, 'certificateImage', e.target.value)} className="p-2 border rounded-md" />
-                    <input type="number" placeholder="Issued Year" value={cert.year || ''} onChange={(e) => handleCertChange(index, 'year', e.target.value)} className="p-2 border rounded-md" />
-                    <input type="text" placeholder="Certificate Link" value={cert.certificateLink} onChange={(e) => handleCertChange(index, 'certificateLink', e.target.value)} className="p-2 border rounded-md" />
+                  <div key={index} className="grid grid-cols-1  md:grid-cols-4 gap-3 mb-2 p-3 border rounded-md">
+                    <input type="text" placeholder="Certificate Name" value={cert.name} onChange={(e) => handleCertChange(index, 'name', e.target.value)} className="p-2 border rounded-md w-full" />
+                    <input type="text" placeholder="Certificate Image URL" value={cert.certificateImage} onChange={(e) => handleCertChange(index, 'certificateImage', e.target.value)} className="p-2 border rounded-md w-full" />
+                    <input type="number" placeholder="Issued Year" value={cert.year || ''} onChange={(e) => handleCertChange(index, 'year', e.target.value)} className="p-2 border rounded-md w-full" />
+                    <input type="text" placeholder="Certificate Link" value={cert.certificateLink} onChange={(e) => handleCertChange(index, 'certificateLink', e.target.value)} className="p-2 border rounded-md w-full" />
                     <button type="button" onClick={() => removeCertification(index)} className="col-span-4 bg-red-100 text-red-700 rounded-md py-1 hover:bg-red-200">Remove</button>
                   </div>
                 ))}
-                <button type="button" onClick={addCertification} className="mt-2 bg-blue-100 text-blue-700 rounded-md py-2 px-4 hover:bg-blue-200">
+                <button type="button" onClick={addCertification} className="mt-2 w-full sm:w-auto bg-blue-100 text-blue-700 rounded-md py-2 px-4 hover:bg-blue-200">
                   Add Certification
                 </button>
               </div>
             </>
           )}
 
-          <button type="submit" className="col-span-4 md:col-span-1 bg-[#0ea5a3] text-white p-3 rounded-md hover:shadow">
+          <button type="submit" className="col-span-1 md:col-span-1 bg-[#0ea5a3] text-white p-3 rounded-md hover:shadow-lg transition">
             {editingUserId ? 'Update User' : 'Create User'}
           </button>
         </form>
@@ -455,25 +455,25 @@ const handleDownloadTrainers = () =>
 
         {/* === Users List === */}
         <h3 className="text-xl font-semibold text-gray-900 mb-3">All Users</h3>
-        <div className="flex flex-wrap gap-3 mb-3">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-3 mb-4">
           
           <button
             onClick={handleDownloadAll}
-            className="bg-[#0ea5a3] text-white px-4 py-2 rounded-xl shadow-md hover:bg-[#0d8b8a] transition-all duration-200"
+            className="bg-[#0ea5a3] text-white px-4 py-2 rounded-xl shadow hover:bg-[#0d8b8a] text-sm w-full sm:w-auto"
           >
             Download All Users
           </button>
 
           <button
             onClick={handleDownloadStudents}
-            className="bg-[#38bdf8] text-white px-4 py-2 rounded-xl shadow-md hover:bg-[#0ea5a3] transition-all duration-200"
+            className="bg-[#38bdf8] text-white px-4 py-2 rounded-xl shadow hover:bg-[#209ac9] text-sm w-full sm:w-auto"
           >
             Download Students
           </button>
 
           <button
             onClick={handleDownloadTrainers}
-            className="bg-[#6ee7b7] text-gray-900 px-4 py-2 rounded-xl shadow-md hover:bg-[#34d399] transition-all duration-200"
+            className="bg-[#6ee7b7] text-gray-900 px-4 py-2 rounded-xl shadow hover:bg-[#34d399] text-sm w-full sm:w-auto"
           >
             Download Trainers
           </button>
@@ -481,11 +481,13 @@ const handleDownloadTrainers = () =>
 
         <div className="space-y-2">
           {users.map(user => (
-            <div key={user._id} className="flex items-center justify-between p-3 bg-white/50 rounded-xl shadow">
-              <div>{user.name} ({user.role}) - {user.email}</div>
-              <div className="flex gap-2">
-                <button onClick={() => handleEdit(user)} className="p-2 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200"><Edit3 className="h-4 w-4" /></button>
-                <button onClick={() => handleDelete(user._id)} className="p-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200"><Trash2 className="h-4 w-4" /></button>
+            <div key={user._id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 bg-white/50 rounded-xl shadow gap-3">
+              <div className="break-all">
+                <span className="font-semibold">{user.name}</span> <span className="text-sm text-gray-600">({user.role})</span> - <span className="text-sm">{user.email}</span>
+              </div>
+              <div className="flex gap-2 w-full sm:w-auto justify-end">
+                <button onClick={() => handleEdit(user)} className="p-2 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 flex-1 sm:flex-none justify-center flex"><Edit3 className="h-4 w-4" /></button>
+                <button onClick={() => handleDelete(user._id)} className="p-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200 flex-1 sm:flex-none justify-center flex"><Trash2 className="h-4 w-4" /></button>
               </div>
             </div>
           ))}
@@ -521,8 +523,8 @@ const AdminTrainers: React.FC = () => {
   if (loading) return <div className="flex justify-center items-center h-64">Loading...</div>
 
   return (
-    <div className="space-y-6 max-w-[1200px] mx-auto">
-      <div className="glass-effect rounded-2xl p-6 shadow-xl">
+    <div className="space-y-6 max-w-[1200px] mx-auto w-full">
+      <div className="glass-effect rounded-2xl p-4 sm:p-6 shadow-xl">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">All Trainers Overview</h2>
 
         {trainers.length === 0 ? (
@@ -550,21 +552,21 @@ const AdminTrainers: React.FC = () => {
                     key={t._id || i}
                     className="hover:bg-gray-50 transition-all duration-200"
                   >
-                    <td className="py-3 px-4 font-medium text-gray-900">{t.name}</td>
-                    <td className="py-3 px-4 text-gray-700">{t.email}</td>
-                    <td className="py-3 px-4 text-center text-gray-700">
+                    <td className="py-3 px-4 font-medium text-gray-900 whitespace-nowrap">{t.name}</td>
+                    <td className="py-3 px-4 text-gray-700 whitespace-nowrap">{t.email}</td>
+                    <td className="py-3 px-4 text-center text-gray-700 whitespace-nowrap">
                       {t.dashboardStats?.totalSessions || 0}
                     </td>
-                    <td className="py-3 px-4 text-center text-gray-700">
+                    <td className="py-3 px-4 text-center text-gray-700 whitespace-nowrap">
                       {t.dashboardStats?.completedSessions || 0}
                     </td>
-                    <td className="py-3 px-4 text-center text-gray-700">
+                    <td className="py-3 px-4 text-center text-gray-700 whitespace-nowrap">
                       {t.dashboardStats?.totalStudents || 0}
                     </td>
-                    <td className="py-3 px-4 text-center text-gray-700 font-semibold">
+                    <td className="py-3 px-4 text-center text-gray-700 font-semibold whitespace-nowrap">
                       ${t.dashboardStats?.totalEarnings?.toFixed(2) || '0.00'}
                     </td>
-                    <td className="py-3 px-4 text-center">
+                    <td className="py-3 px-4 text-center whitespace-nowrap">
                       <span
                         className={`px-2 py-1 rounded-md text-sm font-medium ${
                           t.dashboardStats?.averageRating >= 4
@@ -579,7 +581,7 @@ const AdminTrainers: React.FC = () => {
                           : 'N/A'}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-center">
+                    <td className="py-3 px-4 text-center whitespace-nowrap">
                       <span
                         className={`px-2 py-1 rounded-md text-sm capitalize ${
                           t.profile?.verificationStatus === 'verified'
@@ -608,6 +610,7 @@ const AdminDashboard: React.FC = () => {
   const { logout } = useAuth() as any
   const location = useLocation()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  
 
   const navigation = [
     { name: 'Home', href: '/admin', icon: Home },
@@ -637,27 +640,27 @@ const AdminDashboard: React.FC = () => {
       )}
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white bg-opacity-90 backdrop-blur-lg border-r border-white border-opacity-30 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="flex items-center justify-between p-6 border-b border-white border-opacity-30">
+      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white bg-opacity-95 backdrop-blur-lg border-r border-white border-opacity-30 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="flex items-center justify-between p-6 border-b border-gray-100">
           <Link to="/" className="text-lg font-semibold">LearniLM🌍World</Link>
           <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-gray-500 hover:text-gray-700">
             <X className="h-6 w-6" />
           </button>
         </div>
 
-        <nav className="p-6 space-y-2">
+        <nav className="p-4 space-y-2">
           {navigation.map(nav => (
             <Link
               key={nav.name}
               to={nav.href}
-              className={`flex items-center gap-3 p-3 rounded-md hover:bg-[#0ea5a3]/10 ${isActive(nav.href) ? 'bg-[#0ea5a3]/20 font-semibold' : ''}`}
+              className={`flex items-center gap-3 p-3 rounded-xl transition-all ${isActive(nav.href) ? 'bg-[#0ea5a3] text-white shadow-lg' : 'text-gray-600 hover:bg-[#0ea5a3]/10 hover:text-[#0ea5a3]'}`}
             >
               <nav.icon className="h-5 w-5" /> {nav.name}
             </Link>
           ))}
         </nav>
 
-        <div className="absolute bottom-0 left-0 p-6 w-full">
+        <div className="absolute bottom-0 left-0 p-4 w-full">
           <button
             onClick={handleLogout}
             className="flex items-center gap-2 p-3 w-full bg-red-100 text-red-700 rounded-md hover:bg-red-200"
@@ -669,7 +672,14 @@ const AdminDashboard: React.FC = () => {
 
       {/* Content Area */}
       <div className="flex-1 flex flex-col min-h-screen lg:pl-64">
-        <div className="flex-1 p-6 overflow-auto">
+        <div className="lg:hidden p-4 flex items-center justify-between bg-white/80 backdrop-blur sticky top-0 z-30 shadow-sm">
+          <span className="font-bold text-[#0ea5a3]">LearniLM Admin</span>
+          <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-md hover:bg-gray-100">
+            <Menu className="h-6 w-6 text-gray-700" />
+          </button>
+        </div>
+
+        <div className="flex-1 p-4 sm:p-6 overflow-auto">
           <Routes>
             <Route path="/" element={<AdminHome />} />
             <Route path="/users" element={<AdminUsers />} />
@@ -682,5 +692,8 @@ const AdminDashboard: React.FC = () => {
     </div>
   )
 }
+
+
+
 
 export default AdminDashboard

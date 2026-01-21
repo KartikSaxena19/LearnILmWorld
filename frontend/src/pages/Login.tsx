@@ -106,7 +106,7 @@ const Login: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center py-12 bg-[#CBE56A]">
+      className="min-h-screen flex items-center justify-center py-12 bg-[#5186cd]">
       {/* Home Icon Button */}
       <Link
         to="/"
@@ -121,16 +121,16 @@ const Login: React.FC = () => {
         <div
           className="absolute top-20 left-10 w-32 h-32 rounded-full"
           style={{
-            background: '#647a0c',
-            opacity: 0.14,
+            background: '#426fab',
+            opacity: 0.44,
             animation: 'floaty 6s ease-in-out infinite',
           }}
         />
         <div
           className="absolute top-44 right-16 w-24 h-24 rounded-full"
           style={{
-            background: '#647a0c',
-            opacity: 0.09,
+            background: '#426fab',
+            opacity: 0.40,
             animation: 'floaty 6s ease-in-out infinite',
             animationDelay: '1.8s',
           }}
@@ -138,8 +138,8 @@ const Login: React.FC = () => {
         <div
           className="absolute bottom-24 left-1/4 w-40 h-40 rounded-full"
           style={{
-            background: '#647a0c',
-            opacity: 0.14,
+            background: '#426fab',
+            opacity: 0.43,
             animation: 'floaty 6s ease-in-out infinite',
             animationDelay: '3.2s',
           }}
@@ -147,8 +147,8 @@ const Login: React.FC = () => {
         <div
           className="absolute bottom-44 right-44 w-24 h-24 rounded-full"
           style={{
-            background: '#647a0c',
-            opacity: 0.09,
+            background: '#426fab',
+            opacity: 0.42,
             animation: 'floaty 6s ease-in-out infinite',
             animationDelay: '1.8s',
           }}
@@ -157,8 +157,8 @@ const Login: React.FC = () => {
 
       <div className="max-w-md w-full mx-4 relative z-10">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-extrabold text-[#2D274B] mb-2">Welcome Back</h1>
-          <p className="text-[#2D274B] text-lg font-extrabold">Sign in to Continue your Learning Journey</p>
+          <h1 className="text-4xl font-extrabold text-[white] mb-2">Welcome Back</h1>
+          <p className="text-[white] text-lg font-extrabold">Sign in to Continue your Learning Journey</p>
         </div>
 
         <div className="glass-effect rounded-2xl p-8 shadow-2xl bg-white/80 backdrop-blur">
@@ -252,7 +252,7 @@ const Login: React.FC = () => {
           <div className="mt-8 text-center">
             <p className="text-[#2D274B] font-bold">
               Don't have an account? {' '}
-              <Link to="/register" className="font-bold hover:underline" style={{ color: '#ea8315' }}>
+              <Link to="/register" className="font-bold hover:underline" style={{ color: '#426fab' }}>
                 Sign up here
               </Link>
             </p>

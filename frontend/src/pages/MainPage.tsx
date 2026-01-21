@@ -3,20 +3,24 @@ import React, { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Footer from '../components/Footer'
-import bg_img from '../assets/bg_main.jpeg'
-import bg_h_img from '../assets/header_bg.jpg'
+// import bg_img from '../assets/bg_main.jpeg'
+import logo from '../assets/logo.jpeg'
 import SearchBar from '../components/SearchBar'
 import LearningTypeSelector from '../components/LearningTypeSelector'
 import FiltersPanel from '../components/FiltersPanel'
 import TrainersGrid from '../components/TrainersGrid'
 import { useAuth } from '../contexts/AuthContext'
 import CurrencySelector from '../components/CurrencySelector'
+import { Button, Offcanvas, Nav } from 'react-bootstrap'
 
 
 const MainPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [learningType, setLearningType] = useState<'language' | 'subject' | 'hobby'>('language')
   const [languageMode, setLanguageMode] = useState<string>('subject')
+
+  const [showOffcanvas, setShowOffcanvas] = useState(false);
+
 
   const { user, loading } = useAuth();
 
@@ -66,109 +70,140 @@ const MainPage: React.FC = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-fixed text-[#2D274B]" style={{
+      <div className="min-h-screen bg-fixed text-[#2D274B]">
+
+        {/* style={{
         backgroundImage: `url(${bg_img})`,
         position: 'relative',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         width: '100%'
-      }}>
-
+      }} */}
 
         {/* Floating decorative orbs */}
         <div className="fixed inset-0 pointer-events-none">
-          <div className="absolute top-20 left-10 w-28 h-28 rounded-full" style={{ background: '#9787F3', opacity: 0.46, animation: 'floaty 6s ease-in-out infinite' }} />
-          <div className="absolute top-40 right-20 w-20 h-20 rounded-full" style={{ background: '#9787F3', opacity: 0.66, animation: 'floaty 6s ease-in-out infinite', animationDelay: '1.8s' }} />
+          <div className="absolute top-20 left-10 w-28 h-28 rounded-full" style={{ background: '#5186cd', opacity: 0.46, animation: 'floaty 6s ease-in-out infinite' }} />
+          <div className="absolute top-40 right-20 w-20 h-20 rounded-full" style={{ background: '#5186cd', opacity: 0.66, animation: 'floaty 6s ease-in-out infinite', animationDelay: '1.8s' }} />
         </div>
 
-
         {/* Header */}
-        <header className="sticky top-0 z-40 bg-fixed">
-          <div className="px-4 pt-4">
-            <div
-              className="
-        mx-auto
-        max-w-7xl
-        rounded-full
-        bg-[#6B48AF]/90
-        backdrop-blur-md
-        shadow-xl
-        border border-white/30
-      "
-              style={{
-                backgroundImage:
-                  `url(${bg_h_img})`,
-                position: "relative",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-                width: "100%",
-              }}
-            >
-              <div className="px-6 sm:px-10 py-7">
-                <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-0">
+        <header className="sticky top-0 z-40 shadow-xl ">
+          <div className="flex w-full h-[75px] md:h-[85px] bg-[#fef5e4]">
 
-                  {/* LOGO */}
-                  <Link to="/" className="flex items-center">
-                    <div className="text-3xl md:text-4xl font-[Good Vibes] font-extrabold tracking-wide inline-flex items-center">
-                      <span className="text-[#FFFAF1] drop-shadow-lg">
-                        LearniLM
-                      </span>
+            {/* LEFT: LOGO SIDE (unchanged) */}
+            <div className="w-fit flex items-center pl-2 md:pl-10 pr-0 mr-[-1px]">
+              <Link to="/" className="h-full flex items-center">
+                <img
+                  src={logo}
+                  alt="LearnILM World"
+                  className="h-[100%] w-auto object-fill block"
+                />
+              </Link>
+            </div>
 
-                      <motion.span
-                        animate={{ rotate: 360 }}
-                        transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
-                        className="inline-block mx-1 text-3xl"
-                      >
-                        🌎
-                      </motion.span>
+            {/* RIGHT SIDE */}
+            <div className="flex-1 bg-[#5186cd] flex items-center justify-end pr-4 md:pr-10">
 
-                      <span className="text-[#FFFAF1] drop-shadow-lg">
-                        World
-                      </span>
-                    </div>
+              {/* DESKTOP NAV */}
+              <nav className="hidden lg:flex items-center gap-8">
+
+                {/* Pricing */}
+                <CurrencySelector variant="header" />
+
+                {/* Auth based buttons */}
+                {user ? (
+                  <Link
+                    to={getDashboardPath()}
+                    className="px-6 py-2 rounded-full bg-white text-[#5186cd] text-sm font-bold shadow hover:bg-gray-100 hover:scale-105 transition no-underline"
+                  >
+                    Dashboard
                   </Link>
+                ) : (
+                  <Link
+                    to="/login"
+                    className="px-6 py-2 rounded-full bg-white text-[#5186cd] text-sm font-bold shadow hover:scale-105 transition no-underline"
+                  >
+                    Sign In
+                  </Link>
+                )}
+              </nav>
 
-                  {/* NAV */}
-                  <nav className="flex flex-wrap items-center justify-center sm:justify-end gap-3 w-full sm:w-auto">
+              {/* MOBILE MENU TOGGLE */}
+              <div className="lg:hidden text-white ml-auto flex items-center">
+                <Button
+                  variant="link"
+                  className="text-white text-4xl p-0 no-underline"
+                  onClick={() => setShowOffcanvas(true)}
+                >
+                  ☰
+                </Button>
 
-                    <CurrencySelector variant="header" />
+                <Offcanvas
+                  show={showOffcanvas}
+                  onHide={() => setShowOffcanvas(false)}
+                  placement="end"
+                >
+                  <Offcanvas.Header closeButton>
+                    <Offcanvas.Title>Menu</Offcanvas.Title>
+                  </Offcanvas.Header>
 
-                    {!user ? (
-                      <Link
-                        to="/login"
-                        className="px-5 py-2 rounded-full bg-[#CBE56A] text-[#2D274B] font-semibold hover:scale-105 transition"
-                      >
-                        Sign In
-                      </Link>
-                    ) : (
-                      <Link
-                        to={getDashboardPath()}
-                        className="px-5 py-2 rounded-full bg-[#CBE56A] text-[#2D274B] font-semibold hover:scale-105 transition"
-                      >
-                        Dashboard
-                      </Link>
-                    )}
-                  </nav>
+                  <Offcanvas.Body>
+                    <Nav className="flex-column gap-4">
 
-                </div>
+                      {/* Pricing */}
+                      <CurrencySelector
+                        variant="header"
+                        onSelect={() => setShowOffcanvas(false)}
+                      />
+
+
+                      {/* Auth based */}
+                      {user ? (
+                        <Nav.Link
+                          as={Link}
+                          to={getDashboardPath()}
+                          onClick={() => setShowOffcanvas(false)}
+                        >
+                          Dashboard
+                        </Nav.Link>
+                      ) : (
+                        <Nav.Link
+                          as={Link}
+                          to="/login"
+                          onClick={() => setShowOffcanvas(false)}
+                        >
+                          Sign In
+                        </Nav.Link>
+                      )}
+
+                    </Nav>
+                  </Offcanvas.Body>
+                </Offcanvas>
               </div>
+
             </div>
           </div>
         </header>
 
-
         {/* Main content */}
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-
           {/* Hero */}
-          <div className="text-center mb-4">
-            <h1 className="text-4xl md:text-5xl font-extrabold text-[#F64EBB] mb-2 break-keep">Find Your Perfect Trainer</h1>
-            <p className="text-2xl font-bold max-w-3xl mx-auto">Connect with expert trainers from around the world. Start your journey to today.</p>
-          </div>
+          <section className="pt-10 pb-16 px-6 text-center">
+            {/* Top Pill */}
+            <div className="inline-flex items-center gap-2 px-6 py-2 mb-8 rounded-full bg-white text-[#5186cd] font-bold shadow border border-[#5186cd]/20">
+              🤝 A Global Community of Learners & Mentors
+            </div>
 
+            <h1 className="text-4xl md:text-6xl font-extrabold mb-4 text-[#1f2937]">
+              Find Your <span className="text-[#5186cd]">Perfect Trainer</span>
+            </h1>
+
+            <p className="text-xl md:text-2xl font-medium max-w-3xl mx-auto text-gray-700">
+              Connect with expert trainers from around the world and begin your learning journey today.
+            </p>
+          </section>
 
           {/* Search */}
           <div className="flex justify-center mb-10">
@@ -187,10 +222,6 @@ const MainPage: React.FC = () => {
               }} />
             </div>
 
-            {/* <div className="flex justify-end my-4 mr-8">
-            <button onClick={clearFilters} className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 text-[#2D274B] text-lg font-bold">Clear All</button>
-          </div> */}
-
             <FiltersPanel learningType={learningType} filters={filters} setFilters={setFilters} nationalities={nationalities} clearFilters={clearFilters} />
 
           </div>
@@ -201,7 +232,6 @@ const MainPage: React.FC = () => {
 
 
         </main>
-
 
       </div>
       <Footer />

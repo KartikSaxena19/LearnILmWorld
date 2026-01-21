@@ -75,125 +75,76 @@ export default function AboutPage() {
     }
   };
 
+  // style={{
+  //   backgroundImage:
+  //     `url(${bg_img})`,
+  //   position: "relative",
+  //   backgroundSize: "cover",
+  //   backgroundPosition: "center",
+  //   backgroundRepeat: "no-repeat",
+  //   width: "100%",
+  // }}
 
   return (
-    <div className="min-h-screen font-inter bg-fixed text-black scroll-smooth"
-      style={{
-        backgroundImage:
-          `url(${bg_img})`,
-        position: "relative",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        width: "100%",
-      }}>
 
-      {/* HEADER */}
-      {/* <header className="sticky top-0 z-50">
-        <div className="mx-auto max-w-7xl px-4 pt-3 pb-1">
-          <div className="flex items-center justify-between rounded-full backdrop-blur-md shadow-xl px-6 py-3"
-            style={{
-              backgroundImage:
-                `url(${bg_head})`,
-              position: "relative",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-              width: "100%",
-            }}>
-
-            <Link to="/" className="flex items-center gap-1">
-
-              <span className="text-2xl font-[Good Vibes] font-bold text-[#e0fa84]">
-                LearniLM
-              </span>
-              <motion.span
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
-                className="text-2xl"
-              >
-                🌎
-              </motion.span>
-              <span className="text-2xl font-[Good Vibes] font-bold text-[#e0fa84]">
-                World
-              </span>
-            </Link>
-
-            <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-white">
-              <Link to="/about" className="hover:text-[#CBE56A]">About</Link>
-              <Link to="/main" className="hover:text-[#CBE56A]">Mentors</Link>
-              <Link to="/about#careers" className="hover:text-[#CBE56A]">Careers</Link>
-              <Link to="/contact" className="hover:text-[#CBE56A]">Contact</Link>
-            </nav>
-
-            <Link
-              to="/register"
-              className="hidden md:inline-flex items-center px-5 py-2 rounded-full bg-[#F64EBB] text-white font-semibold text-sm shadow hover:scale-105 transition"
-            >
-              Get Started
-            </Link>
-
-            <button
-              className="md:hidden text-white text-xl"
-              onClick={() => setShowOffcanvas(true)}
-            >
-              ☰
-            </button>
-          </div>
-        </div>
-      </header> */}
+    <div className="min-h-screen font-inter bg-[#fef5e4] text-black scroll-smooth"
+    >
 
       <Navbar />
-
       {/* ABOUT SECTION */}
       {/* bg-[#dc8d33] */}
       <section
         id="about"
-        className="relative min-h-screen flex items-center justify-center"
+        className="relative min-h-screen flex items-center justify-center bg-[#fef5e4]"
       >
-        <div className="relative z-10 max-w-6xl mx-auto px-6 pt-1 md:pt-2 text-center">
+        <div className="relative z-10 max-w-6xl mx-auto px-6 pt-16 md:pt-20 text-center">
 
           {/* Top Pill */}
-          <div className="inline-flex items-center gap-2 px-6 py-2 mb-8
-                    rounded-full bg-[#E9C9FF] text-[#5A005F]
-                    font-semibold shadow-sm">
+          <div
+            className="inline-flex items-center gap-2 px-6 py-2 mb-10
+      rounded-full bg-white text-[#5186cd]
+      font-bold shadow-md border border-[#5186cd]/20"
+          >
             🎓 Transforming Education Globally
           </div>
 
           {/* Main Heading */}
-          <h1 className="text-4xl md:text-6xl font-extrabold mb-4 text-[#5A005F]">
-            About LearniLM<span className="inline-block mx-1">🌎</span>World
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-4 text-[#1f2937]">
+            About{" "}
+            <span className="text-[#5186cd]">LearniLM</span>
+            <span className="inline-block mx-1">🌍</span>
+            <span className="text-[#5186cd]">World</span>
           </h1>
 
           {/* Subheading */}
-          <h2 className="text-2xl md:text-3xl font-semibold text-[#7A1FA2] mb-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-[#5186cd] mb-6">
             Empowering Learners Everywhere
           </h2>
 
           {/* Description */}
           <p className="max-w-4xl mx-auto text-lg md:text-xl
-                  font-medium leading-relaxed mb-10 text-[#2D274B]">
+      font-medium leading-relaxed mb-12 text-gray-700">
             We are on a mission to make quality education and{" "}
-            <span className="font-bold text-[#7A1FA2]">skill-building</span> accessible
-            to everyone — through personalized, flexible, and affordable learning
+            <span className="font-bold text-[#5186cd]">skill-building</span>{" "}
+            accessible to everyone — through personalized, flexible, and affordable learning
             experiences.
           </p>
 
           {/* Feature Pills */}
-          <div className="flex flex-wrap justify-center gap-6 mb-12">
+          <div className="flex flex-wrap justify-center gap-6 mb-14">
             <div className="flex items-center gap-3 px-6 py-3 rounded-full
-                      bg-[#E9C9FF] border border-[#E0C6FF]
-                      text-[#5A005F] font-semibold shadow-sm">
+        bg-white border border-[#5186cd]/20
+        text-[#5186cd] font-bold shadow-sm">
               🌍 Global Community
             </div>
             <div className="flex items-center gap-3 px-6 py-3 rounded-full
-                      bg-[#E9C9FF] border border-[#E0C6FF]
-                      text-[#5A005F] font-semibold shadow-sm">
+        bg-white border border-[#5186cd]/20
+        text-[#5186cd] font-bold shadow-sm">
               🎓 Quality Education
             </div>
             <div className="flex items-center gap-3 px-6 py-3 rounded-full
-                      bg-[#E9C9FF] border border-[#E0C6FF]
-                      text-[#5A005F] font-semibold shadow-sm">
+        bg-white border border-[#5186cd]/20
+        text-[#5186cd] font-bold shadow-sm">
               💡 Accessible Learning
             </div>
           </div>
@@ -202,102 +153,105 @@ export default function AboutPage() {
           <Link to="/login">
             <button
               className="px-10 py-4 rounded-full
-               bg-[#7A1FA2] hover:bg-[#5A005F]
-               transition text-white text-xl font-bold shadow-lg"
+        bg-[#276dc9] hover:bg-[#205eb0]
+        transition text-white text-xl font-bold shadow-xl"
             >
               Start Learning Today →
             </button>
           </Link>
+
         </div>
       </section>
 
-      {/* VISION & CORE VALUES */}
       {/* e0fa84 bg-gradient-to-b from-[#2D274B] to-[#1E1A3A] */}
       {/* OUR VISION & VALUES */}
-      <section className="pt-6 pb-12 px-6">
+      <section className="pt-16 pb-20 px-6 bg-[#fef5e4]">
         <div className="max-w-7xl mx-auto text-center">
 
           {/* Top Pill */}
-          <div className="inline-flex items-center px-6 py-2 rounded-full bg-[#F2B6FF] text-[#5A005F] font-semibold mb-6">
-            Our Vision and values
+          <div className="inline-flex items-center px-6 py-2 rounded-full bg-white text-[#276dc9] font-bold shadow-md border border-[#5186cd]/20 mb-8">
+            Our Vision & Values
           </div>
 
           {/* Main Heading */}
-          <h2 className="text-5xl md:text-6xl font-extrabold mb-8">
-            <span className="text-black">What We</span>{" "}
-            <span className="text-[#6A0075]">Believe In</span>
+          <h2 className="text-4xl md:text-6xl font-extrabold mb-8 text-[#1f2937]">
+            What We{" "}
+            <span className="text-[#5186cd]">Believe In</span>
           </h2>
 
           {/* Vision Text */}
-          <p className="max-w-5xl mx-auto text-lg md:text-xl leading-relaxed text-black mb-20">
-            <strong>Our Vision:</strong> To create a world where learning is limitless,
-            empowering individuals to explore, innovate, and grow without barriers —
-            transforming education into a lifelong adventure.
+          <p className="max-w-5xl mx-auto text-lg md:text-xl leading-relaxed text-gray-700 mb-16">
+            <strong className="text-[#5186cd]">Our Vision:</strong> To create a world where learning is limitless,
+            empowering individuals to explore, innovate, and grow without barriers — transforming education
+            into a lifelong adventure.
           </p>
 
           {/* Values Grid */}
           <div className="grid md:grid-cols-4 gap-8 text-black text-left">
 
             {/* Empowerment */}
-            <div className="bg-[#F8E8FF] rounded-[75px] p-8 border-4 border-black/20">
-              <div className="w-14 h-14 flex items-center justify-center rounded-full bg-[#F2C6FF] text-[#6A0075] mb-5 mx-auto">
+            <div className="bg-[#e9f1fb] rounded-[75px] p-8 border-4 border-[#5186cd]/40">
+              <div className="w-14 h-14 flex items-center justify-center rounded-full bg-[#cfe0f7] text-[#276dc9] mb-5 mx-auto">
                 <HandHeart size={28} strokeWidth={1.8} />
               </div>
 
-              <h3 className="text-xl font-bold mb-3">Empowerment</h3>
-              <p className="text-base leading-relaxed">
+              <h3 className="text-xl font-bold mb-3 text-[#1f2937]">Empowerment</h3>
+              <p className="text-base leading-relaxed text-gray-700">
                 We believe in unlocking every learner&apos;s potential through opportunity
                 and support.
               </p>
             </div>
 
             {/* Integrity */}
-            <div className="bg-[#F8E8FF] rounded-[75px] p-8 border-4 border-black/20">
-              <div className="w-14 h-14 flex items-center justify-center rounded-full bg-[#F2C6FF] text-[#6A0075] mb-5 mx-auto">
+            <div className="bg-[#e9f1fb] rounded-[75px] p-8 border-4 border-[#5186cd]/40">
+              <div className="w-14 h-14 flex items-center justify-center rounded-full bg-[#cfe0f7] text-[#276dc9] mb-5 mx-auto">
                 <ShieldCheck size={28} strokeWidth={1.8} />
               </div>
-              <h3 className="text-xl font-bold mb-3">Integrity</h3>
-              <p className="text-base leading-relaxed">
-                We uphold transparency, fairness, and trust in everything we build and
-                teach.
+
+              <h3 className="text-xl font-bold mb-3 text-[#1f2937]">Integrity</h3>
+              <p className="text-base leading-relaxed text-gray-700">
+                We uphold transparency, fairness, and trust in everything we build and teach.
               </p>
             </div>
 
             {/* Innovation */}
-            <div className="bg-[#F8E8FF] rounded-[75px] p-8 border-4 border-black/20">
-              <div className="w-14 h-14 flex items-center justify-center rounded-full bg-[#F2C6FF] text-[#6A0075] mb-5 mx-auto">
+            <div className="bg-[#e9f1fb] rounded-[75px] p-8 border-4 border-[#5186cd]/40">
+              <div className="w-14 h-14 flex items-center justify-center rounded-full bg-[#cfe0f7] text-[#276dc9] mb-5 mx-auto">
                 <Lightbulb size={28} strokeWidth={1.8} />
               </div>
-              <h3 className="text-xl font-bold mb-3">Innovation</h3>
-              <p className="text-base leading-relaxed">
+
+              <h3 className="text-xl font-bold mb-3 text-[#1f2937]">Innovation</h3>
+              <p className="text-base leading-relaxed text-gray-700">
                 We constantly evolve through technology to make education smarter and
                 more engaging.
               </p>
             </div>
 
             {/* Community */}
-            <div className="bg-[#F8E8FF] rounded-[75px] p-8 border-4 border-black/20">
-              <div className="w-14 h-14 flex items-center justify-center rounded-full bg-[#F2C6FF] text-[#6A0075] mb-5 mx-auto">
+            <div className="bg-[#e9f1fb] rounded-[75px] p-8 border-4 border-[#5186cd]/40">
+              <div className="w-14 h-14 flex items-center justify-center rounded-full bg-[#cfe0f7] text-[#276dc9] mb-5 mx-auto">
                 <Users size={28} strokeWidth={1.8} />
               </div>
-              <h3 className="text-xl font-bold mb-3">Community</h3>
-              <p className="text-base leading-relaxed">
+
+              <h3 className="text-xl font-bold mb-3 text-[#1f2937]">Community</h3>
+              <p className="text-base leading-relaxed text-gray-700">
                 We foster a global network where learners and mentors uplift one another.
               </p>
             </div>
 
           </div>
+
         </div>
       </section>
 
       {/* OUR STORY */}
       {/*e0fa84  bg-gradient-to-b from-[#dc8d33] to-[#f3b765] text-[#2D274B]  */}
-      <section className="py-28 px-6 bg-[#F8E6FF]">
+      <section className="py-28 px-6 bg-[#fef4e4]">
         <div className="max-w-7xl mx-auto">
 
           {/* Top Pill */}
           <div className="flex justify-center mb-12">
-            <span className="px-6 py-2 rounded-full bg-[#E8B3FF] text-[#5A005F] font-semibold">
+            <span className="px-6 py-2 rounded-full bg-white text-[#276dc9] font-bold shadow-md border border-[#5186cd]/20">
               Our Story
             </span>
           </div>
@@ -315,7 +269,7 @@ export default function AboutPage() {
               <img
                 src={our_story}
                 alt="How LearniLM World Began"
-                className="w-full max-w-lg rounded-[75px] object-cover border-3 border-black"
+                className="w-full max-w-lg rounded-[75px] object-cover border-4 border-[#5186cd]/40"
               />
             </motion.div>
 
@@ -328,39 +282,39 @@ export default function AboutPage() {
               className="flex flex-col"
             >
               {/* Heading */}
-              <h2 className="text-5xl font-extrabold mb-8 leading-tight">
+              <h2 className="text-5xl font-extrabold mb-8 leading-tight text-[#1f2937]">
                 How{" "}
-                <span className="text-[#C86AF2]">LearniLM</span>{" "}
-                <span className="inline-block ">🌎</span>{" "}
-                <span className="text-[#C86AF2]">World</span>{" "}
+                <span className="text-[#5186cd]">LearniLM</span>{" "}
+                <span className="inline-block">🌎</span>{" "}
+                <span className="text-[#5186cd]">World</span>{" "}
                 Began
               </h2>
 
               {/* Paragraphs */}
-              <p className="text-lg leading-relaxed mb-6 text-black max-w-xl">
+              <p className="text-lg leading-relaxed mb-6 text-gray-700 max-w-xl">
                 What started as a simple idea — to make learning truly personal —
                 evolved into a global movement connecting passionate trainers and
                 eager learners across the world.
               </p>
 
-              <p className="text-lg leading-relaxed text-black max-w-xl mb-12">
+              <p className="text-lg leading-relaxed text-gray-700 max-w-xl mb-12">
                 Through dedication, creativity, and a belief that knowledge should
                 have no limits,{" "}
-                <span className="font-bold">
+                <span className="font-bold text-[#5186cd]">
                   LearniLM<span className="inline-block mx-1">🌎</span>World
                 </span>{" "}
                 continues to empower individuals to grow academically,
                 professionally, and personally.
               </p>
 
-              {/* QUOTE (RIGHT COLUMN, LEFT ALIGNED) */}
+              {/* QUOTE */}
               <div className="relative max-w-xl">
                 {/* Shadow Layer */}
-                <div className="absolute inset-0 bg-[#5A004F] rounded-full -translate-x-4 translate-y-4"></div>
+                <div className="absolute inset-0 bg-[#5186cd] rounded-full -translate-x-4 translate-y-4 opacity-20"></div>
 
                 {/* Main Card */}
-                <div className="relative bg-[#E6A7CF] px-10 py-8 rounded-full">
-                  <p className="text-2xl font-bold text-black">
+                <div className="relative bg-[#e9f1fb] px-10 py-8 rounded-full border border-[#5186cd]/30 shadow-md">
+                  <p className="text-2xl font-bold text-[#1f2937]">
                     “Every learner has a story. Ours is about making each one count.”
                   </p>
                 </div>
@@ -374,7 +328,7 @@ export default function AboutPage() {
 
       {/* CAREERS */}
       {/* e0fa84 CBE56A*/}
-      <section id="careers" className="py-24 px-6 text-[2D274B]">
+      <section id="careers" className="py-24 px-6 text-[#2D274B] bg-[#fef5e4]">
         <div className="max-w-6xl mx-auto text-center">
           <motion.div
             initial={{ scale: 0 }}
@@ -382,10 +336,12 @@ export default function AboutPage() {
             transition={{ duration: 0.4 }}
             viewport={{ once: true }}
           >
-            <Briefcase size={40} className="mx-auto mb-4 text-[#C86AF2]" />
+            <Briefcase size={40} className="mx-auto mb-4 text-[#276dc9]" />
           </motion.div>
 
-          <h2 className="text-4xl font-serif font-bold text-[#C86AF2]">Careers at LearniLM🌎World</h2>
+          <h2 className="text-4xl font-serif font-bold text-[#5186cd]">
+            Careers at LearniLM🌎World
+          </h2>
           <p className="mt-4 text-lg max-w-3xl mx-auto text-[#2D274B]">
             Join a mission-driven team transforming education. Your ideas matter, your growth is
             supported, and your work makes a real impact.
@@ -401,7 +357,7 @@ export default function AboutPage() {
             ].map((benefit, i) => (
               <div
                 key={i}
-                className="px-6 py-3 rounded-full bg-[#F8E8FF] border-2 border-black/80 text-lg font-medium"
+                className="px-6 py-3 rounded-full bg-[#e9f1fb] border-2 border-[#5186cd]/40 text-lg font-medium"
               >
                 {benefit}
               </div>
@@ -415,7 +371,7 @@ export default function AboutPage() {
             <motion.img
               src={careers_img}
               alt="Team working together"
-              className="w-full h-[625px] object-cover rounded-[60px]"
+              className="w-full h-[625px] object-cover rounded-[60px] border-4 border-[#5186cd]/30"
               initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
@@ -429,12 +385,12 @@ export default function AboutPage() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-4xl font-extrabold text-[#9A0FA5] mb-8">
+              <h3 className="text-4xl font-extrabold text-[#5186cd] mb-8">
                 Open Positions
               </h3>
 
               {/* INDIA */}
-              <div className="bg-[#F8E8FF] border-2 border-black/30 rounded-[48px] p-10 mb-10">
+              <div className="bg-[#e9f1fb] border-2 border-[#5186cd]/30 rounded-[48px] p-10 mb-10">
                 <h4 className="text-2xl font-bold mb-6 flex items-center gap-3">
                   🇮🇳 India
                 </h4>
@@ -449,7 +405,7 @@ export default function AboutPage() {
               </div>
 
               {/* INTERNATIONAL */}
-              <div className="bg-[#F8E8FF] border-2 border-black/30 rounded-[48px] p-10">
+              <div className="bg-[#e9f1fb] border-2 border-[#5186cd]/30 rounded-[48px] p-10">
                 <h4 className="text-2xl font-bold mb-6 flex items-center gap-3">
                   🌍 International
                 </h4>
@@ -463,48 +419,44 @@ export default function AboutPage() {
                   <li>• Sales Intern – Jordan</li>
                 </ul>
               </div>
-
-
             </motion.div>
-
           </div>
 
-          {/* APPLY BUTTON */}
+          {/* APPLY BUTTON — ONLY BUTTON COLOR CHANGED */}
           <button
             onClick={() => setShowCareerForm(true)}
-            className="mt-10 inline-block px-8 py-4 bg-[#F64EBB] text-white font-bold rounded-full hover:scale-105 transition"
+            className="mt-10 inline-block px-8 py-4 bg-[#276dc9] hover:bg-[#205eb0] text-white font-bold rounded-full hover:scale-105 transition"
           >
             Apply Now →
           </button>
 
         </div>
+
         {showCareerForm && (
           <CareerApplicationForm onClose={() => setShowCareerForm(false)} />
         )}
-
-
       </section>
 
       {/* POLICY & REFUND */}
       {/* e0fa84 CBE56A 2D274B */}
       <section
         id="policy-refund"
-        className="py-28 px-6 bg-gradient-to-b from-[#F8E6FF] to-[#FDF6FF]"
+        className="py-28 px-6 bg-[#e9f1fb]"
       >
         <div className="max-w-7xl mx-auto text-center">
 
           {/* TOP PILL */}
-          <div className="inline-flex px-5 py-2 rounded-full bg-[#E9C9FF] text-[#5A005F] text-sm font-semibold mb-6">
+          <div className="inline-flex px-5 py-2 rounded-full bg-white text-[#276dc9] text-sm font-bold mb-6 shadow border border-[#5186cd]/20">
             POLICIES
           </div>
 
           {/* HEADING */}
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
-            Policy & <span className="text-[#C86AF2]">Refund</span>
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-[#1f2937]">
+            Policy & <span className="text-[#5186cd]">Refund</span>
           </h2>
 
           {/* SUBTEXT */}
-          <p className="text-lg text-[#2D274B] max-w-3xl mx-auto mb-16">
+          <p className="text-lg text-gray-700 max-w-3xl mx-auto mb-16">
             We believe in transparency and fairness. Our policies are designed to
             protect learners, trainers, and ensure a smooth learning experience for
             everyone on LearniLM<span className="inline-block mx-1">🌎</span>World.
@@ -555,29 +507,31 @@ export default function AboutPage() {
               return (
                 <div
                   key={i}
-                  className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition"
+                  className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition border border-[#5186cd]/15"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-[#F1DBFF] flex items-center justify-center text-[#8A1FA5] mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-[#fef5e4] flex items-center justify-center text-[#276dc9] mb-4">
                     <Icon size={22} />
                   </div>
 
-                  <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                  <p className="text-[#2D274B] leading-relaxed">{item.text}</p>
+                  <h3 className="text-xl font-bold mb-2 text-[#1f2937]">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed">{item.text}</p>
                 </div>
               )
             })}
           </div>
 
           {/* FOOTER NOTE */}
-          <div className="mt-16 bg-[#F1DBFF] rounded-2xl p-6 max-w-4xl mx-auto flex flex-col sm:flex-row items-center gap-4 justify-center text-center sm:text-left">
-            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-[#8A1FA5]">
+          <div className="mt-16 bg-white rounded-2xl p-6 max-w-4xl mx-auto flex flex-col sm:flex-row items-center gap-4 justify-center text-center sm:text-left border border-[#5186cd]/20 shadow-sm">
+            <div className="w-10 h-10 rounded-lg bg-[#e9f1fb] flex items-center justify-center text-[#276dc9]">
               <Mail size={20} />
             </div>
 
-            <p className="text-[#2D274B]">
+            <p className="text-gray-700">
               For detailed refund requests or payment-related concerns, please contact
               us at{" "}
-              <span className="font-semibold text-[#8A1FA5]">
+              <span className="font-semibold text-[#5186cd]">
                 support@learnilmworld.com
               </span>
               . We’re committed to making your learning experience safe, fair, and
@@ -588,31 +542,30 @@ export default function AboutPage() {
         </div>
       </section>
 
-
       {/* BLOG / INSIGHTS */}
       {/* 2D274B CBE56A e0fa84 */}
       <section
         id="blog"
-        className="py-28 px-6 bg-gradient-to-b from-[#F8E6FF] to-[#FDF6FF]"
+        className="py-28 px-6 bg-[#e1edfc]"
       >
         <div className="max-w-7xl mx-auto text-center">
 
           {/* TOP PILL */}
-          <div className="inline-flex px-5 py-2 rounded-full bg-[#E9C9FF] text-[#5A005F] text-sm font-semibold mb-6">
+          <div className="inline-flex px-5 py-2 rounded-full bg-white text-[#276dc9] text-sm font-bold mb-6 shadow border border-[#5186cd]/20">
             FROM OUR BLOG
           </div>
 
           {/* HEADING */}
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-[#1f2937]">
             From the{" "}
-            <span className="text-[#C86AF2]">
+            <span className="text-[#5186cd]">
               LearniLM<span className="inline-block mx-1">🌎</span>World
             </span>{" "}
             Desk
           </h2>
 
           {/* SUBTEXT */}
-          <p className="text-lg text-[#2D274B] max-w-3xl mx-auto mb-16">
+          <p className="text-lg text-gray-700 max-w-3xl mx-auto mb-16">
             Explore stories, tips, and ideas that inspire learners and educators alike —
             where curiosity meets opportunity.
           </p>
@@ -649,26 +602,26 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-white rounded-3xl shadow-md hover:shadow-xl transition overflow-hidden"
+                className="bg-white rounded-3xl shadow-md hover:shadow-xl transition overflow-hidden border border-[#5186cd]/10"
               >
                 <div className="relative">
                   <img src={post.image} className="w-full h-[240px] object-cover" />
-                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/90 text-[#7A1FA2] text-sm font-semibold shadow">
+                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/95 text-[#276dc9] text-sm font-semibold shadow border border-[#5186cd]/20">
                     # LearnWithPurpose
                   </span>
                 </div>
 
                 {/* CONTENT */}
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-3 text-[#2D274B]">
+                  <h3 className="text-xl font-bold mb-3 text-[#1f2937]">
                     {post.title}
                   </h3>
 
-                  <p className="text-[#2D274B]/80 mb-5 leading-relaxed">
+                  <p className="text-gray-700 mb-5 leading-relaxed">
                     {post.excerpt}
                   </p>
 
-                  <span className="text-[#7A1FA2] font-semibold inline-flex items-center gap-1">
+                  <span className="text-[#5186cd] font-semibold inline-flex items-center gap-1 hover:underline">
                     Read More →
                   </span>
                 </div>
@@ -682,23 +635,23 @@ export default function AboutPage() {
       {/* bg-[#2D274B] e0fa84 */}
       <section
         id="help"
-        className="py-28 px-6 bg-gradient-to-b from-[#F8E6FF] to-[#FDF6FF] text-[#2D274B]"
+        className="py-28 px-6 bg-gradient-to-br from-[#5186cd] via-[#6ea0e0] to-[#fef5e4] text-white"
       >
         <div className="max-w-4xl mx-auto text-center">
 
           {/* TOP PILL */}
-          <div className="inline-flex px-5 py-2 rounded-full bg-[#E9C9FF] text-[#5A005F] text-sm font-semibold mb-6">
+          <div className="inline-flex px-5 py-2 rounded-full bg-white text-[#276dc9] text-sm font-bold mb-6 shadow">
             SUPPORT
           </div>
 
           {/* HEADING */}
           <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
-            <span className="text-[#7A1FA2]">Help</span>{" "}
-            <span className="text-[#F5B942]">Centre</span>
+            <span className="text-white">Help</span>{" "}
+            <span className="text-[#fef5e4]">Centre</span>
           </h2>
 
           {/* SUBTEXT */}
-          <p className="text-lg max-w-3xl mx-auto mb-14 text-[#6B4C7A]">
+          <p className="text-lg max-w-3xl mx-auto mb-14 text-white/90">
             Need assistance? Find quick answers and guides to help both learners and
             mentors navigate LearniLM<span className="inline-block mx-1">🌎</span>World
             with ease.
@@ -734,34 +687,35 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08 }}
                 viewport={{ once: true }}
-                className="group bg-[#F3E8FF] rounded-2xl px-6 py-5 cursor-pointer"
+                className="group bg-white/90 rounded-2xl px-6 py-5 cursor-pointer text-[#1f2937] shadow"
               >
                 <summary className="flex justify-between items-center text-lg font-semibold list-none">
                   {faq.q}
-                  <span className="text-[#7A1FA2] transition-transform group-open:rotate-180">
+                  <span className="text-[#5186cd] transition-transform group-open:rotate-180">
                     ⌄
                   </span>
                 </summary>
 
-                <p className="mt-4 text-[#2D274B]/80 leading-relaxed">
+                <p className="mt-4 text-gray-700 leading-relaxed">
                   {faq.a}
                 </p>
               </motion.details>
             ))}
           </div>
 
-          {/* CONTACT LINE (UNCHANGED CONTENT) */}
+          {/* CONTACT LINE */}
           <div className="mt-16 text-center">
-            <p className="text-lg font-medium text-[#6B4C7A]">
+            <p className="text-lg font-medium text-white/90">
               Still need help? Reach out to us anytime at{" "}
-              <span className="font-semibold text-[#F5B942]">
+              <span className="font-semibold text-[#fef5e4]">
                 support@learnilmworld.com
               </span>
             </p>
+
             {/* Feedback Button */}
             <button
               onClick={() => setShowFeedback(true)}
-              className="mt-6 bg-[#6B48AF] text-[white] px-6 py-3 rounded-full font-semibold hover:bg-[#F64EBB] transition"
+              className="mt-6 bg-white text-[#276dc9] px-6 py-3 rounded-full font-bold shadow hover:bg-[#fef5e4] transition"
             >
               Give Feedback
             </button>
@@ -772,17 +726,17 @@ export default function AboutPage() {
                 <motion.div
                   initial={{ scale: 0.85, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  className="bg-gray-100 text-[#2D274B] rounded-3xl p-8 w-[90%] max-w-lg relative"
+                  className="bg-[#fef5e4] text-[#1f2937] rounded-3xl p-8 w-[90%] max-w-lg relative shadow-xl"
                 >
                   {/* Close */}
                   <button
                     onClick={() => setShowFeedback(false)}
-                    className="absolute top-4 right-4 text-3xl font-bold text-red-400 hover:text-red-600"
+                    className="absolute top-4 right-4 text-3xl font-bold text-[#5186cd] hover:text-[#3f6fb0]"
                   >
                     ×
                   </button>
 
-                  <h3 className="text-3xl font-bold mb-6 text-center">
+                  <h3 className="text-3xl font-extrabold mb-6 text-center text-[#5186cd]">
                     We Value Your Feedback 🌟
                   </h3>
 
@@ -794,7 +748,7 @@ export default function AboutPage() {
                       onChange={(e) =>
                         setFeedbackData({ ...feedbackData, name: e.target.value })
                       }
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6b48af]"
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#5186cd]/30 focus:outline-none focus:ring-2 focus:ring-[#5186cd]"
                       required
                     />
 
@@ -805,7 +759,7 @@ export default function AboutPage() {
                       onChange={(e) =>
                         setFeedbackData({ ...feedbackData, email: e.target.value })
                       }
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6b48af]"
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#5186cd]/30 focus:outline-none focus:ring-2 focus:ring-[#5186cd]"
                       required
                     />
 
@@ -814,7 +768,7 @@ export default function AboutPage() {
                       onChange={(e) =>
                         setFeedbackData({ ...feedbackData, category: e.target.value })
                       }
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6b48af]"
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#5186cd]/30 focus:outline-none focus:ring-2 focus:ring-[#5186cd]"
                       required
                     >
                       <option value="">Select a category</option>
@@ -830,20 +784,20 @@ export default function AboutPage() {
                       onChange={(e) =>
                         setFeedbackData({ ...feedbackData, message: e.target.value })
                       }
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6b48af]"
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#5186cd]/30 focus:outline-none focus:ring-2 focus:ring-[#5186cd]"
                       required
                     />
 
                     <button
                       type="submit"
-                      className="w-full bg-[#F64EBB] text-[white] font-bold py-3 rounded-xl hover:scale-105 transition"
+                      className="w-full bg-[#5186cd] hover:bg-[#3f6fb0] text-white font-bold py-3 rounded-xl hover:scale-105 transition"
                     >
                       Submit Feedback
                     </button>
                   </form>
 
                   {feedbackStatus === "success" && (
-                    <p className="text-green-600 mt-4 text-center font-semibold">
+                    <p className="text-[#5186cd] mt-4 text-center font-semibold">
                       ✅ Thank you! Your feedback has been submitted.
                     </p>
                   )}
@@ -864,42 +818,41 @@ export default function AboutPage() {
 
       {/* TERMS & CONDITIONS */}
       {/* CBE56A 2D274B e0fa84*/}
-
       <section
         id="terms"
-        className="py-28 px-6 bg-gradient-to-b from-[#F8E6FF] to-[#FDF6FF]"
+        className="py-28 px-6 bg-[#eef4fc]"
       >
         <div className="max-w-7xl mx-auto text-center">
 
           {/* TOP PILL */}
-          <div className="inline-flex px-5 py-2 rounded-full bg-[#E9C9FF] text-[#5A005F] text-sm font-semibold mb-6">
+          <div className="inline-flex px-5 py-2 rounded-full bg-[#5186cd] text-white text-sm font-bold mb-6 shadow">
             LEGAL
           </div>
 
           {/* HEADING */}
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
-            Terms & <span className="text-[#C86AF2]">Conditions</span>
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-[#1f2937]">
+            Terms & <span className="text-[#5186cd]">Conditions</span>
           </h2>
 
           {/* SUBTEXT */}
-          <p className="mt-4 text-lg text-[#2D274B] max-w-3xl mx-auto mb-16">
+          <p className="mt-4 text-lg text-gray-700 max-w-3xl mx-auto mb-16">
             By accessing or using LearniLM<span className="inline-block mx-1">🌎</span>World,
             you agree to our policies and terms. These ensure a safe, transparent,
             and fair learning environment for everyone.
           </p>
 
-          {/* TERMSGRID */}
+          {/* TERMS GRID */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
 
             {/* 1 */}
-            <div className="bg-white rounded-2xl p-6 shadow-md">
-              <div className="w-12 h-12 rounded-xl bg-[#F1DBFF] flex items-center justify-center text-[#8A1FA5] mb-4">
+            <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition">
+              <div className="w-12 h-12 rounded-xl bg-[#e3edfb] flex items-center justify-center text-[#5186cd] mb-4">
                 <UserCheck size={22} />
               </div>
-              <h3 className="text-xl font-bold mb-2">
+              <h3 className="text-xl font-bold mb-2 text-[#1f2937]">
                 User Responsibilities & Code of Conduct
               </h3>
-              <p className="text-[#2D274B] leading-relaxed">
+              <p className="text-gray-700 leading-relaxed">
                 Users must provide accurate information, maintain account
                 confidentiality, and uphold professionalism. Misuse, fraud,
                 or inappropriate conduct may lead to suspension.
@@ -907,14 +860,14 @@ export default function AboutPage() {
             </div>
 
             {/* 2 */}
-            <div className="bg-white rounded-2xl p-6 shadow-md">
-              <div className="w-12 h-12 rounded-xl bg-[#F1DBFF] flex items-center justify-center text-[#8A1FA5] mb-4">
+            <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition">
+              <div className="w-12 h-12 rounded-xl bg-[#e3edfb] flex items-center justify-center text-[#5186cd] mb-4">
                 <CreditCard size={22} />
               </div>
-              <h3 className="text-xl font-bold mb-2">
+              <h3 className="text-xl font-bold mb-2 text-[#1f2937]">
                 Booking, Payments & Cancellations
               </h3>
-              <p className="text-[#2D274B] leading-relaxed">
+              <p className="text-gray-700 leading-relaxed">
                 All bookings depend on trainer availability. Payments are
                 securely processed, and cancellations or reschedules must
                 follow platform policies to qualify for refunds.
@@ -922,14 +875,14 @@ export default function AboutPage() {
             </div>
 
             {/* 3 */}
-            <div className="bg-white rounded-2xl p-6 shadow-md">
-              <div className="w-12 h-12 rounded-xl bg-[#F1DBFF] flex items-center justify-center text-[#8A1FA5] mb-4">
+            <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition">
+              <div className="w-12 h-12 rounded-xl bg-[#e3edfb] flex items-center justify-center text-[#5186cd] mb-4">
                 <BookOpen size={22} />
               </div>
-              <h3 className="text-xl font-bold mb-2">
+              <h3 className="text-xl font-bold mb-2 text-[#1f2937]">
                 Intellectual Property Rights
               </h3>
-              <p className="text-[#2D274B] leading-relaxed">
+              <p className="text-gray-700 leading-relaxed">
                 All content, materials, and trademarks on LearniLM World
                 belong to LearniLM World or its partners. Unauthorized use
                 or redistribution is prohibited.
@@ -937,14 +890,14 @@ export default function AboutPage() {
             </div>
 
             {/* 4 */}
-            <div className="bg-white rounded-2xl p-6 shadow-md">
-              <div className="w-12 h-12 rounded-xl bg-[#F1DBFF] flex items-center justify-center text-[#8A1FA5] mb-4">
+            <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition">
+              <div className="w-12 h-12 rounded-xl bg-[#e3edfb] flex items-center justify-center text-[#5186cd] mb-4">
                 <Scale size={22} />
               </div>
-              <h3 className="text-xl font-bold mb-2">
+              <h3 className="text-xl font-bold mb-2 text-[#1f2937]">
                 Limitation of Liability
               </h3>
-              <p className="text-[#2D274B] leading-relaxed">
+              <p className="text-gray-700 leading-relaxed">
                 LearniLM World is not liable for indirect or consequential
                 losses arising from misuse of the platform. Services are
                 provided “as is” within legal limits.
@@ -952,14 +905,14 @@ export default function AboutPage() {
             </div>
 
             {/* 5 */}
-            <div className="bg-white rounded-2xl p-6 shadow-md">
-              <div className="w-12 h-12 rounded-xl bg-[#F1DBFF] flex items-center justify-center text-[#8A1FA5] mb-4">
+            <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition">
+              <div className="w-12 h-12 rounded-xl bg-[#e3edfb] flex items-center justify-center text-[#5186cd] mb-4">
                 <Shield size={22} />
               </div>
-              <h3 className="text-xl font-bold mb-2">
+              <h3 className="text-xl font-bold mb-2 text-[#1f2937]">
                 Privacy & Data Usage
               </h3>
-              <p className="text-[#2D274B] leading-relaxed">
+              <p className="text-gray-700 leading-relaxed">
                 We respect your privacy. Data is collected only to improve
                 learning experiences and platform functionality. Personal
                 data is never sold or misused.
@@ -967,14 +920,14 @@ export default function AboutPage() {
             </div>
 
             {/* 6 */}
-            <div className="bg-white rounded-2xl p-6 shadow-md">
-              <div className="w-12 h-12 rounded-xl bg-[#F1DBFF] flex items-center justify-center text-[#8A1FA5] mb-4">
+            <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition">
+              <div className="w-12 h-12 rounded-xl bg-[#e3edfb] flex items-center justify-center text-[#5186cd] mb-4">
                 <Gavel size={22} />
               </div>
-              <h3 className="text-xl font-bold mb-2">
+              <h3 className="text-xl font-bold mb-2 text-[#1f2937]">
                 Dispute Resolution & Governing Law
               </h3>
-              <p className="text-[#2D274B] leading-relaxed">
+              <p className="text-gray-700 leading-relaxed">
                 Disputes will be resolved amicably where possible. If
                 unresolved, they will be governed under applicable Indian
                 law and jurisdiction.
@@ -984,10 +937,10 @@ export default function AboutPage() {
           </div>
 
           {/* DISCLAIMER */}
-          <p className="mt-16 text-[#2D274B] text-base max-w-3xl mx-auto">
+          <p className="mt-16 text-gray-700 text-base max-w-3xl mx-auto">
             These terms may be updated periodically to reflect platform or
             legal changes. For queries, contact us at{" "}
-            <span className="font-semibold text-[#8A1FA5]">
+            <span className="font-semibold text-[#5186cd]">
               legal@learnilmworld.com
             </span>.
           </p>

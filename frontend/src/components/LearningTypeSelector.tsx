@@ -1,12 +1,11 @@
 // FILE: src/components/LearningTypeSelector.tsx
 import React from 'react'
 
-
 interface Props { learningType: string; onChange: (t: 'language' | 'subject' | 'hobby') => void }
 
 const LearningTypeSelector: React.FC<Props> = React.memo(({ learningType, onChange }) => {
     return (
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
 
             {/* Language */}
             <button
@@ -19,8 +18,8 @@ const LearningTypeSelector: React.FC<Props> = React.memo(({ learningType, onChan
           shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
           active:translate-x-[2px] active:translate-y-[2px] active:shadow-none
           ${learningType === 'language'
-                        ? 'bg-[#E0B0FF] text-[#2D274B]'
-                        : 'bg-gray-200 text-gray-700'
+                        ? 'bg-[#e9f1fb] text-[#5186cd]'
+                        : 'bg-white text-[#1f2937] hover:bg-[#fef5e4]'
                     }`}
             >
                 <span className="text-base sm:text-xl">文<sub>A</sub></span>
@@ -38,8 +37,8 @@ const LearningTypeSelector: React.FC<Props> = React.memo(({ learningType, onChan
           shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
           active:translate-x-[2px] active:translate-y-[2px] active:shadow-none
           ${learningType === 'subject'
-                        ? 'bg-[#E0B0FF] text-[#2D274B]'
-                        : 'bg-gray-200 text-gray-700'
+                        ? 'bg-[#e9f1fb] text-[#5186cd]'
+                        : 'bg-white text-[#1f2937] hover:bg-[#fef5e4]'
                     }`}
             >
                 <span className="text-base sm:text-xl">📝</span>
@@ -57,8 +56,8 @@ const LearningTypeSelector: React.FC<Props> = React.memo(({ learningType, onChan
           shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
           active:translate-x-[2px] active:translate-y-[2px] active:shadow-none
           ${learningType === 'hobby'
-                        ? 'bg-[#E0B0FF] text-[#2D274B]'
-                        : 'bg-gray-200 text-gray-700'
+                        ? 'bg-[#e9f1fb] text-[#5186cd]'
+                        : 'bg-white text-[#1f2937] hover:bg-[#fef5e4]'
                     }`}
             >
                 <span className="text-base sm:text-xl">🎨</span>
@@ -68,7 +67,5 @@ const LearningTypeSelector: React.FC<Props> = React.memo(({ learningType, onChan
         </div>
     )
 })
-
-
 
 export default LearningTypeSelector

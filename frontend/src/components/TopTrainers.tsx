@@ -131,7 +131,7 @@ export default function TopTrainers(): JSX.Element {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
-          className="text-4xl md:text-5xl font-serif font-extrabold text-[#F64EBB] text-center"
+          className="text-4xl md:text-5xl font-serif font-extrabold text-[#5186cd] text-center"
         >
           Meet Our Top Trainers
         </motion.h2>
@@ -181,7 +181,7 @@ export default function TopTrainers(): JSX.Element {
                   <div
                     className="  
                     absolute inset-0
-                    bg-[#6B48AF] text-white rounded-[32px] shadow-xl p-4
+                    bg-[#276dc9] text-white rounded-[32px] shadow-xl p-4
                     hover:scale-105 transition cursor-pointer
                     flex flex-col
                     [backface-visibility:hidden]
@@ -200,7 +200,7 @@ export default function TopTrainers(): JSX.Element {
                         <div className="w-[150px] text-right">
                           <span
                             className={`text-[12px] px-2 py-1 rounded-full font-semibold inline-block mb-1 ${role === "language"
-                              ? "bg-[#4430a9] text-white"
+                              ? "bg-[#5186cd] text-white"
                               : role === "subject"
                                 ? "bg-[#CBE56A] text-[#2D274B]"
                                 : "bg-white text-[#2D274B]"
@@ -241,7 +241,7 @@ export default function TopTrainers(): JSX.Element {
 
                     <Link
                       to={`/trainer-profile/${trainer._id}`}
-                      className="mt-3 w-full text-center bg-[#F64EBB] text-[#white] py-2 rounded-lg font-semibold hover:bg-[#f123a9] transition"
+                      className="mt-3 w-full text-center bg-white text-[#276dc9] py-2 rounded-lg font-semibold hover:bg-[#4674b0] hover:text-white transition"
                     >
                       View Profile
                     </Link>
@@ -272,12 +272,12 @@ export default function TopTrainers(): JSX.Element {
             to="/main"
             className="
               px-8 py-3 
-              bg-[#F64EBB] 
+              bg-[#276dc9] 
               text-[white] 
               font-semibold 
               rounded-xl 
               shadow-md 
-              hover:bg-[#f61fab] 
+              hover:bg-[#4879b8] 
               transition 
               text-lg
             "

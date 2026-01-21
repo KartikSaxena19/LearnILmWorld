@@ -33,7 +33,7 @@ const CoursePlayer = () => {
   return (
     <div className="min-h-screen bg-[#FFF9F0] p-4 lg:p-8">
       <div className="max-w-4xl mx-auto">
-        <Link to="/student/courses" className="inline-flex items-center text-gray-500 hover:text-pink-600 font-medium mb-6 transition-colors">
+        <Link to="/courses" className="inline-flex items-center text-gray-500 hover:text-pink-600 font-medium mb-6 transition-colors">
           <ArrowLeft size={20} className="mr-2"/> Back to Courses
         </Link>
 

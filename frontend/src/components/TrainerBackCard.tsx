@@ -53,7 +53,7 @@ export default function TrainerBackCard({
       `}
         >
             {/* HEADER */}
-            <div className="relative h-[150px] rounded-t-[28px] bg-gradient-to-r from-[#7A3DF0] to-[#A855F7]">
+            <div className="relative h-[150px] rounded-t-[28px] bg-gradient-to-r from-[#276dc9] to-[#205eb0]">
                 <Link
                     to={`/trainer-profile/${trainer._id}`}
                     className="absolute top-4 right-4 bg-yellow-400 text-black text-xs font-semibold px-3 py-1 rounded-full hover:bg-yellow-300 transition"
@@ -82,7 +82,7 @@ export default function TrainerBackCard({
 
                 {/* RATING ROW */}
                 <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
-                    <span className="flex items-center gap-1 font-semibold text-[#F64EBB]">
+                    <span className="flex items-center gap-1 font-semibold text-[#5186cd]">
                         ⭐ {trainer.profile?.averageRating ?? "4.9"}
                     </span>
                     <span>(342 reviews)</span>
@@ -104,7 +104,7 @@ export default function TrainerBackCard({
                     {displayList.slice(0, 4).map((item) => (
                         <span
                             key={item}
-                            className="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700"
+                            className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700"
                         >
                             {item}
                         </span>
@@ -115,7 +115,7 @@ export default function TrainerBackCard({
                 {isModal && (
                     <Link
                         to={`/trainer-profile/${trainer._id}`}
-                        className="mt-6 block w-full text-center bg-[#F64EBB] text-white py-3 rounded-xl font-semibold hover:bg-[#f123a9] transition"
+                        className="mt-6 block w-full text-center bg-[#276dc9] text-white py-3 rounded-xl font-semibold hover:bg-[#205eb0] transition"
                     >
                         View Profile
                     </Link>

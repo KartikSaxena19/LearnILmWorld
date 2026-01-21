@@ -99,6 +99,8 @@ const userSchema = new mongoose.Schema({
     availability: { type: [AvailabilitySchema], default: [] },
 
     demoVideo: { type: String, trim: true, default: '' },
+    // Exclusive Demo open afterwards we are tessting in demovideo
+    // exclusiveDemoVideo: { type: String, trim: true, default: '' },
     profileImages: { type: [String], default: [] },
 
     // Map of social links - can be updated by sending plain object from frontend
