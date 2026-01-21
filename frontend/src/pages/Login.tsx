@@ -110,10 +110,10 @@ const Login: React.FC = () => {
       {/* Home Icon Button */}
       <Link
         to="/"
-        className="absolute top-6 right-6 p-2 rounded-lg bg-[#4f4382] backdrop-blur-md hover:bg-[#dc8d33]/30 transition flex items-center justify-center"
+        className="absolute top-6 right-6 p-2 rounded-lg bg-[#fef5e4] text-[#5186cd] backdrop-blur-md hover:bg-[#205eb0]/30 hover:text-[#fef5e4]  transition flex items-center justify-center"
         aria-label="Go to Home"
       >
-        <Home className="h-6 w-6 text-white hover:text-[#dc8d33] transition-colors duration-300" />
+        <Home className="h-6 w-6  transition-colors duration-300" />
       </Link>
 
       {/* Decorative orbs */}
@@ -229,11 +229,11 @@ const Login: React.FC = () => {
             </div>
 
             {/* Submit button */}
+            {/* bg-[#fef5e4] text-[#5186cd] hover:bg-[#205eb0]/30 hover:text-[#fef5e4]  */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center text-base sm:text-lg py-3 rounded-xl font-semibold text-white hover:opacity-90 transition"
-              style={{ backgroundColor: '#4f4382' }}
+              className="w-full flex items-center justify-center text-base sm:text-lg py-3 rounded-xl font-semibold bg-[#5186cd] text-[#fef5e4] hover:bg-[#095ac4]  hover:opacity-90 transition"
               aria-disabled={loading}
             >
               {loading ? (

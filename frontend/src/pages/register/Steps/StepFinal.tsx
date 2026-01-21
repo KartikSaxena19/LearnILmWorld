@@ -196,7 +196,7 @@ const StepFinal: React.FC<Props> = ({
         <button
           onClick={handleSubmitClick}
           disabled={loading}
-          className="px-4 py-2 rounded-lg bg-emerald-400 text-black font-semibold disabled:opacity-50"
+          className="px-4 py-2 rounded-lg  bg-[#5186cd] text-[#fef5e4] hover:bg-[#095ac4] font-semibold disabled:opacity-50"
         >
           {loading ? 'Submitting...' : 'Create Account'}
         </button>

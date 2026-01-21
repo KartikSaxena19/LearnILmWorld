@@ -243,10 +243,10 @@ const Register: React.FC = () => {
       {/* Home Icon Button */}
       <Link
         to="/"
-        className="absolute top-6 right-6 p-2 rounded-lg bg-[#4f4382] backdrop-blur-md hover:bg-[#dc8d33]/30 transition flex items-center justify-center"
+        className="absolute top-6 right-6 p-2 rounded-lg bg-[#fef5e4] text-[#5186cd] backdrop-blur-md hover:bg-[#5892de] hover:text-[#fef5e4]  transition flex items-center justify-center"
         aria-label="Go to Home"
       >
-        <Home className="h-6 w-6 text-white hover:text-[#dc8d33] transition-colors duration-300" />
+        <Home className="h-6 w-6  transition-colors duration-300" />
       </Link>
 
       {/* Decorative orbs (same as before) */}

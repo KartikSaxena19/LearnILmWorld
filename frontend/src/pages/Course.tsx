@@ -3,13 +3,10 @@ import axios from "axios";
 import heroImage from "../assets/office_politics.png";
 import CourseCard from "../components/CourseCard";
 import { motion } from 'framer-motion'
-import { Link, useNavigate } from "react-router-dom";
+// import { Link, useNavigate } from "react-router-dom";
 import { Target, ShieldCheck, Zap, BookOpen, Award, Clock, ChevronDown, ChevronUp } from "lucide-react";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-
-
-
 
 
 const SkeletonCard = () => (
@@ -27,9 +24,6 @@ const SkeletonCard = () => (
 );
 
 
-
-
-
 const Courses = () => {
   //   const navigate = useNavigate();
   // const [user, setUser] = useState(null);
@@ -38,14 +32,6 @@ const Courses = () => {
   const [courses, setCourses] = useState([]);
   const [showAll, setShowAll] = useState(false);
   const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
-
-
-
-
-
-
-
-
 
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -79,32 +65,32 @@ const Courses = () => {
     {
       title: "Research-Backed Methods",
       desc: "All strategies grounded in the latest psychology and organizational research.",
-      icon: <Target className="w-6 h-6 text-yellow-500" />
+      icon: <Target className="w-6 h-6 text-[#276dc9]" />
     },
     {
       title: "100% Ethical Approach",
       desc: "Learn to succeed without compromising your values or integrity.",
-      icon: <ShieldCheck className="w-6 h-6 text-yellow-500" />
+      icon: <ShieldCheck className="w-6 h-6 text-[#276dc9]" />
     },
     {
       title: "Actionable Frameworks",
       desc: "Practical tools you can apply immediately in your workplace.",
-      icon: <Zap className="w-6 h-6 text-yellow-500" />
+      icon: <Zap className="w-6 h-6 text-[#276dc9]" />
     },
     {
       title: "Expert Instructors",
       desc: "Learn from professionals with decades of corporate experience.",
-      icon: <BookOpen className="w-6 h-6 text-yellow-500" />
+      icon: <BookOpen className="w-6 h-6 text-[#276dc9]" />
     },
     {
       title: "Certificate of Completion",
       desc: "Earn credentials to showcase your professional development.",
-      icon: <Award className="w-6 h-6 text-yellow-500" />
+      icon: <Award className="w-6 h-6 text-[#276dc9]" />
     },
     {
       title: "Lifetime Access",
       desc: "Learn at your own pace with unlimited access to all materials.",
-      icon: <Clock className="w-6 h-6 text-yellow-500" />
+      icon: <Clock className="w-6 h-6 text-[#276dc9]" />
     },
   ];
 
@@ -118,7 +104,6 @@ const Courses = () => {
     { q: "Can I get a certificate upon completion?", a: "Yes, all our courses come with a verifiable certificate of completion." },
     { q: "Are the courses available in multiple languages?", a: "Yes, the courses are available in multiple languages." },
   ];
-
 
 
   useEffect(() => {
@@ -305,7 +290,7 @@ const Courses = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <span className="text-yellow-600 font-semibold tracking-wider text-sm uppercase block mb-2">Why Choose Us</span>
+            <span className="text-[#5186cd] font-semibold tracking-wider text-sm uppercase block mb-2">Why Choose Us</span>
             <h2 className="text-4xl font-bold text-[#111827] mb-4 font-serif">The Premium Learning Experience</h2>
             <p className="text-gray-500 max-w-2xl mx-auto">We've designed our courses to deliver real results through proven methodologies and practical application.</p>
           </motion.div>
@@ -321,7 +306,7 @@ const Courses = () => {
                 whileHover={{ scale: 1.05 }}
                 className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
               >
-                <div className="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center mb-6">
+                <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-6">
                   {item.icon}
                 </div>
                 <h3 className="text-xl font-bold text-[#111827] mb-3 font-serif">{item.title}</h3>
@@ -341,7 +326,7 @@ const Courses = () => {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <span className="text-yellow-600 font-semibold tracking-wider text-sm uppercase block mb-2">FAQ</span>
+            <span className="text-[#5186cd] font-semibold tracking-wider text-sm uppercase block mb-2">FAQ</span>
             <h2 className="text-4xl font-bold text-[#111827] mb-4 font-serif">Frequently Asked Questions</h2>
             <p className="text-gray-500">Have questions? We've got answers.</p>
           </motion.div>
