@@ -45,13 +45,13 @@ import arab_flag from "../assets/arab_flag.jpeg";
 
 import heroImage3 from "../assets/together child1.png";
 
-import math from "../assets/Math.jpeg";
-import hist from "../assets/history3.png";
-import geo from "../assets/Geography.jpeg";
-import phy from "../assets/Physics.jpeg";
-import chem from "../assets/chemistry.jpeg";
-import bio from "../assets/Biology.jpeg";
-import cs from "../assets/ComputerScience.png";
+import math from "../assets/Maths_new.jpeg";
+import hist from "../assets/History_new.png";
+import geo from "../assets/Geography_new.jpeg";
+import phy from "../assets/Physics_new.jpeg";
+import chem from "../assets/Chemistry_new.jpeg";
+import bio from "../assets/Biology_new.jpeg";
+import cs from "../assets/ComputerScience_new.png";
 import Footer from "../components/Footer";
 import TopTrainers from "../components/TopTrainers";
 // import { LanguageCard } from '../components/LanguageCard'
@@ -999,7 +999,8 @@ export default function LandingPageAlt() {
                 className="group relative h-56 rounded-xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-xl transition-all duration-300 cursor-pointer"
                 style={{
                   backgroundImage: `url(${subject.img})`,
-                  backgroundSize: "cover",
+                  backgroundSize: "100% 100%",
+                  //backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}
                 onClick={() => handleSubjectClick(subject)}
